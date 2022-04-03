@@ -1,8 +1,11 @@
 import { BellIcon, SearchIcon } from '@heroicons/react/outline';
-import React from 'react';
+import React, { useState } from 'react';
+import { ModalCustom } from '../atoms';
 import { getImageFromAssets, imageApiAvatarUser } from '../utils/helperAssets';
 
 export default function Home() {
+  const [showModalCustom, setshowModalCustom] = useState(false);
+
   return (
     <div
       className="relative bg-zinc-50 min-h-screen max-h-full p-4 pb-14 sm:hidden"
@@ -88,7 +91,9 @@ export default function Home() {
         <h1 className="text-lg text-white font-medium">
           Ubah Dunia dengan Bantuan Kecilmu
         </h1>
-        <button className="px-6 py-2 rounded-lg text-zinc-800 font-semibold text-sm bg-apps-greenButton shadow-md shadow-lime-800/50">
+        <button
+          onClick={() => setshowModalCustom(true)}
+          className="px-6 py-2 rounded-lg text-zinc-800 font-semibold text-sm bg-apps-greenButton shadow-md shadow-lime-800/50">
           Cari Donasi
         </button>
       </div>
@@ -166,6 +171,17 @@ export default function Home() {
           ))}
         </div>
       </div>
+
+      <ModalCustom
+        open={showModalCustom}
+        handlerClose={setshowModalCustom}
+        title={'Test'}>
+        <img
+          src={getImageFromAssets('/assets/images/framemodal.png')}
+          alt=""
+          className="h-full"
+        />
+      </ModalCustom>
     </div>
   );
 }
