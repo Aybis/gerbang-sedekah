@@ -1,13 +1,13 @@
 import { ArrowNarrowLeftIcon } from '@heroicons/react/solid';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SwitchToggle, Textarea } from '../atoms';
 import { getImageFromAssets } from '../utils/helperAssets';
 
 export default function PaymentScreen() {
   const navigate = useNavigate();
   const [showNama, setshowNama] = useState(false);
-  const [showComment, setshowComment] = useState(false);
+  const [showComment, setshowComment] = useState(true);
 
   const handlerClick = () => {
     navigate('/confirm');
@@ -70,15 +70,17 @@ export default function PaymentScreen() {
           />
           <p className=" text-zinc-600 font-normal text-sm">Transfer OVO</p>
         </div>
-        <select className="rounded-lg text-sm bg-apps-primary border-none text-white font-semibold appearance-none focus:border-none ring-transparent">
+        <select className="rounded-lg text-sm bg-apps-primary border-none text-white font-semibold  focus:border-lime-500 border border-transparent">
           <option value="ovo">OVO</option>
         </select>
       </div>
 
       <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
         <p>
-          <span className="text-apps-primary">Masuk</span> atau lengkapi data di
-          bawah ini.
+          <Link to={'/login'} className="text-apps-primary">
+            Masuk
+          </Link>{' '}
+          atau lengkapi data di bawah ini.
         </p>
       </div>
 
@@ -110,7 +112,7 @@ export default function PaymentScreen() {
       </div>
 
       <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
-        <Textarea isDisabled={showComment} />
+        <Textarea isDisabled={!showComment} />
       </div>
 
       <div className="relative flex justify-center items-center mx-4">
