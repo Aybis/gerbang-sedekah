@@ -84,14 +84,14 @@ export default function PaymentScreen() {
 
       <div className="relative flex space-x-4 mt-4 px-4">
         <img
-          src={getImageFromAssets('assets/images/framemodal.png')}
+          src={getImageFromAssets('assets/images/gekrafs.png')}
           alt=""
-          className="h-20 w-20 rounded-lg object-cover object-top"
+          className="h-20 w-28 rounded-lg"
         />
         <div className="relative">
-          <h1 className="font-medium text-zinc-800">Ramadhan Sedekah Subuh</h1>
+          <h1 className="font-medium text-zinc-800">Gekfras Peduli</h1>
           <p className="text-xs text-zinc-500 mt-1 font-light">
-            Yayasan Generasi Bangsa Beradab
+            Gerakan Ekonomi Kreatif Nasional
           </p>
           <div className="flex items-center space-x-2 mt-4">
             <div className="flex -space-x-2">

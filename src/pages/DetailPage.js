@@ -77,17 +77,20 @@ export default function DetailPage() {
         <div className="relative">
           <div className="relative flex justify-center mt-12">
             <img
-              src={getImageFromAssets('assets/images/framemodal.png')}
+              src={getImageFromAssets('assets/images/gekrafs.png')}
               alt=""
-              className="h-80 object-cover w-full shadow-lg shadow-zinc-200/80 rounded-lg"
+              className="h-64 w-full shadow-lg shadow-zinc-200/80 rounded-lg"
             />
           </div>
 
           <div className="relative mt-4">
-            <h1 className="text-zinc-800 text-lg font-semibold">
-              Ramadhan Sedekah Subuh
+            <h1 className="font-medium text-lg text-zinc-800">
+              Gekfras Peduli
             </h1>
-            <div className="relative flex space-x-2 mt-2 text-xs">
+            <p className="text-xs text-zinc-500 font-light">
+              Gerakan Ekonomi Kreatif Nasional
+            </p>
+            <div className="relative flex space-x-2 mt-3 text-xs">
               <span className="px-4 py-1 bg-green-100 rounded-full text-green-600">
                 Ramadhan Project
               </span>

@@ -176,11 +176,13 @@ export default function Home() {
         open={showModalCustom}
         handlerClose={setshowModalCustom}
         title={'Test'}>
-        <img
-          src={getImageFromAssets('/assets/images/framemodal.png')}
-          alt=""
-          className="h-full"
-        />
+        <div className="py-12">
+          <img
+            src={getImageFromAssets('/assets/images/gekrafs.png')}
+            alt=""
+            className="h-full"
+          />
+        </div>
       </ModalCustom>
     </div>
   );
