@@ -1,0 +1,12 @@
+### Run with Docker ###
+
+# Create Container Node
+docker build -t gerbang-sedekah-frontend:1.0 .
+docker run -p 8903:8080 --name gerbang-sedekah-fe -d gerbang-sedekah-frontend:1.0
+
+# Step to Update/Deploy Code
+docker exec -it gerbang-sedekah-fe bash
+git pull origin
+npm install
+npm run build
+exit
