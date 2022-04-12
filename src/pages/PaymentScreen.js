@@ -1,13 +1,48 @@
-import { ArrowNarrowLeftIcon } from '@heroicons/react/solid';
+import { ArrowNarrowLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { SwitchToggle, Textarea } from '../atoms';
+import { ModalDonasi, SwitchToggle, Textarea } from '../atoms';
 import { getImageFromAssets } from '../utils/helperAssets';
 
 export default function PaymentScreen() {
   const navigate = useNavigate();
   const [showNama, setshowNama] = useState(false);
   const [showComment, setshowComment] = useState(true);
+  const [showModal, setshowModal] = useState(false);
+  const [dataBankSelect, setdataBankSelect] = useState(false);
+
+  const handlerClickBank = (item) => {
+    console.log(item);
+    setdataBankSelect(item);
+    setshowModal(false);
+  };
+
+  const dataBank = [
+    {
+      id: 1,
+      name: 'BSI',
+      noRek: '714 725 4851',
+      image: getImageFromAssets('/assets/images/bsi.png'),
+    },
+    {
+      id: 2,
+      name: 'BRI',
+      noRek: '0139 0100 333 23 08',
+      image: getImageFromAssets('/assets/images/bri.png'),
+    },
+    {
+      id: 3,
+      name: 'MANDIRI',
+      noRek: '167 000 369 25 88',
+      image: getImageFromAssets('/assets/images/mandiri.png'),
+    },
+    {
+      id: 4,
+      name: 'BCA',
+      noRek: '663 0906 707',
+      image: getImageFromAssets('/assets/images/bca.png'),
+    },
+  ];
 
   const handlerClick = () => {
     navigate('/confirm');
@@ -61,18 +96,40 @@ export default function PaymentScreen() {
         <p>5.000.000</p>
       </div>
 
-      <div className="relative flex justify-between items-center px-4 py-3 rounded-lg  text-center mx-4 mt-6">
-        <div className="flex space-x-3 items-center">
-          <img
-            src={getImageFromAssets('assets/images/ovo.svg')}
-            className="h-10"
-            alt=""
-          />
-          <p className=" text-zinc-600 font-normal text-sm">Transfer OVO</p>
-        </div>
-        <select className="rounded-lg text-sm bg-apps-primary border-none text-white font-semibold  focus:border-lime-500 border border-transparent">
-          <option value="ovo">OVO</option>
-        </select>
+      <div
+        className={[
+          'relative flex justify-between items-center px-4 py-3 rounded-lg  text-center mx-4 mt-6',
+          dataBankSelect ? 'border border-zinc-200 rounded-lg' : 'border-none',
+        ].join(' ')}>
+        {dataBankSelect ? (
+          <div className="flex items-center space-x-3">
+            <img
+              src={dataBankSelect.image}
+              alt={dataBankSelect.image}
+              className={[
+                dataBankSelect.name === 'MANDIRI' ? 'h-4' : 'h-9',
+                '',
+              ].join(' ')}
+            />
+            <div className="flex items-start flex-col space-y-1">
+              <p className="text-sm font-medium to-zinc-800">
+                {dataBankSelect.name}
+              </p>
+              <p className="text-xs text-zinc-700">{dataBankSelect.noRek}</p>
+              <p className="text-xs text-zinc-500">
+                Yayasan Generasi Bangsa Beradab
+              </p>
+            </div>
+          </div>
+        ) : (
+          <p className="text-sm font-medium text-zinc-700">Metode Pembayaran</p>
+        )}
+
+        <button
+          onClick={() => setshowModal(true)}
+          className="text-sm relative -tracking-wide rounded-lg font-semibold text-apps-primary flex justify-between items-center">
+          <span>Lihat Semua</span>
+        </button>
       </div>
 
       <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
@@ -122,6 +179,48 @@ export default function PaymentScreen() {
           Lanjutkan
         </button>
       </div>
+
+      <ModalDonasi
+        open={showModal}
+        handlerClose={setshowModal}
+        position="bottom">
+        <div className="flex flex-col mt-3">
+          <h1 className="font-medium text-zinc-600 text-left">
+            Pilih Metode Pembayaran
+          </h1>
+
+          <div className="grid grid-cols-1 gap-3 mt-6">
+            {dataBank?.map((item) => (
+              <div
+                onClick={() => handlerClickBank(item)}
+                key={Math.random()}
+                className=" flex justify-between items-center p-3 rounded-lg border border-zinc-200">
+                <div className="flex items-center space-x-6">
+                  <img
+                    src={item.image}
+                    alt={item.image}
+                    className={[
+                      item.name === 'MANDIRI' ? 'h-4' : 'h-9',
+                      '',
+                    ].join(' ')}
+                  />
+                  <div className="flex items-start flex-col space-y-1">
+                    <p className="text-sm font-medium to-zinc-800">
+                      {item.name}
+                    </p>
+                    <p className="text-xs text-zinc-700">{item.noRek}</p>
+                    <p className="text-xs text-zinc-500">
+                      Yayasan Generasi Bangsa Beradab
+                    </p>
+                  </div>
+                </div>
+
+                <ChevronRightIcon className="h-5 text-zinc-500" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </ModalDonasi>
     </div>
   );
 }

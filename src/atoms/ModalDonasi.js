@@ -81,12 +81,12 @@ export default function ModalDonasi({
                   />
                 </div>
                 <div>{children}</div>
-                {/* <button
+                <button
                   ref={completeButtonRef}
                   onClick={() => handlerClose(false)}
-                  className="bg-warmGray-100 opacity-0 -mt-4 h-0 w-0">
+                  className="hidden">
                   Cancel
-                </button> */}
+                </button>
               </div>
             </div>
           </Transition.Child>

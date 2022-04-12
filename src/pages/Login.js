@@ -35,6 +35,7 @@ export default function Login() {
         swal('Yeay!', 'Login Berhasil!', 'success');
         Cookies.set('session', res.data.jwtToken);
         setisSubmit(false);
+        navigate('/');
         return res;
       })
       .catch((err) => {
