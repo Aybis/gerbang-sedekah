@@ -12,7 +12,6 @@ export default function PaymentScreen() {
   const [dataBankSelect, setdataBankSelect] = useState(false);
 
   const handlerClickBank = (item) => {
-    console.log(item);
     setdataBankSelect(item);
     setshowModal(false);
   };
@@ -44,12 +43,31 @@ export default function PaymentScreen() {
     },
   ];
 
+  const dataOrganisasi = [
+    {
+      id: 4,
+      name: 'Tidak',
+    },
+    {
+      id: 1,
+      name: 'Gekrafs',
+    },
+    {
+      id: 2,
+      name: ' Yakesma',
+    },
+    {
+      id: 3,
+      name: 'Pertamina',
+    },
+  ];
+
   const handlerClick = () => {
     navigate('/confirm');
   };
 
   return (
-    <div className="relative bg-white min-h-screen h-full">
+    <div className="relative bg-white min-h-screen h-full pb-10">
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
         <span onClick={() => navigate(-1)}>
@@ -152,9 +170,34 @@ export default function PaymentScreen() {
       <div className="relative flex justify-between items-center mx-4 mt-6">
         <input
           type="text"
-          placeholder="Nomor Whatsapp atau Email Anda"
+          placeholder="Nomor Whatsapp"
           className="bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
         />
+      </div>
+
+      <div className="relative flex justify-between items-center mx-4 mt-6">
+        <input
+          type="email"
+          placeholder="Email"
+          className="bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
+        />
+      </div>
+
+      <div className="relative flex justify-between items-center mx-4 mt-6">
+        <p className="text-sm font-light text-zinc-500">
+          Saya tergabung dalam organisasi{' '}
+          <span className="text-apps-primary text-opacity-70">(opsional)</span>
+        </p>
+
+        <select
+          name=""
+          className="border-none text-sm focus:ring-transparent w-fit">
+          {dataOrganisasi.map((item) => (
+            <option value={item.id} key={Math.random()}>
+              {item.name}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div className="relative flex justify-between items-center rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
