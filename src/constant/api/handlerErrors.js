@@ -11,7 +11,7 @@ export default function handlerErrors(error) {
         Cookies.remove('session');
         localStorage.clear();
       } else {
-        message = error.response.data.message;
+        message = error.response.data.title;
       }
 
       if (typeof message === 'string') {

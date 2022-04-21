@@ -1,19 +1,48 @@
 import { ArrowNarrowLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 import { ModalDonasi, SwitchToggle, Textarea } from '../atoms';
-import { getImageFromAssets } from '../utils/helperAssets';
+import {
+  insertDonatur,
+  setDonatur,
+  setTempBank,
+  setTempDonatur,
+} from '../redux/actions/donatur';
+import { userGetTempToken } from '../redux/actions/user';
+import { getImageFromAssets } from '../utils/helpers/assetHelpers';
+import useForm from '../utils/helpers/useForm';
 
 export default function PaymentScreen() {
   const navigate = useNavigate();
+  const [didMount, setdidMount] = useState(false);
   const [showNama, setshowNama] = useState(false);
   const [showComment, setshowComment] = useState(true);
   const [showModal, setshowModal] = useState(false);
+  const [isLoading, setisLoading] = useState(false);
   const [dataBankSelect, setdataBankSelect] = useState(false);
+  const USER = useSelector((state) => state.user);
+  const DONATUR = useSelector((state) => state.donatur);
+  const dispatch = useDispatch();
+
+  const [state, setstate] = useForm({
+    projectId: 1,
+    donaturName: DONATUR?.tempDonatur?.donaturName ?? USER?.profile?.username,
+    paymentMethod: 'Transfer',
+    paymentBank: '',
+    channel: DONATUR?.tempDonatur?.channel ?? '',
+    email: USER?.profile?.email,
+    phone: USER?.profile?.phone,
+    nominal: DONATUR?.tempDonatur?.nominal ?? 0,
+    komentar: DONATUR?.tempDonatur?.komentar ?? '',
+  });
 
   const handlerClickBank = (item) => {
     setdataBankSelect(item);
     setshowModal(false);
+    state.paymentBank = item.name;
+    dispatch(setTempBank(item));
   };
 
   const dataBank = [
@@ -62,15 +91,60 @@ export default function PaymentScreen() {
     },
   ];
 
-  const handlerClick = () => {
-    navigate('/confirm');
+  const handlerChangeChannel = (event) => {
+    state.channel = event.target.value;
   };
+
+  const handlerSubmit = async (event) => {
+    setisLoading(true);
+    event.preventDefault();
+    try {
+      const getToken = await dispatch(userGetTempToken());
+      const result = await dispatch(insertDonatur(state, USER?.authTemp));
+
+      if (getToken?.http_code === '200' && result?.http_code === '200') {
+        setisLoading(false);
+        dispatch(setDonatur(getToken?.data));
+        dispatch(setTempDonatur(result?.data));
+
+        navigate('/confirm');
+      } else {
+        setisLoading(false);
+
+        swal('Oh No!', 'Something Happened!', 'error');
+      }
+    } catch (error) {
+      setisLoading(false);
+
+      swal('Oh No!', 'Something Happened!', 'error');
+    }
+    setisLoading(false);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
+  useEffect(() => {
+    setdidMount(true);
+
+    return () => {
+      setdidMount(false);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!didMount) {
+    return null;
+  }
 
   return (
     <div className="relative bg-white min-h-screen h-full pb-10">
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
-        <span onClick={() => navigate(-1)}>
+        <span
+          onClick={() =>
+            USER?.profile?.name ? navigate(-1) : navigate('/login')
+          }>
           <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
         </span>
         <div className="col-span-2 relative">
@@ -111,7 +185,14 @@ export default function PaymentScreen() {
 
       <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
         <p>Rp.</p>
-        <p>5.000.000</p>
+        <input
+          type="text"
+          name="nominal"
+          onChange={setstate}
+          placeholder="type amount"
+          value={state.nominal || ''}
+          className="border-none bg-transparent text-zinc-800 font-semibold focus:ring-transparent focus:border-transparent text-right placeholder:font-light placeholder:text-sm placeholder:text-zinc-400"
+        />
       </div>
 
       <div
@@ -140,7 +221,7 @@ export default function PaymentScreen() {
             </div>
           </div>
         ) : (
-          <p className="text-sm font-medium text-zinc-700">Metode Pembayaran</p>
+          <p className="text-sm font-medium text-zinc-700">Pilih Pembayaran</p>
         )}
 
         <button
@@ -150,78 +231,102 @@ export default function PaymentScreen() {
         </button>
       </div>
 
-      <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
-        <p>
-          <Link to={'/login'} className="text-apps-primary">
-            Masuk
-          </Link>{' '}
-          atau lengkapi data di bawah ini.
-        </p>
-      </div>
+      {USER?.session && (
+        <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
+          <p>
+            <Link to={'/login'} className="text-apps-primary">
+              Masuk
+            </Link>{' '}
+            atau lengkapi data di bawah ini.
+          </p>
+        </div>
+      )}
+      <form onSubmit={handlerSubmit}>
+        <div className="relative flex justify-between items-center mx-4 mt-6">
+          <input
+            type="text"
+            autoComplete="off"
+            disabled={showNama}
+            name="donaturName"
+            value={state.donaturName}
+            onChange={setstate}
+            placeholder="Nama Lengkap"
+            className="disabled:bg-zinc-200 disabled:opacity-75 transition-all duration-300 ease-in-out bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
+          />
+        </div>
+        <div className="relative flex justify-between items-center mx-4 mt-6">
+          <input
+            type="text"
+            autoComplete="off"
+            name="phone"
+            value={state.phone || ''}
+            onChange={setstate}
+            placeholder="Nomor Whatsapp"
+            className="bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
+          />
+        </div>
 
-      <div className="relative flex justify-between items-center mx-4 mt-6">
-        <input
-          type="text"
-          disabled={showNama}
-          placeholder="Nama Lengkap"
-          className="disabled:bg-zinc-200 disabled:opacity-75 transition-all duration-300 ease-in-out bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
-        />
-      </div>
-      <div className="relative flex justify-between items-center mx-4 mt-6">
-        <input
-          type="text"
-          placeholder="Nomor Whatsapp"
-          className="bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
-        />
-      </div>
+        <div className="relative flex justify-between items-center mx-4 mt-6">
+          <input
+            type="email"
+            autoComplete="off"
+            placeholder="Email"
+            name="email"
+            value={state.email || ''}
+            onChange={setstate}
+            className="bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
+          />
+        </div>
 
-      <div className="relative flex justify-between items-center mx-4 mt-6">
-        <input
-          type="email"
-          placeholder="Email"
-          className="bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
-        />
-      </div>
+        <div className="relative flex justify-between items-center mx-4 mt-6">
+          <p className="text-sm font-light text-zinc-500">
+            Saya tergabung dalam organisasi{' '}
+            <span className="text-apps-primary text-opacity-70">
+              (opsional)
+            </span>
+          </p>
 
-      <div className="relative flex justify-between items-center mx-4 mt-6">
-        <p className="text-sm font-light text-zinc-500">
-          Saya tergabung dalam organisasi{' '}
-          <span className="text-apps-primary text-opacity-70">(opsional)</span>
-        </p>
+          <select
+            name="channel"
+            onChange={(e) => handlerChangeChannel(e)}
+            defaultValue={DONATUR?.tempDonatur?.channel}
+            className="border-zinc-300 rounded-lg text-sm focus:ring-apps-primary w-fit">
+            {dataOrganisasi.map((item) => (
+              <option value={item.name} key={Math.random()}>
+                {item.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          name=""
-          className="border-none text-sm focus:ring-transparent w-fit">
-          {dataOrganisasi.map((item) => (
-            <option value={item.id} key={Math.random()}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="relative flex justify-between items-center rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
+          <p>Sembunyikan nama saya (anonim)</p>
 
-      <div className="relative flex justify-between items-center rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
-        <p>Sembunyikan nama saya (anonim)</p>
+          <SwitchToggle setEnabled={setshowNama} enabled={showNama} />
+        </div>
 
-        <SwitchToggle setEnabled={setshowNama} enabled={showNama} />
-      </div>
+        <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
+          <p>Tulis komentar (opsional)</p>
+          <SwitchToggle setEnabled={setshowComment} enabled={showComment} />
+        </div>
 
-      <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
-        <p>Tulis komentar (opsional)</p>
-        <SwitchToggle setEnabled={setshowComment} enabled={showComment} />
-      </div>
+        <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
+          <Textarea
+            name={'komentar'}
+            onchange={setstate}
+            value={state.komentar}
+            isDisabled={!showComment}
+          />
+        </div>
 
-      <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
-        <Textarea isDisabled={!showComment} />
-      </div>
-
-      <div className="relative flex justify-center items-center mx-4">
-        <button
-          onClick={() => handlerClick()}
-          className="w-full flex justify-center items-center bg-lime-500 shadow-md shadow-lime-500/50 text-[#0E4944] mt-8 font-medium px-4 py-3 rounded-lg">
-          Lanjutkan
-        </button>
-      </div>
+        <div className="relative flex justify-center items-center mx-4">
+          <button
+            disabled={isLoading}
+            className="disabled:opacity-40 w-full flex justify-center items-center bg-lime-500 shadow-md shadow-lime-500/50 text-[#0E4944] mt-8 font-medium px-4 py-3 rounded-lg">
+            Lanjutkan
+          </button>
+        </div>
+      </form>
 
       <ModalDonasi
         open={showModal}

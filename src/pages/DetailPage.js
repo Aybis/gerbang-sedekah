@@ -2,7 +2,7 @@ import { ArrowNarrowLeftIcon, ShareIcon } from '@heroicons/react/solid';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Modal, ModalDonasi } from '../atoms';
-import { getImageFromAssets } from '../utils/helperAssets';
+import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 
 export default function DetailPage() {
   const [showModal, setshowModal] = useState(false);

@@ -1,10 +1,40 @@
-import { BellIcon, SearchIcon } from '@heroicons/react/outline';
+import { BellIcon, LogoutIcon, SearchIcon } from '@heroicons/react/outline';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import swal from 'sweetalert';
 import { ModalCustom } from '../atoms';
-import { getImageFromAssets, imageApiAvatarUser } from '../utils/helperAssets';
+import {
+  getImageFromAssets,
+  imageApiAvatarUser,
+} from '../utils/helpers/assetHelpers';
+import Cookies from 'js-cookie';
 
 export default function Home() {
   const [showModalCustom, setshowModalCustom] = useState(false);
+  const USER = useSelector((state) => state.user);
+
+  const handlerLogout = () => {
+    swal({
+      title: 'Are you sure?',
+      text: 'Anda yakin ingin keluar dari aplikasi!',
+      icon: 'warning',
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        Cookies.remove('session');
+        localStorage.clear();
+        swal('Anda berhasil logout!', {
+          icon: 'success',
+        });
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
+      } else {
+        swal('Okay!');
+      }
+    });
+  };
 
   return (
     <div
@@ -17,7 +47,7 @@ export default function Home() {
       <div className="relative flex justify-between items-center">
         <div className="flex space-x-2">
           <img
-            src={imageApiAvatarUser('AMA')}
+            src={imageApiAvatarUser(USER?.profile?.username)}
             alt="user"
             className="h-10 rounded-md"
           />
@@ -26,13 +56,16 @@ export default function Home() {
               Selamat datang,
             </h4>
             <h3 className="text-sm font-semibold text-zinc-800">
-              Abdul Muchtar Astria
+              {USER?.profile?.username}
             </h3>
           </div>
         </div>
-        <div className="relative">
-          <BellIcon className="h-6 text-zinc-400" />
-          <span className="absolute rounded-full top-0 right-1 h-2 w-2 bg-red-600"></span>
+        <div
+          onClick={() => handlerLogout()}
+          className="relative flex flex-col items-center justify-center">
+          <LogoutIcon className="h-6 text-zinc-400" />
+          <p className="text-xs text-center text-zinc-400">Logout</p>
+          <span className="absolute rounded-full top-0 right-1 h-2 w-2 bg-red-600 hidden"></span>
         </div>
       </div>
 

@@ -1,16 +1,15 @@
-import { EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
-import axios from 'axios';
+import { ArrowLeftIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Loading } from '../atoms';
+import { userRegister } from '../redux/actions/user';
+import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import swal from 'sweetalert';
-import { Loading } from '../atoms';
-import { setProfile } from '../redux/actions/user';
-import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 
-export default function Login() {
+export default function Register() {
   const session = Cookies.get('session');
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -19,29 +18,30 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [isSubmit, setisSubmit] = useState(false);
 
   const [showPassword, setshowPassword] = useState(false);
 
   const handlerSubmit = async (data) => {
     setisSubmit(true);
-    return await axios
-      .post(`https://api-sedekah.gerbangadab.com/kolabore/login`, data)
-      .then((res) => {
-        dispatch(setProfile(res.data.data));
-        swal('Yeay!', 'Login Berhasil!', 'success');
-        Cookies.set('session', res.data.data.jwtToken);
-        setisSubmit(false);
-        navigate('/');
-        return res;
-      })
-      .catch((err) => {
-        swal('Oh No!', err.response.data.message, 'error');
-        console.log(err.response);
-        setisSubmit(false);
-        return err.response;
-      });
+    // console.log(data);
+
+    const result = await dispatch(userRegister(data));
+
+    if (result?.http_code === '200') {
+      setisSubmit(false);
+      swal('Yeay!', 'Register Success!', 'success');
+      navigate('/login');
+    } else {
+      setisSubmit(false);
+      let message = result?.message ?? result?.errors?.map((item) => item);
+
+      swal('Oh no!', message ?? 'Something Happened!', 'error');
+    }
     setisSubmit(false);
+
+    return result;
   };
 
   useEffect(() => {
@@ -49,14 +49,17 @@ export default function Login() {
       navigate(-1, { replace: true });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="relative inset-0 bg-zinc-100 max-h-full max-w-full">
-      <div className="fixed top-0 inset-x-0 p-4 bg-[#009461] hidden z-20">
+      <div className="fixed top-0 inset-x-0 p-4 bg-[#9BD35A] z-20">
         <div className="relative mx-auto container max-w-md w-full ">
-          <div className="flex space-x-2 items-center cursor-pointer text-white hover:text-zinc-800 transition-all duration-300 ease-in-out w-fit">
-            <p className=" font-medium text-sm">Masuk Akun</p>
+          <div
+            onClick={() => navigate('/login')}
+            className="flex space-x-2 items-center cursor-pointer text-white hover:text-zinc-800 transition-all duration-300 ease-in-out w-fit">
+            <ArrowLeftIcon className="h-4" />
+            <p className=" font-medium text-sm">Masuk</p>
           </div>
         </div>
       </div>
@@ -91,30 +94,70 @@ export default function Login() {
             className="relative max-w-md w-full px-4">
             <div className="relative z-10 p-4 rounded-3xl bg-white shadow-lg shadow-zinc-500/50">
               <h1 className="text-2xl font-semibold text-zinc-800 mt-4">
-                Login
+                Daftar baru
               </h1>
               <h1 className="text-sm font-light text-zinc-400 mt-1">
-                Masuk untuk nikmati kemudahan berdonasi dan akses fitur lainnya.
+                Perjalanan kebaikanmu dimulai di sini.
               </h1>
 
               <div className="mt-8">
                 <div className="col-span-6 sm:col-span-3">
                   <input
-                    type="text"
-                    placeholder="Username"
-                    {...register('username', { required: true })}
+                    {...register('email', { required: true })}
+                    type="email"
+                    placeholder="Email"
                     autoComplete="off"
                     className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
                   />
+                  {errors.email && (
+                    <p className="text-xs text-red-500 mt-1">
+                      This field is required
+                    </p>
+                  )}
                 </div>
+                <div className="col-span-6 sm:col-span-3">
+                  <input
+                    {...register('phone', { required: true })}
+                    type="text"
+                    placeholder="Phone number"
+                    autoComplete="off"
+                    className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
+                  />
+                  {errors.phone && (
+                    <p className="text-xs text-red-500 mt-1">
+                      This field is required
+                    </p>
+                  )}
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <input
+                    {...register('username', { required: true })}
+                    type="text"
+                    placeholder="Username"
+                    autoComplete="off"
+                    className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
+                  />
+                  {errors.username && (
+                    <p className="text-xs text-red-500 mt-1">
+                      This field is required
+                    </p>
+                  )}
+                </div>
+
                 <div className="mt-4 relative">
                   <input
+                    {...register('password', { required: true, minLength: 8 })}
                     type={showPassword ? 'text' : 'password'}
-                    {...register('password', { required: true })}
                     placeholder="Password"
                     autoComplete="off"
                     className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
                   />
+                  {errors.password && (
+                    <p className="text-xs text-red-500 mt-1">
+                      Password minimal 8 karakter
+                    </p>
+                  )}
                   <div
                     className="absolute top-4 right-5 flex justify-center items-center"
                     onClick={() => setshowPassword(!showPassword)}>
@@ -128,7 +171,7 @@ export default function Login() {
 
                 <div className="relative mt-2">
                   <span className="text-sm absolute right-2 text-zinc-400 hover:text-apps-primary transition-all duration-300 ease-in-out">
-                    Lupa Password?
+                    Forgot Password?
                   </span>
                 </div>
 
@@ -136,42 +179,21 @@ export default function Login() {
                   <button
                     type="submit"
                     disabled={isSubmit}
-                    className="disabled:opacity-40 disabled:cursor-not-allowed w-full hover:bg-green-500 transition-all duration-300 ease-in-out bg-apps-primary text-white font-semibold rounded-lg flex space-x-2 justify-center items-center py-3">
+                    className="disabled:opacity-40 disabled:cursor-not-allowed w-full bg-apps-primary text-white font-semibold rounded-lg flex space-x-2 justify-center items-center py-3">
                     {isSubmit && (
                       <Loading height={5} width={4} color="text-white" />
                     )}
-                    Masuk
+                    Buat akun
                   </button>
                 </div>
 
-                <span className="relative text-center w-full flex items-center justify-center mt-6 text-sm text-zinc-400">
-                  Atau masuk dengan
-                </span>
-
-                <div className="relative flex space-x-4 justify-center mt-4 mb-6 items-center">
-                  <div className="border border-zinc-200 rounded-lg p-2">
-                    <img
-                      src={getImageFromAssets('/assets/images/google.svg')}
-                      alt="logo"
-                      className="h-10 object-cover cursor-pointer"
-                    />
-                  </div>
-                  <div className="border border-zinc-200 rounded-lg p-2">
-                    <img
-                      src={getImageFromAssets('/assets/images/facebook.svg')}
-                      alt="logo"
-                      className="h-10 object-cover cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                <div className="flex mt-4 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">
+                <div className="flex pt-6 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">
                   <h4 className="pt-1">
-                    Belum punya akun?{' '}
+                    Sudah punya akun?{' '}
                     <span
-                      onClick={() => navigate('/register')}
-                      className="text-apps-primary font-semibold cursor-pointer hover:text-green-500 transition-all duration-300 ease-in-out">
-                      Daftar sekarang{' '}
+                      onClick={() => navigate('/login')}
+                      className="text-apps-primary font-semibold">
+                      Masuk sekarang{' '}
                     </span>
                   </h4>
                 </div>
