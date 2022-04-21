@@ -14,11 +14,7 @@ export default function Login() {
   const session = Cookies.get('session');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
   const [isSubmit, setisSubmit] = useState(false);
 
   const [showPassword, setshowPassword] = useState(false);
@@ -41,7 +37,6 @@ export default function Login() {
         setisSubmit(false);
         return err.response;
       });
-    setisSubmit(false);
   };
 
   useEffect(() => {

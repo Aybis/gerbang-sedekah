@@ -1,4 +1,5 @@
-import { BellIcon, LogoutIcon, SearchIcon } from '@heroicons/react/outline';
+import { LogoutIcon, SearchIcon } from '@heroicons/react/outline';
+import Cookies from 'js-cookie';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
@@ -7,7 +8,6 @@ import {
   getImageFromAssets,
   imageApiAvatarUser,
 } from '../utils/helpers/assetHelpers';
-import Cookies from 'js-cookie';
 
 export default function Home() {
   const [showModalCustom, setshowModalCustom] = useState(false);
