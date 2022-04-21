@@ -23,6 +23,12 @@ export default function (state = initialState, action) {
         tempBank: action.payload ?? {},
       };
 
+    case type.TEMP_PROJECT:
+      return {
+        ...state,
+        tempProject: action.payload ?? {},
+      };
+
     case type.LOADING:
       return {
         ...state,

@@ -18,14 +18,15 @@ function App() {
         <Route path="/" element={<Gate />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/payment" element={<PaymentScreen />} />
-          <Route path="/confirm" element={<ConfirmPayment />} />
         </Route>
 
         <Route path="/" element={<Authenticated />}>
           <Route index element={<Home />} />
           <Route path="/detail" element={<DetailPage />} />
         </Route>
+
+        <Route path="/payment/:project" element={<PaymentScreen />} />
+        <Route path="/confirm" element={<ConfirmPayment />} />
       </Routes>
     </>
   );

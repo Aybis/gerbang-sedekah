@@ -50,7 +50,7 @@ export default function DetailPage() {
   ];
 
   const handlerClick = () => {
-    navigate('/payment');
+    navigate('/payment/1');
   };
 
   return (

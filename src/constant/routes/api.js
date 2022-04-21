@@ -23,6 +23,7 @@ export default {
   // transaction
   donatur: (data) => axios.post('kolabore/new-donatur', data),
   updateDonatur: (data) => axios.post('kolabore/update-donatur', data),
+  getDonaturDetail: (id) => axios.get(`kolabore/get-donatur?id=${id}`),
   getDetailProject: (idProjcet) =>
     axios.get(`kolabore/get-project?id=${idProjcet}`),
 };

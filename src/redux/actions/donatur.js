@@ -17,6 +17,11 @@ export const setTempBank = (data) => ({
   payload: data,
 });
 
+export const setTempProject = (data) => ({
+  type: type.TEMP_PROJECT,
+  payload: data,
+});
+
 export const setLoadingDnt = (data) => ({
   type: type.LOADING,
   payload: data,
@@ -36,5 +41,31 @@ export const insertDonatur = (data, token) => async (dispatch) => {
     })
     .catch((err) => {
       return err.response;
+    });
+};
+
+export const fetchProjectDetail = (data) => async (dispatch) => {
+  setHeader();
+
+  return await api
+    .getDetailProject(data)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err.response);
+    });
+};
+
+export const fetchDonaturDetail = (data) => async (dispatch) => {
+  setHeader();
+
+  return await api
+    .getDonaturDetail(data)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err.response);
     });
 };

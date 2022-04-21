@@ -1,21 +1,23 @@
 import { ArrowNarrowLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
 import { ModalDonasi, SwitchToggle, Textarea } from '../atoms';
 import {
+  fetchDonaturDetail,
+  fetchProjectDetail,
   insertDonatur,
-  setDonatur,
   setTempBank,
   setTempDonatur,
 } from '../redux/actions/donatur';
-import { userGetTempToken } from '../redux/actions/user';
+import { setTokenTemp, userGetTempToken } from '../redux/actions/user';
 import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 import useForm from '../utils/helpers/useForm';
 
 export default function PaymentScreen() {
   const navigate = useNavigate();
+  const { project } = useParams();
   const [didMount, setdidMount] = useState(false);
   const [showNama, setshowNama] = useState(false);
   const [showComment, setshowComment] = useState(true);
@@ -104,7 +106,7 @@ export default function PaymentScreen() {
 
       if (getToken?.http_code === '200' && result?.http_code === '200') {
         setisLoading(false);
-        dispatch(setDonatur(getToken?.data));
+        dispatch(setTokenTemp(getToken?.data));
         dispatch(setTempDonatur(result?.data));
 
         navigate('/confirm');
@@ -124,6 +126,10 @@ export default function PaymentScreen() {
   };
 
   useEffect(() => {
+    dispatch(fetchProjectDetail(project));
+    if (DONATUR?.tempDonatur?.id) {
+      dispatch(fetchDonaturDetail(DONATUR?.tempDonatur?.id));
+    }
     setdidMount(true);
 
     return () => {
@@ -137,13 +143,15 @@ export default function PaymentScreen() {
     return null;
   }
 
+  console.log(project);
+
   return (
     <div className="relative bg-white min-h-screen h-full pb-10">
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
         <span
           onClick={() =>
-            USER?.profile?.name ? navigate(-1) : navigate('/login')
+            USER?.profile?.username ? navigate(-1) : navigate('/login')
           }>
           <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
         </span>
