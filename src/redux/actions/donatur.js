@@ -48,7 +48,7 @@ export const fetchProjectDetail = (data) => async (dispatch) => {
   setHeader();
 
   return await api
-    .getDetailProject(data)
+    .getDetailProject({ id: parseInt(data) })
     .then((res) => {
       console.log(res);
     })

@@ -147,7 +147,7 @@ export default function Register() {
 
                 <div className="mt-4 relative">
                   <input
-                    {...register('password', { required: true, minLength: 8 })}
+                    {...register('password', { required: true })}
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                     autoComplete="off"
