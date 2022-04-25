@@ -156,7 +156,7 @@ export default function DetailPage() {
             </div>
             <div className="relative fle flex-1 w-fit mb-2">
               <button
-                onClick={() => setshowModal(true)}
+                onClick={() => navigate('/payment/1')}
                 className="w-full px-4 py-2 rounded-lg text-[#0E4944] bg-lime-500 font-medium text-sm shadow-md shadow-lime-500/50">
                 Donasi
               </button>

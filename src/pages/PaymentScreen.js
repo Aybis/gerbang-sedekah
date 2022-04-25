@@ -1,4 +1,5 @@
 import { ArrowNarrowLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -7,6 +8,7 @@ import { ModalDonasi, SwitchToggle, Textarea } from '../atoms';
 import {
   fetchDonaturDetail,
   fetchProjectDetail,
+  fetchProjectDetailByUrl,
   insertDonatur,
   setTempBank,
   setTempDonatur,
@@ -24,8 +26,12 @@ export default function PaymentScreen() {
   const [showModal, setshowModal] = useState(false);
   const [isLoading, setisLoading] = useState(false);
   const [dataBankSelect, setdataBankSelect] = useState(false);
+  const [nominalCurrency, setnominalCurrency] = useState(0);
+  const [organitation, setorganitation] = useState('Tidak');
   const USER = useSelector((state) => state.user);
   const DONATUR = useSelector((state) => state.donatur);
+  const session = Cookies.get('session');
+  const sessionTemp = Cookies.get('authTemp');
   const dispatch = useDispatch();
 
   const [state, setstate] = useForm({
@@ -33,9 +39,9 @@ export default function PaymentScreen() {
     donaturName: DONATUR?.tempDonatur?.donaturName ?? USER?.profile?.username,
     paymentMethod: 'Transfer',
     paymentBank: '',
-    channel: DONATUR?.tempDonatur?.channel ?? '',
-    email: USER?.profile?.email,
-    phone: USER?.profile?.phone,
+    channel: '',
+    email: USER?.profile?.email ?? '',
+    phone: USER?.profile?.phone ?? '',
     nominal: DONATUR?.tempDonatur?.nominal ?? 0,
     komentar: DONATUR?.tempDonatur?.komentar ?? '',
   });
@@ -45,6 +51,13 @@ export default function PaymentScreen() {
     setshowModal(false);
     state.paymentBank = item.name;
     dispatch(setTempBank(item));
+  };
+  const handlerChangeCurrency = (event) => {
+    let val = event.target.value;
+    val = val.replace(/,/g, '');
+    const x = Number(val);
+    state.nominal = x;
+    setnominalCurrency(x.toLocaleString());
   };
 
   const dataBank = [
@@ -85,7 +98,7 @@ export default function PaymentScreen() {
     },
     {
       id: 2,
-      name: ' Yakesma',
+      name: 'Yakesma',
     },
     {
       id: 3,
@@ -93,13 +106,12 @@ export default function PaymentScreen() {
     },
   ];
 
-  const handlerChangeChannel = (event) => {
-    state.channel = event.target.value;
-  };
-
   const handlerSubmit = async (event) => {
     setisLoading(true);
     event.preventDefault();
+
+    state.channel = organitation;
+
     try {
       const getToken = await dispatch(userGetTempToken());
       const result = await dispatch(insertDonatur(state, USER?.authTemp));
@@ -126,10 +138,31 @@ export default function PaymentScreen() {
   };
 
   useEffect(() => {
-    dispatch(fetchProjectDetail(project));
-    if (DONATUR?.tempDonatur?.id) {
-      dispatch(fetchDonaturDetail(DONATUR?.tempDonatur?.id));
+    if (!session) {
+      const getToken = dispatch(userGetTempToken());
+      if (getToken?.http_code === '200' || sessionTemp) {
+        if (project / project === 1) {
+          dispatch(fetchProjectDetail(project, sessionTemp));
+        } else {
+          dispatch(fetchProjectDetailByUrl(project, sessionTemp));
+        }
+        if (DONATUR?.tempDonatur?.id) {
+          dispatch(fetchDonaturDetail(DONATUR?.tempDonatur?.id, sessionTemp));
+          setnominalCurrency(DONATUR?.tempDonatur?.nominal?.toLocaleString());
+          setdataBankSelect(DONATUR?.tempBank);
+          state.donaturName = DONATUR?.tempDonatur?.donaturName;
+          state.channel = DONATUR?.tempDonatur?.channel;
+          setorganitation(DONATUR?.tempDonatur?.channel);
+        }
+      }
+    } else {
+      if (project / project === 1) {
+        dispatch(fetchProjectDetail(project, session));
+      } else {
+        dispatch(fetchProjectDetailByUrl(project, session));
+      }
     }
+
     setdidMount(true);
 
     return () => {
@@ -137,14 +170,11 @@ export default function PaymentScreen() {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch, state]);
 
   if (!didMount) {
     return null;
   }
-
-  console.log(project);
-
   return (
     <div className="relative bg-white min-h-screen h-full pb-10">
       {/* header page */}
@@ -166,16 +196,18 @@ export default function PaymentScreen() {
 
       <div className="relative flex space-x-4 mt-4 px-4">
         <img
-          src={getImageFromAssets('assets/images/gekrafs.png')}
+          src={getImageFromAssets('/assets/images/gekrafs.png')}
           alt=""
           className="h-20 w-28 rounded-lg"
         />
         <div className="relative">
-          <h1 className="font-medium text-zinc-800">Gekfras Peduli</h1>
+          <h1 className="font-medium text-zinc-800">
+            {DONATUR?.tempProject?.title}
+          </h1>
           <p className="text-xs text-zinc-500 mt-1 font-light">
-            Gerakan Ekonomi Kreatif Nasional
+            {DONATUR?.tempProject?.shortDescription}
           </p>
-          <div className="flex items-center space-x-2 mt-4">
+          <div className=" items-center space-x-2 mt-4 hidden">
             <div className="flex -space-x-2">
               {Array.from({ length: 5 }).map((item) => (
                 <img
@@ -196,9 +228,9 @@ export default function PaymentScreen() {
         <input
           type="text"
           name="nominal"
-          onChange={setstate}
+          onChange={(e) => handlerChangeCurrency(e)}
           placeholder="type amount"
-          value={state.nominal || ''}
+          value={nominalCurrency}
           className="border-none bg-transparent text-zinc-800 font-semibold focus:ring-transparent focus:border-transparent text-right placeholder:font-light placeholder:text-sm placeholder:text-zinc-400"
         />
       </div>
@@ -249,14 +281,14 @@ export default function PaymentScreen() {
           </p>
         </div>
       )}
-      <form onSubmit={handlerSubmit}>
+      <form autoComplete="off" onSubmit={handlerSubmit}>
         <div className="relative flex justify-between items-center mx-4 mt-6">
           <input
             type="text"
-            autoComplete="off"
+            autoComplete="new-password"
             disabled={showNama}
             name="donaturName"
-            value={state.donaturName}
+            value={state.donaturName || ''}
             onChange={setstate}
             placeholder="Nama Lengkap"
             className="disabled:bg-zinc-200 disabled:opacity-75 transition-all duration-300 ease-in-out bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
@@ -265,7 +297,7 @@ export default function PaymentScreen() {
         <div className="relative flex justify-between items-center mx-4 mt-6">
           <input
             type="text"
-            autoComplete="off"
+            autoComplete="new-password"
             name="phone"
             value={state.phone || ''}
             onChange={setstate}
@@ -277,7 +309,7 @@ export default function PaymentScreen() {
         <div className="relative flex justify-between items-center mx-4 mt-6">
           <input
             type="email"
-            autoComplete="off"
+            autoComplete="new-password"
             placeholder="Email"
             name="email"
             value={state.email || ''}
@@ -296,11 +328,11 @@ export default function PaymentScreen() {
 
           <select
             name="channel"
-            onChange={(e) => handlerChangeChannel(e)}
-            defaultValue={DONATUR?.tempDonatur?.channel}
+            onChange={(event) => setorganitation(event.target.value)}
+            value={organitation}
             className="border-zinc-300 rounded-lg text-sm focus:ring-apps-primary w-fit">
-            {dataOrganisasi.map((item) => (
-              <option value={item.name} key={Math.random()}>
+            {dataOrganisasi.map((item, index) => (
+              <option value={item.name} key={index}>
                 {item.name}
               </option>
             ))}

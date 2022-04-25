@@ -129,7 +129,7 @@ export default function ConfirmPayment() {
           <img src={DONATUR?.tempBank?.image} className="h-10" alt="" />
         </div>
         <div className="relative text-right">
-          <p className="text-xs">Atas nama</p>
+          <p className="text-xs font-light">Atas nama</p>
           <p className="text-xs text-zinc-500">
             {' '}
             Yayasan Generasi Bangsa Beradab
@@ -138,7 +138,7 @@ export default function ConfirmPayment() {
       </div>
 
       {/* Button Section */}
-      <div className="sticky bottom-10 flex justify-center items-center mx-4">
+      <div className="sticky bottom-10 flex justify-center items-center mx-4 mt-12">
         <button
           onClick={() => setshowModal(true)}
           className="w-full flex justify-center items-center bg-lime-500 shadow-md shadow-lime-500/50 text-[#0E4944] mt-8 font-medium px-4 py-3 rounded-lg">

@@ -44,28 +44,44 @@ export const insertDonatur = (data, token) => async (dispatch) => {
     });
 };
 
-export const fetchProjectDetail = (data) => async (dispatch) => {
-  setHeader();
+export const fetchProjectDetail = (data, token) => async (dispatch) => {
+  setHeader(token);
 
   return await api
     .getDetailProject({ id: parseInt(data) })
     .then((res) => {
-      console.log(res);
+      dispatch(setTempProject(res.data));
+      return res.data;
     })
     .catch((err) => {
-      console.log(err.response);
+      return err.response;
     });
 };
 
-export const fetchDonaturDetail = (data) => async (dispatch) => {
-  setHeader();
+export const fetchProjectDetailByUrl = (data, token) => async (dispatch) => {
+  setHeader(token);
+
+  return await api
+    .getDetailProjectByUrl({ shortUrl: data })
+    .then((res) => {
+      dispatch(setTempProject(res.data));
+      return res.data;
+    })
+    .catch((err) => {
+      return err.response;
+    });
+};
+
+export const fetchDonaturDetail = (data, token) => async (dispatch) => {
+  setHeader(token);
 
   return await api
     .getDonaturDetail(data)
     .then((res) => {
-      console.log(res);
+      dispatch(setTempDonatur(res.data));
+      return res.data;
     })
     .catch((err) => {
-      console.log(err.response);
+      return err.response;
     });
 };
