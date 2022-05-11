@@ -25,18 +25,13 @@ export default function Register() {
 
   const handlerSubmit = async (data) => {
     setisSubmit(true);
-    // console.log(data);
-
     const result = await userRegister(data);
 
-    console.log(result);
-
-    if (result?.http_code === 200) {
+    if (result?.status_code === 200) {
       setisSubmit(false);
       swal('Yeay!', 'Register Success!', 'success');
       navigate('/login');
     } else {
-      console.log(result?.data?.message);
       setisSubmit(false);
       let message =
         result?.data?.message ?? result?.errors?.map((item) => item);
