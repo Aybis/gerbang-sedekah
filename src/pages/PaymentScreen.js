@@ -13,7 +13,7 @@ import {
   setTempBank,
   setTempDonatur,
 } from '../redux/actions/donatur';
-import { setTokenTemp, userGetTempToken } from '../redux/actions/user';
+import { userGetTempToken } from '../redux/actions/user';
 import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 import useForm from '../utils/helpers/useForm';
 
@@ -106,8 +106,6 @@ export default function PaymentScreen() {
     },
   ];
 
-  console.log(USER, session);
-
   const handlerSubmit = async (event) => {
     setisLoading(true);
     event.preventDefault();
@@ -115,9 +113,9 @@ export default function PaymentScreen() {
     state.channel = organitation;
 
     try {
-      const getToken = await dispatch(userGetTempToken());
+      // const getToken = await dispatch(userGetTempToken());
       const result = await dispatch(
-        insertDonatur(state, session || USER?.authTemp),
+        insertDonatur(state, session ?? USER?.authTemp),
       );
       // kondisi jika user login
       if (session) {
@@ -133,9 +131,9 @@ export default function PaymentScreen() {
         }
       } else {
         // kondisi jika user transaksi tanpa login
-        if (getToken?.status_code === 200 && result?.status_code === 200) {
+        if (result?.status_code === 200) {
           setisLoading(false);
-          dispatch(setTokenTemp(getToken?.data));
+          // dispatch(setTokenTemp(getToken?.data));
           dispatch(setTempDonatur(result?.data));
 
           navigate('/confirm');
@@ -158,7 +156,7 @@ export default function PaymentScreen() {
   useEffect(() => {
     if (!session) {
       const getToken = dispatch(userGetTempToken());
-      if (getToken?.http_code === '200' || sessionTemp) {
+      if (getToken?.status_code === 200 && sessionTemp) {
         if (project / project === 1) {
           dispatch(fetchProjectDetail(project, sessionTemp));
         } else {
@@ -188,7 +186,7 @@ export default function PaymentScreen() {
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, state]);
+  }, [dispatch]);
 
   if (!didMount) {
     return null;
