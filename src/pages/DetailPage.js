@@ -50,17 +50,17 @@ export default function DetailPage() {
   ];
 
   const handlerClick = () => {
-    navigate('/payment/1');
+    navigate('/payment/2');
   };
 
   return (
-    <div className="relative bg-zinc-50 min-h-screen max-h-full p-4 pb-14 sm:hidden">
+    <div className="relative bg-zinc-50 min-h-screen max-h-full p-4 pb-14 mx-auto container max-w-md">
       {/* Section Header */}
 
       {/* header page */}
       <div className="flex justify-between items-center mt-3 -mb-6">
         <span onClick={() => navigate(-1)}>
-          <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
+          <ArrowNarrowLeftIcon className="text-zinc-700 h-6 cursor-pointer" />
         </span>
         <div className=" relative">
           <h1 className="text-lg font-medium text-zinc-700 tracking-wide">
@@ -156,7 +156,7 @@ export default function DetailPage() {
             </div>
             <div className="relative fle flex-1 w-fit mb-2">
               <button
-                onClick={() => navigate('/payment/1')}
+                onClick={() => navigate('/payment/2')}
                 className="w-full px-4 py-2 rounded-lg text-[#0E4944] bg-lime-500 font-medium text-sm shadow-md shadow-lime-500/50">
                 Donasi
               </button>

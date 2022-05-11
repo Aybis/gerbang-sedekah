@@ -35,7 +35,7 @@ export default function PaymentScreen() {
   const dispatch = useDispatch();
 
   const [state, setstate] = useForm({
-    projectId: 1,
+    projectId: 2,
     donaturName: DONATUR?.tempDonatur?.donaturName ?? USER?.profile?.username,
     paymentMethod: 'Transfer',
     paymentBank: '',
@@ -106,6 +106,8 @@ export default function PaymentScreen() {
     },
   ];
 
+  console.log(USER, session);
+
   const handlerSubmit = async (event) => {
     setisLoading(true);
     event.preventDefault();
@@ -114,18 +116,34 @@ export default function PaymentScreen() {
 
     try {
       const getToken = await dispatch(userGetTempToken());
-      const result = await dispatch(insertDonatur(state, USER?.authTemp));
+      const result = await dispatch(
+        insertDonatur(state, session || USER?.authTemp),
+      );
+      // kondisi jika user login
+      if (session) {
+        if (result?.status_code === 200) {
+          setisLoading(false);
+          dispatch(setTempDonatur(result?.data));
 
-      if (getToken?.http_code === '200' && result?.http_code === '200') {
-        setisLoading(false);
-        dispatch(setTokenTemp(getToken?.data));
-        dispatch(setTempDonatur(result?.data));
+          navigate('/confirm');
+        } else {
+          setisLoading(false);
 
-        navigate('/confirm');
+          swal('Oh No!', 'Something Happened!', 'error');
+        }
       } else {
-        setisLoading(false);
+        // kondisi jika user transaksi tanpa login
+        if (getToken?.status_code === 200 && result?.status_code === 200) {
+          setisLoading(false);
+          dispatch(setTokenTemp(getToken?.data));
+          dispatch(setTempDonatur(result?.data));
 
-        swal('Oh No!', 'Something Happened!', 'error');
+          navigate('/confirm');
+        } else {
+          setisLoading(false);
+
+          swal('Oh No!', 'Something Happened!', 'error');
+        }
       }
     } catch (error) {
       setisLoading(false);
@@ -176,7 +194,7 @@ export default function PaymentScreen() {
     return null;
   }
   return (
-    <div className="relative bg-white min-h-screen h-full pb-10">
+    <div className="relative bg-zinc-50 min-h-screen h-full pb-10 mx-auto container max-w-md">
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
         <span
@@ -382,7 +400,7 @@ export default function PaymentScreen() {
               <div
                 onClick={() => handlerClickBank(item)}
                 key={Math.random()}
-                className=" flex justify-between items-center p-3 rounded-lg border border-zinc-200">
+                className=" flex justify-between items-center p-3 rounded-lg border border-zinc-200 cursor-pointer hover:bg-zinc-100 transition-all duration-300 ease-in">
                 <div className="flex items-center space-x-6">
                   <img
                     src={item.image}

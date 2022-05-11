@@ -56,7 +56,7 @@ export default function ModalDonasi({
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
             <div
               className={[
-                'inline-block  align-bottom bg-white p-3 shadow-xl transform transition-all h-auto w-full rounded-t-3xl',
+                'inline-block  align-bottom bg-white p-3 shadow-xl transform transition-all h-auto w-full rounded-t-3xl mx-auto container max-w-md lg:pb-20',
               ].join(' ')}>
               {/* line bar */}
               <div className="flex justify-center items-center mt-3">

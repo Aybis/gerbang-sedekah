@@ -111,7 +111,7 @@ export default function Login() {
                     className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
                   />
                   <div
-                    className="absolute top-4 right-5 flex justify-center items-center"
+                    className="absolute top-4 right-5 flex justify-center items-center cursor-pointer"
                     onClick={() => setshowPassword(!showPassword)}>
                     {showPassword ? (
                       <EyeIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />

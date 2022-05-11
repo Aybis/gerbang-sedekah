@@ -1,109 +1,24 @@
-import { LogoutIcon, SearchIcon } from '@heroicons/react/outline';
-import Cookies from 'js-cookie';
+import { SearchIcon } from '@heroicons/react/outline';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import swal from 'sweetalert';
 import { ModalCustom } from '../atoms';
-import {
-  getImageFromAssets,
-  imageApiAvatarUser,
-} from '../utils/helpers/assetHelpers';
+import { NavigationMenu, SectionHeader } from '../components';
+import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 
 export default function Home() {
   const [showModalCustom, setshowModalCustom] = useState(false);
-  const USER = useSelector((state) => state.user);
-
-  const handlerLogout = () => {
-    swal({
-      title: 'Are you sure?',
-      text: 'Anda yakin ingin keluar dari aplikasi!',
-      icon: 'warning',
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-      if (willDelete) {
-        Cookies.remove('session');
-        localStorage.clear();
-        swal('Anda berhasil logout!', {
-          icon: 'success',
-        });
-        setTimeout(() => {
-          window.location.reload();
-        }, 300);
-      } else {
-        swal('Okay!');
-      }
-    });
-  };
 
   return (
     <div
-      className="relative bg-zinc-50 min-h-screen max-h-full p-4 pb-14 sm:hidden"
+      className="relative bg-zinc-50 min-h-screen max-h-full p-4 pb-14 mx-auto container max-w-md"
       style={{
         backgroundImage: `${getImageFromAssets('assets/iamges/Vector.svg')}`,
         backgroundRepeat: 'no-repeat',
       }}>
       {/* Header */}
-      <div className="relative flex justify-between items-center">
-        <div className="flex space-x-2">
-          <img
-            src={imageApiAvatarUser(USER?.profile?.username)}
-            alt="user"
-            className="h-10 rounded-md"
-          />
-          <div className="flex flex-col">
-            <h4 className="text-xs font-light text-zinc-500">
-              Selamat datang,
-            </h4>
-            <h3 className="text-sm font-semibold text-zinc-800">
-              {USER?.profile?.username}
-            </h3>
-          </div>
-        </div>
-        <div
-          onClick={() => handlerLogout()}
-          className="relative flex flex-col items-center justify-center">
-          <LogoutIcon className="h-6 text-zinc-400" />
-          <p className="text-xs text-center text-zinc-400">Logout</p>
-          <span className="absolute rounded-full top-0 right-1 h-2 w-2 bg-red-600 hidden"></span>
-        </div>
-      </div>
+      <SectionHeader />
 
       {/* Menu */}
-      <div className="fixed  bottom-0 inset-x-0 z-30 bg-apps-primary">
-        <div className="relative flex justify-around items-center mx-4 py-3">
-          <div className="relative flex justify-center items-center bg-green-900 p-3 rounded-full">
-            <img
-              src={getImageFromAssets('assets/images/Category.svg')}
-              alt="home"
-              className="h-5"
-            />
-          </div>
-          <div className="relative flex justify-center items-center">
-            <img
-              src={getImageFromAssets('assets/images/Search.svg')}
-              alt="home"
-              className="h-5"
-            />
-          </div>
-          <div className="relative bg-apps-secondary h-12 w-12 rounded-full"></div>
-          <div className="relative flex justify-center items-center">
-            <img
-              src={getImageFromAssets('assets/images/Swap.svg')}
-              alt="home"
-              className="h-5"
-            />
-          </div>
-          <div className="relative flex justify-center items-center">
-            <img
-              src={getImageFromAssets('assets/images/Profile.svg')}
-              alt="home"
-              className="h-5"
-            />
-          </div>
-        </div>
-      </div>
-
+      <NavigationMenu />
       {/* Search  */}
       <div className="relative mt-8">
         <div className="relative">
@@ -213,7 +128,7 @@ export default function Home() {
           <img
             src={getImageFromAssets('/assets/images/gekrafs.png')}
             alt=""
-            className="h-full"
+            className="h-full max-w-xl"
           />
         </div>
       </ModalCustom>

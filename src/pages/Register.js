@@ -27,15 +27,19 @@ export default function Register() {
     setisSubmit(true);
     // console.log(data);
 
-    const result = await dispatch(userRegister(data));
+    const result = await userRegister(data);
 
-    if (result?.http_code === '200') {
+    console.log(result);
+
+    if (result?.http_code === 200) {
       setisSubmit(false);
       swal('Yeay!', 'Register Success!', 'success');
       navigate('/login');
     } else {
+      console.log(result?.data?.message);
       setisSubmit(false);
-      let message = result?.message ?? result?.errors?.map((item) => item);
+      let message =
+        result?.data?.message ?? result?.errors?.map((item) => item);
 
       swal('Oh no!', message ?? 'Something Happened!', 'error');
     }
@@ -53,7 +57,7 @@ export default function Register() {
 
   return (
     <div className="relative inset-0 bg-zinc-100 max-h-full max-w-full">
-      <div className="fixed top-0 inset-x-0 p-4 bg-[#9BD35A] z-20">
+      <div className="fixed top-0 inset-x-0 p-4 bg-[#9BD35A] z-20 hidden">
         <div className="relative mx-auto container max-w-md w-full ">
           <div
             onClick={() => navigate('/login')}
@@ -188,11 +192,11 @@ export default function Register() {
                 </div>
 
                 <div className="flex pt-6 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">
-                  <h4 className="pt-1">
+                  <h4 className="pt-1s">
                     Sudah punya akun?{' '}
                     <span
                       onClick={() => navigate('/login')}
-                      className="text-apps-primary font-semibold">
+                      className="text-apps-primary font-semibold cursor-pointer hover:text-green-500 transition-all duration-300 ease-in">
                       Masuk sekarang{' '}
                     </span>
                   </h4>

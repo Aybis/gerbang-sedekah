@@ -37,9 +37,11 @@ export const insertDonatur = (data, token) => async (dispatch) => {
   return await api
     .donatur(data)
     .then((res) => {
+      console.log('insert', res);
       return res;
     })
     .catch((err) => {
+      console.log('insert', err.response);
       return err.response;
     });
 };

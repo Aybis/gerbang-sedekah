@@ -35,7 +35,7 @@ export default function ConfirmPayment() {
   }
 
   return (
-    <div className="relative bg-white min-h-screen h-full">
+    <div className="relative bg-zinc-50 max-w-md mx-auto container min-h-screen h-full">
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
         <span onClick={() => navigate(-1)}>
@@ -115,7 +115,12 @@ export default function ConfirmPayment() {
         <div className="relative">
           <div className="flex space-x-2 items-center">
             <p className="text-sm">{DONATUR?.tempBank?.noRek}</p>
-            <DuplicateIcon className="h-5 text-zinc-500" />
+            <DuplicateIcon
+              className="h-5 text-zinc-500 cursor-pointer"
+              onClick={() => {
+                navigator.clipboard.writeText(this.state.textToCopy);
+              }}
+            />
           </div>
           <p className="text-xs text-zinc-400 font-light hidden">
             {' '}

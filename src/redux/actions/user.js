@@ -70,7 +70,7 @@ export const userRefreshToken = (data) => async (dispatch) => {
     });
 };
 
-export const userRegister = (data) => async (dispatch) => {
+export const userRegister = async (data) => {
   return await api
     .register(data)
     .then((res) => {
@@ -86,12 +86,13 @@ export const userGetTempToken = (data) => async (dispatch) => {
   return await api
     .getAuth()
     .then((res) => {
+      console.log('temp', res);
       Cookies.set('authTemp', res.data.jwtToken);
       dispatch(setTokenTemp(res.data.jwtToken));
       return res;
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log('temp', err.response);
       return err.response;
     });
 };
