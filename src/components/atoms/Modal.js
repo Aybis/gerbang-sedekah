@@ -24,7 +24,7 @@ export default function Modal({
         onClose={() => handlerClose(dontClose)}>
         <div
           className={[
-            'flex justify-center w-full min-h-screen text-center inset-0',
+            'flex justify-center w-full min-h-screen text-center inset-0 mx-auto container max-w-md',
             position === 'center' && 'items-center',
             position === 'bottom' && 'items-end',
             position === 'top' && 'items-start',

@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { Modal } from '../atoms';
-import { getImageFromAssets } from '../utils/helpers/assetHelpers';
 
 export default function ConfirmPayment() {
   const navigate = useNavigate();
@@ -146,7 +146,7 @@ export default function ConfirmPayment() {
       <div className="sticky bottom-10 flex justify-center items-center mx-4 mt-12">
         <button
           onClick={() => setshowModal(true)}
-          className="w-full flex justify-center items-center bg-lime-500 shadow-md shadow-lime-500/50 text-[#0E4944] mt-8 font-medium px-4 py-3 rounded-lg">
+          className="w-full flex justify-center items-center bg-blue-600 shadow-lg shadow-blue-500/50 hover:bg-blue-400 transition-all duration-300 ease-in-out text-white mt-8 font-medium px-4 py-3 rounded-lg">
           Konfirmasi Pembayaran
         </button>
       </div>
@@ -169,8 +169,8 @@ export default function ConfirmPayment() {
 
           <button
             onClick={() => handlerClikModal()}
-            className="w-full flex justify-center items-center bg-lime-500 shadow-md shadow-lime-500/50 text-[#0E4944] mt-8 font-medium px-4 py-3 rounded-lg">
-            Tutup
+            className="w-full flex justify-center items-center bg-blue-600 shadow-lg shadow-blue-500/50 hover:bg-blue-400 transition-all duration-300 ease-in-out text-white mt-8 font-medium px-4 py-3 rounded-lg">
+            Kembali
           </button>
         </div>
       </Modal>

@@ -4,7 +4,7 @@ export default function Loading({
   height = 12,
   width = 12,
   inputClass,
-  color,
+  color = 'text-white',
 }) {
   return (
     <svg

@@ -1,0 +1,10 @@
+export { default as Homepage } from './Home';
+export { default as NotFound } from './404';
+export { default as Login } from './Login';
+export { default as Register } from './Register';
+export { default as Payment } from './PaymentScreen';
+export { default as Confirm } from './ConfirmPayment';
+export { default as DetailCampaign } from './DetailPage';
+export { default as Transaksi } from './Transaksi';
+export { default as Search } from './Search';
+export { default as Profile } from './Profile';

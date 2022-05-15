@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import swal from 'sweetalert';
-import { ModalDonasi, SwitchToggle, Textarea } from '../atoms';
+import { ButtonSubmit, ModalDonasi, SwitchToggle, Textarea } from '../atoms';
 import {
   fetchDonaturDetail,
   fetchProjectDetail,
@@ -12,10 +12,11 @@ import {
   insertDonatur,
   setTempBank,
   setTempDonatur,
-} from '../redux/actions/donatur';
-import { userGetTempToken } from '../redux/actions/user';
-import { getImageFromAssets } from '../utils/helpers/assetHelpers';
-import useForm from '../utils/helpers/useForm';
+} from '../../redux/actions/donatur';
+import { userGetTempToken } from '../../redux/actions/user';
+import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
+import useForm from '../../utils/helpers/useForm';
+import Layout from './includes/Layout';
 
 export default function PaymentScreen() {
   const navigate = useNavigate();
@@ -191,26 +192,27 @@ export default function PaymentScreen() {
   if (!didMount) {
     return null;
   }
+
   return (
-    <div className="relative bg-zinc-50 min-h-screen h-full pb-10 mx-auto container max-w-md">
+    <Layout showMenu={false}>
       {/* header page */}
-      <div className="grid grid-cols-3 p-4 justify-self-center">
-        <span
-          onClick={() =>
-            USER?.profile?.username ? navigate(-1) : navigate('/login')
-          }>
-          <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
-        </span>
-        <div className="col-span-2 relative">
-          <h1 className="text-lg font-medium text-zinc-700 tracking-wide">
-            Detail Donasi
-          </h1>
+      <div className="relative">
+        <div className="relative grid grid-cols-3 items-center">
+          <div
+            onClick={() => navigate(-1)}
+            className="flex flex-none w-fit justify-center col-span-1 items-center p-2 hover:bg-zinc-100 rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
+            <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
+          </div>
+          <div className="flex flex-shrink relative col-span-2">
+            <h1 className="text-lg font-semibold text-zinc-700 tracking-wide">
+              Detail Campaign
+            </h1>
+          </div>
         </div>
       </div>
 
       {/* subject section */}
-
-      <div className="relative flex space-x-4 mt-4 px-4">
+      <div className="relative flex space-x-4 mt-4">
         <img
           src={getImageFromAssets('/assets/images/gekrafs.png')}
           alt=""
@@ -239,7 +241,7 @@ export default function PaymentScreen() {
         </div>
       </div>
 
-      <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
+      <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 rounded-lg font-semibold text-zinc-800 text-center mt-6">
         <p>Rp.</p>
         <input
           type="text"
@@ -253,8 +255,10 @@ export default function PaymentScreen() {
 
       <div
         className={[
-          'relative flex justify-between items-center px-4 py-3 rounded-lg  text-center mx-4 mt-6',
-          dataBankSelect ? 'border border-zinc-200 rounded-lg' : 'border-none',
+          'relative flex justify-between items-center py-3 rounded-lg  text-center mt-6',
+          dataBankSelect
+            ? 'border border-zinc-200 rounded-lg px-2'
+            : 'border-none',
         ].join(' ')}>
         {dataBankSelect ? (
           <div className="flex items-center space-x-3">
@@ -282,13 +286,13 @@ export default function PaymentScreen() {
 
         <button
           onClick={() => setshowModal(true)}
-          className="text-sm relative -tracking-wide rounded-lg font-semibold text-apps-primary flex justify-between items-center">
+          className="text-sm relative -tracking-wide rounded-lg p-2 font-semibold text-blue-600 flex justify-between items-center hover:text-white hover:bg-blue-500 transition-all duration-300 ease-in-out">
           <span>Lihat Semua</span>
         </button>
       </div>
 
-      {USER?.session && (
-        <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
+      {!USER?.session && (
+        <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mt-6">
           <p>
             <Link to={'/login'} className="text-apps-primary">
               Masuk
@@ -298,7 +302,7 @@ export default function PaymentScreen() {
         </div>
       )}
       <form autoComplete="off" onSubmit={handlerSubmit}>
-        <div className="relative flex justify-between items-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center mt-6">
           <input
             type="text"
             autoComplete="new-password"
@@ -310,7 +314,7 @@ export default function PaymentScreen() {
             className="disabled:bg-zinc-200 disabled:opacity-75 transition-all duration-300 ease-in-out bg-slate-100 px-4 py-3 w-full rounded-lg text-zinc-800 text-sm placeholder-opacity-30 font-medium focus:ring-lime-600 focus:border-lime-600 border border-transparent placeholder:font-light"
           />
         </div>
-        <div className="relative flex justify-between items-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center mt-6">
           <input
             type="text"
             autoComplete="new-password"
@@ -322,7 +326,7 @@ export default function PaymentScreen() {
           />
         </div>
 
-        <div className="relative flex justify-between items-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center mt-6">
           <input
             type="email"
             autoComplete="new-password"
@@ -334,7 +338,7 @@ export default function PaymentScreen() {
           />
         </div>
 
-        <div className="relative flex justify-between items-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center mt-6">
           <p className="text-sm font-light text-zinc-500">
             Saya tergabung dalam organisasi{' '}
             <span className="text-apps-primary text-opacity-70">
@@ -355,18 +359,18 @@ export default function PaymentScreen() {
           </select>
         </div>
 
-        <div className="relative flex justify-between items-center rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center rounded-lg font-light text-zinc-600 text-sm text-center mt-6">
           <p>Sembunyikan nama saya (anonim)</p>
 
           <SwitchToggle setEnabled={setshowNama} enabled={showNama} />
         </div>
 
-        <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mt-6">
           <p>Tulis komentar (opsional)</p>
           <SwitchToggle setEnabled={setshowComment} enabled={showComment} />
         </div>
 
-        <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mx-4 mt-6">
+        <div className="relative flex justify-between items-center  rounded-lg font-light text-zinc-600 text-sm text-center mt-6">
           <Textarea
             name={'komentar'}
             onchange={setstate}
@@ -375,12 +379,12 @@ export default function PaymentScreen() {
           />
         </div>
 
-        <div className="relative flex justify-center items-center mx-4">
-          <button
-            disabled={isLoading}
-            className="disabled:opacity-40 w-full flex justify-center items-center bg-lime-500 shadow-md shadow-lime-500/50 text-[#0E4944] mt-8 font-medium px-4 py-3 rounded-lg">
-            Lanjutkan
-          </button>
+        <div className="relative flex justify-center items-center mt-8">
+          <ButtonSubmit
+            isLoading={isLoading}
+            addClass={'p-2 w-full shadow-lg shadow-blue-500/50'}>
+            Lanjut Bayar
+          </ButtonSubmit>
         </div>
       </form>
 
@@ -425,6 +429,6 @@ export default function PaymentScreen() {
           </div>
         </div>
       </ModalDonasi>
-    </div>
+    </Layout>
   );
 }
