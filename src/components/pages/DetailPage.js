@@ -10,12 +10,13 @@ import api from '../../constant/routes/api';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { ButtonSubmit, Modal, ProgressBar } from '../atoms';
 import Layout from './includes/Layout';
+import createDOMPurify from 'dompurify';
 
 export default function DetailPage() {
   const { id } = useParams();
   const [showShareModal, setshowShareModal] = useState(false);
   const [like, setlike] = useState(false);
-
+  const DOMPurify = createDOMPurify(window);
   const [detailData, setdetailData] = useState(null);
   const navigate = useNavigate();
 
@@ -128,7 +129,12 @@ export default function DetailPage() {
         {/* Section Deskripsi */}
         <div className="relative mt-6">
           <p className="text-sm font-medium text-zinc-600 mb-1">Deskripsi</p>
-          <p className="text-zinc-400 text-sm">{detailData?.description}</p>
+          <div
+            className="text-zinc-400 text-sm"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(detailData?.description),
+            }}
+          />
         </div>
 
         {/* Button Donasi */}

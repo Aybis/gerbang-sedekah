@@ -6,29 +6,6 @@ import { imageApiAvatarUser } from '../../../utils/helpers/assetHelpers';
 export default function SectionHeader() {
   const USER = useSelector((state) => state.user);
 
-  // const handlerLogout = () => {
-  //   swal({
-  //     title: 'Are you sure?',
-  //     text: 'Anda yakin ingin keluar dari aplikasi!',
-  //     icon: 'warning',
-  //     buttons: true,
-  //     dangerMode: true,
-  //   }).then((willDelete) => {
-  //     if (willDelete) {
-  //       Cookies.remove('session');
-  //       localStorage.clear();
-  //       swal('Anda berhasil logout!', {
-  //         icon: 'success',
-  //       });
-  //       setTimeout(() => {
-  //         window.location.reload();
-  //       }, 300);
-  //     } else {
-  //       swal('Okay!');
-  //     }
-  //   });
-  // };
-
   return (
     <div className="relative">
       <div className="relative flex justify-between items-center">

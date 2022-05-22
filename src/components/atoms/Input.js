@@ -21,7 +21,7 @@ export default function Input({
   addClassComponent,
   temp = 'text',
 }) {
-  const [showPassword, setshowPassword] = useState(false);
+  const [showPassword, setshowPassword] = useState(true);
 
   return (
     <div className={addClassComponent}>
@@ -49,7 +49,7 @@ export default function Input({
           <div
             className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-auto cursor-pointer"
             onClick={() => setshowPassword(!showPassword)}>
-            {showPassword ? (
+            {!showPassword ? (
               <EyeIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />
             ) : (
               <EyeOffIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />

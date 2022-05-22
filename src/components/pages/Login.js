@@ -57,9 +57,9 @@ export default function Login() {
 
   return (
     <div>
-      <div className="fixed hidden z-10 inset-x-0 top-0 h-14 bg-[#009461] p-4"></div>
+      <div className="fixed hidden z-10 inset-x-0 top-0 h-14 bg-[#009461]"></div>
 
-      <div className="relative max-w-md container mx-auto min-h-screen h-full bg-white p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out -mt-24">
+      <div className="relative max-w-md container mx-auto min-h-screen h-full bg-white md:p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out md:-mt-24">
         {/* background image gerbang adab */}
         <div
           className="fixed inset-x-0 lg:h-full h-5/6 bottom-0"
@@ -89,15 +89,20 @@ export default function Login() {
         </div>
 
         {/* Form Login */}
-        <div className="relative  border-zinc-200 rounded-xl p-4 bg-white mt-8">
+        <div className="relative  border-zinc-200 rounded-xl p-4 bg-white md:mt-8">
           <div className="relative mt-4">
-            <Heading1 title={'Login'} />
-            <p className="text-sm text-zinc-500 tracking-wide leading-relaxed font-light mt-1">
+            <Heading1
+              title={'Login'}
+              addClass="text-xl md:text-2xl font-semibold"
+            />
+            <p className="text-xs md:text-sm text-zinc-500 tracking-wide leading-relaxed font-light mt-1">
               Masuk untuk nikmati kemudahan berdonasi dan akses fitur lainnya.
             </p>
           </div>
 
-          <form className="mt-10 flex flex-col" onSubmit={handlerSubmit}>
+          <form
+            className="mt-4 md:mt-10 flex flex-col"
+            onSubmit={handlerSubmit}>
             <Input
               addClassComponent={'my-2'}
               type="text"

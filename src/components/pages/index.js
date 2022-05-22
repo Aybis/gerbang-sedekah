@@ -8,3 +8,5 @@ export { default as DetailCampaign } from './DetailPage';
 export { default as Transaksi } from './Transaksi';
 export { default as Search } from './Search';
 export { default as Profile } from './Profile';
+export { default as ShowAll } from './ShowAll';
+export { default as SearchSomething } from './SearchSomething';

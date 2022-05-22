@@ -164,6 +164,7 @@ export default function PaymentScreen() {
           dispatch(fetchProjectDetailByUrl(project, sessionTemp));
         }
         if (DONATUR?.tempDonatur?.id) {
+          console.log('sini');
           dispatch(fetchDonaturDetail(DONATUR?.tempDonatur?.id, sessionTemp));
           setnominalCurrency(DONATUR?.tempDonatur?.nominal?.toLocaleString());
           setdataBankSelect(DONATUR?.tempBank);
@@ -270,7 +271,7 @@ export default function PaymentScreen() {
                 '',
               ].join(' ')}
             />
-            <div className="flex items-start flex-col space-y-1">
+            <div className="flex items-start text-left flex-col space-y-1">
               <p className="text-sm font-medium to-zinc-800">
                 {dataBankSelect.name}
               </p>
@@ -286,7 +287,7 @@ export default function PaymentScreen() {
 
         <button
           onClick={() => setshowModal(true)}
-          className="text-sm relative -tracking-wide rounded-lg p-2 font-semibold text-blue-600 flex justify-between items-center hover:text-white hover:bg-blue-500 transition-all duration-300 ease-in-out">
+          className="text-xs border border-blue-500 relative -tracking-wide rounded-lg p-2 font-semibold text-blue-600 flex justify-between items-center hover:text-white hover:bg-blue-500 transition-all duration-300 ease-in-out">
           <span>Lihat Semua</span>
         </button>
       </div>

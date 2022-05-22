@@ -31,9 +31,9 @@ export default function NotFound() {
         </div>
       </main>
       <footer className="flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 hidden">
-        <nav className="flex justify-center space-x-4">
+        <nav className=" justify-center space-x-4 hidden">
           <a
-            href="#"
+            href="/"
             className="text-sm font-medium text-gray-500 hover:text-gray-600">
             Contact Support
           </a>
@@ -42,7 +42,7 @@ export default function NotFound() {
             aria-hidden="true"
           />
           <a
-            href="#"
+            href="/"
             className="text-sm font-medium text-gray-500 hover:text-gray-600">
             Status
           </a>
@@ -51,7 +51,7 @@ export default function NotFound() {
             aria-hidden="true"
           />
           <a
-            href="#"
+            href="/"
             className="text-sm font-medium text-gray-500 hover:text-gray-600">
             Twitter
           </a>

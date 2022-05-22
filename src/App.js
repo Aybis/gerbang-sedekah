@@ -10,6 +10,8 @@ import {
   Profile,
   Register,
   Search,
+  SearchSomething,
+  ShowAll,
   Transaksi,
 } from './components/pages';
 import Authenticated from './middleware/Authenticated';
@@ -25,7 +27,9 @@ function App() {
           <Route path="/detail/:id" element={<DetailCampaign />} />
           <Route path="/transaksi" element={<Transaksi />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/search/:search" element={<SearchSomething />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/all/:kategori" element={<ShowAll />} />
         </Route>
 
         {/* Route without autenthication */}

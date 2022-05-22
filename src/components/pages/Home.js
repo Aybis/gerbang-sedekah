@@ -1,10 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { Heading1 } from '../atoms';
 import {
   SectionCampaign,
-  SectionCTA,
+  SectionCampaignMendesak,
   SectionKategori,
-  SectionReportDonasi,
 } from '../molecules';
 import Layout from './includes/Layout';
 import SectionHeader from './includes/SectionHeader';
@@ -73,27 +74,40 @@ export default function Home() {
     },
   ];
 
+  const dataGekrafs = {
+    name: 'Gekrafs Peduli',
+    image: getImageFromAssets('/assets/images/gekrafs.png'),
+    komunitas: 'Gekrafs Ekonomi Kreatif Nasional',
+    terkumpul: '455.984.259',
+    sisa: 229,
+    percentage: 75,
+    id: 2,
+    isActive: true,
+  };
+
   return (
     <Layout>
       {/* SectionHeader */}
       <SectionHeader />
       {/* End SectionHeader */}
 
-      {/* SectionReportDonation */}
-      <div className="relative mb-4 mt-12">
-        <Heading1 title={'Dana Terkumpul'} addClass="text-base font-medium" />
-        <SectionReportDonasi />
+      <div className="relative mb-4 mt-8">
+        <Heading1
+          title={'Campaign Mendesak'}
+          addClass="text-sm md:text-base font-medium mb-2"
+        />
+        <div className="relative flex gap-4 overflow-x-auto -mx-4 px-4 pb-3">
+          <SectionCampaignMendesak item={dataGekrafs} />
+          {listCampaign.map((item, index) => (
+            <SectionCampaignMendesak item={item} key={index} />
+          ))}
+        </div>
       </div>
-      {/* End SectionReportDonation */}
-
-      {/* SectionCTATemp */}
-      <SectionCTA />
-      {/* End SectionCTATemp */}
 
       {/* SectionKategori */}
       <div className="relative my-8">
-        <Heading1 title={'Kategori'} addClass="text-base font-medium" />
-        <div className="relative grid grid-cols-3 gap-x-4 gap-y-5 place-items-center mt-4">
+        <Heading1 title={'Kategori'} addClass="md:text-base font-medium" />
+        <div className="relative grid grid-cols-3 gap-x-4 gap-y-5 place-items-center mt-2">
           {dataKategori?.map((item, index) => (
             <SectionKategori item={item} key={index} />
           ))}
@@ -103,8 +117,19 @@ export default function Home() {
 
       {/* List Campaign */}
       <div className="relative my-8">
-        <Heading1 title={'List Campaign'} addClass="text-base font-medium" />
-        <div className="relative grid grid-cols-1 gap-4 mt-4">
+        <div className="relative flex justify-between items-center">
+          <Heading1
+            title={'List Campaign'}
+            addClass="md:text-base font-medium"
+          />
+
+          <Link
+            to={'/all/yatim-piatu'}
+            className="text-xs font-light text-zinc-400 cursor-pointer hover:text-zinc-500 transition-all duration-300 ease-in-out">
+            show all
+          </Link>
+        </div>
+        <div className="relative grid grid-cols-1 gap-4 mt-2">
           {listCampaign?.map((item, index) => (
             // Campaign Card
             <SectionCampaign item={item} key={index} />
