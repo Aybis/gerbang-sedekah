@@ -10,3 +10,5 @@ export { default as ButtonSubmit } from './ButtonSubmit';
 export { default as Divider } from './Divider';
 export { default as ProgressBar } from './ProgressBar';
 export { default as Icon } from './Icon';
+export { default as InputCustom } from './InputCustom';
+export { default as InputCurrency } from './InputCurrency';

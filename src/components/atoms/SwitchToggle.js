@@ -6,7 +6,7 @@ const SwitchToggle = ({ enabled = false, setEnabled }) => {
       checked={enabled}
       onChange={setEnabled}
       className={`${
-        enabled ? 'bg-lime-600' : 'bg-gray-200'
+        enabled ? 'bg-blue-600' : 'bg-gray-200'
       } relative inline-flex items-center h-6 rounded-full w-11 transition-all duration-300 ease-in-out`}>
       <span className="sr-only">Enable</span>
       <span

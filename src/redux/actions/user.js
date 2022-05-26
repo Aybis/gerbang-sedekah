@@ -86,10 +86,9 @@ export const userGetTempToken = (data) => async (dispatch) => {
   return await api
     .getAuth()
     .then((res) => {
-      console.log('temp', res);
       Cookies.set('authTemp', res.data.jwtToken);
       dispatch(setTokenTemp(res.data.jwtToken));
-      return res;
+      return res.data;
     })
     .catch((err) => {
       console.log('temp', err.response);

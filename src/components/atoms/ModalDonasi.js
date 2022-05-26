@@ -59,10 +59,10 @@ export default function ModalDonasi({
                 'inline-block  align-bottom bg-white p-3 shadow-xl transform transition-all h-auto w-full rounded-t-3xl mx-auto container max-w-md lg:pb-20',
               ].join(' ')}>
               {/* line bar */}
-              <div className="flex justify-center items-center mt-3">
+              <div className="flex justify-center items-center mt-3 ">
                 <hr
                   onClick={() => handlerClose(dontClose)}
-                  className="w-24 h-[6px] rounded-full bg-zinc-200"
+                  className="w-24 h-[6px] rounded-full bg-zinc-200 cursor-pointer"
                 />
               </div>
               <div className="p-2">

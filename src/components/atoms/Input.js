@@ -25,7 +25,9 @@ export default function Input({
 
   return (
     <div className={addClassComponent}>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-700 capitalize">
         {labelName}
       </label>
       <div className="mt-1 relative rounded-md shadow-sm">

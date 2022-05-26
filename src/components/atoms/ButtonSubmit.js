@@ -8,11 +8,13 @@ export default function ButtonSubmit({
   addClass,
   type = 'primary',
   isDisabled = false,
+  typeButton = 'submit',
 }) {
   return (
     <button
       onClick={handlerClick}
       disabled={isDisabled || isLoading}
+      type={typeButton}
       className={[
         'disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none',
         'px-3 py-3 rounded-lg font-semibold flex justify-center items-center relative space-x-2 transition-all duration-300 ease-in-out cursor-pointer',

@@ -1,7 +1,8 @@
 import { SearchIcon } from '@heroicons/react/solid';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
+import { fetchAllCampaign } from '../../redux/actions/campaign';
 import { Heading1 } from '../atoms';
 import { SectionCampaign, SectionCampaignMendesak } from '../molecules';
 import Layout from './includes/Layout';
@@ -9,41 +10,16 @@ import Layout from './includes/Layout';
 export default function Search() {
   const [search, setsearch] = useState('');
   const navigate = useNavigate();
-
-  const dataGekrafs = {
-    name: 'Gekrafs Peduli',
-    image: getImageFromAssets('/assets/images/gekrafs.png'),
-    komunitas: 'Gekrafs Ekonomi Kreatif Nasional',
-    terkumpul: '455.984.259',
-    sisa: 229,
-    percentage: 75,
-    id: 2,
-    isActive: true,
-  };
-
-  const data1 = {
-    name: 'Infaq Yatim : Kebahagiaan untuk 500 anak-anak Yatim',
-    image:
-      'https://imgix.kitabisa.com/master/b380d3ff-8748-11ec-a3fc-52b309a993ab_FDC998DEA99A7DAD.png',
-    komunitas: 'Indonesia Berbagi',
-    terkumpul: '153.020.259',
-    sisa: 1295,
-    percentage: 70,
-  };
-
-  const data2 = {
-    name: 'Infaq Yatim : Kebahagiaan untuk 500 anak-anak Yatim',
-    image:
-      'https://imgix.kitabisa.com/13b2764f-ef86-494c-b73a-d82842b281b4.jpg?ar=16:9&w=214&auto=compress&fm=pjpg&cs=tinysrgb&fit=scale',
-    komunitas: 'Rumah Zakat',
-    terkumpul: '6.652.201.949',
-    sisa: 230,
-    percentage: 89,
-  };
+  const CAMPAIGN = useSelector((state) => state.campaign);
+  const dispatch = useDispatch();
 
   const handlerChangeInput = (event) => {
     setsearch(event.target.value);
   };
+
+  useEffect(() => {
+    dispatch(fetchAllCampaign());
+  }, [dispatch]);
 
   return (
     <Layout>
@@ -85,10 +61,15 @@ export default function Search() {
           addClass="text-sm md:text-base font-medium mb-2"
         />
         <div className="relative flex space-x-3 gap-4 overflow-x-auto -mx-4 px-4 pb-3">
-          <SectionCampaignMendesak item={dataGekrafs} />
-          {Array.from({ length: 3 }).map((item, index) => (
-            <SectionCampaignMendesak item={dataGekrafs} key={index} />
-          ))}
+          {CAMPAIGN?.isLoading
+            ? ''
+            : CAMPAIGN?.allCampaign?.length > 0
+            ? CAMPAIGN?.allCampaign
+                .slice(0, 2)
+                .map((item, index) => (
+                  <SectionCampaignMendesak item={item} key={index} />
+                ))
+            : ''}
         </div>
       </div>
 
@@ -108,10 +89,12 @@ export default function Search() {
           </Link>
         </div>
         <div className="relative grid grid-cols-1 gap-4 mt-2">
-          {Array.from({ length: 3 }).map((item, index) => (
-            // Campaign Card
-            <SectionCampaign item={data1} key={index} />
-          ))}
+          {CAMPAIGN?.allCampaign?.length > 0
+            ? CAMPAIGN?.allCampaign?.slice(1, 3)?.map((item, index) => (
+                // Campaign Card
+                <SectionCampaign item={item} key={index} />
+              ))
+            : ''}
         </div>
       </div>
       {/* End List Campaign */}
@@ -128,10 +111,12 @@ export default function Search() {
           </Link>
         </div>
         <div className="relative grid grid-cols-1 gap-4 mt-2">
-          {Array.from({ length: 3 }).map((item, index) => (
-            // Campaign Card
-            <SectionCampaign item={data2} key={index} />
-          ))}
+          {CAMPAIGN?.allCampaign?.length > 0
+            ? CAMPAIGN?.allCampaign?.slice(3, 5)?.map((item, index) => (
+                // Campaign Card
+                <SectionCampaign item={item} key={index} />
+              ))
+            : ''}
         </div>
       </div>
       {/* End List Campaign */}

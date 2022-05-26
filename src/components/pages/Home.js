@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
+import { fetchAllCampaign } from '../../redux/actions/campaign';
 import { Heading1 } from '../atoms';
 import {
   SectionCampaign,
@@ -11,6 +12,11 @@ import Layout from './includes/Layout';
 import SectionHeader from './includes/SectionHeader';
 
 export default function Home() {
+  const [didMount, setDidMount] = useState(false);
+
+  const dispatch = useDispatch();
+  const CAMPAIGN = useSelector((state) => state.campaign);
+
   const dataKategori = [
     {
       name: 'Pemberdayaan',
@@ -44,46 +50,16 @@ export default function Home() {
     },
   ];
 
-  const listCampaign = [
-    {
-      name: 'Infaq Yatim : Kebahagiaan untuk 500 anak-anak Yatim',
-      image:
-        'https://imgix.kitabisa.com/master/fccd2dc8-7cbf-11ec-a3fc-52b309a993ab_19832BDBF04CE7F7.png',
-      komunitas: 'Indonesia Berbagi',
-      terkumpul: '455.984.259',
-      sisa: 229,
-      percentage: 75,
-    },
-    {
-      name: 'Infaq Yatim : Kebahagiaan untuk 500 anak-anak Yatim',
-      image:
-        'https://imgix.kitabisa.com/master/b380d3ff-8748-11ec-a3fc-52b309a993ab_FDC998DEA99A7DAD.png',
-      komunitas: 'Indonesia Berbagi',
-      terkumpul: '153.020.259',
-      sisa: 1295,
-      percentage: 70,
-    },
-    {
-      name: 'Infaq Yatim : Kebahagiaan untuk 500 anak-anak Yatim',
-      image:
-        'https://imgix.kitabisa.com/13b2764f-ef86-494c-b73a-d82842b281b4.jpg?ar=16:9&w=214&auto=compress&fm=pjpg&cs=tinysrgb&fit=scale',
-      komunitas: 'Rumah Zakat',
-      terkumpul: '6.652.201.949',
-      sisa: 230,
-      percentage: 89,
-    },
-  ];
+  useEffect(() => {
+    dispatch(fetchAllCampaign());
+    setDidMount(true);
+    return () => setDidMount(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
-  const dataGekrafs = {
-    name: 'Gekrafs Peduli',
-    image: getImageFromAssets('/assets/images/gekrafs.png'),
-    komunitas: 'Gekrafs Ekonomi Kreatif Nasional',
-    terkumpul: '455.984.259',
-    sisa: 229,
-    percentage: 75,
-    id: 2,
-    isActive: true,
-  };
+  if (!didMount) {
+    return null;
+  }
 
   return (
     <Layout>
@@ -97,10 +73,15 @@ export default function Home() {
           addClass="text-sm md:text-base font-medium mb-2"
         />
         <div className="relative flex gap-4 overflow-x-auto -mx-4 px-4 pb-3">
-          <SectionCampaignMendesak item={dataGekrafs} />
-          {listCampaign.map((item, index) => (
-            <SectionCampaignMendesak item={item} key={index} />
-          ))}
+          {CAMPAIGN?.isLoading
+            ? ''
+            : CAMPAIGN?.allCampaign?.length > 0
+            ? CAMPAIGN?.allCampaign
+                .slice(0, 2)
+                .map((item, index) => (
+                  <SectionCampaignMendesak item={item} key={index} />
+                ))
+            : ''}
         </div>
       </div>
 
@@ -130,10 +111,12 @@ export default function Home() {
           </Link>
         </div>
         <div className="relative grid grid-cols-1 gap-4 mt-2">
-          {listCampaign?.map((item, index) => (
-            // Campaign Card
-            <SectionCampaign item={item} key={index} />
-          ))}
+          {CAMPAIGN?.allCampaign?.length > 0
+            ? CAMPAIGN?.allCampaign?.slice(1, 5)?.map((item, index) => (
+                // Campaign Card
+                <SectionCampaign item={item} key={index} />
+              ))
+            : ''}
         </div>
       </div>
       {/* End List Campaign */}

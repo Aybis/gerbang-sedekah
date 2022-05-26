@@ -112,16 +112,23 @@ export default function DetailPage() {
 
         {/* Progress Bar Section */}
         <div className="relative mt-6">
-          <ProgressBar percentage={75} />
+          <ProgressBar
+            percentage={(detailData?.collected / detailData?.target) * 100}
+          />
           <div className="relative flex text-xs justify-between mt-2">
             <span className="text-zinc-500">
               <div className="relative">
-                <span className="text-zinc-800 font-medium">Rp 75.000.000</span>
+                <span className="text-zinc-800 font-medium">
+                  Rp {detailData?.collected?.toLocaleString('id')}
+                </span>
               </div>
             </span>
             <span className="text-zinc-800 font-medium">
-              <span className="text-zinc-400">Target : </span> Rp 100.000.000{' '}
-              <span className="text-zinc-600">(75%)</span>
+              <span className="text-zinc-400">Target : </span> Rp{' '}
+              {detailData?.target.toLocaleString('id')}{' '}
+              <span className="text-zinc-600">
+                ({(detailData?.collected / detailData?.target) * 100}%)
+              </span>
             </span>
           </div>
         </div>

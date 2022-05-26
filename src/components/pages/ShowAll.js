@@ -1,25 +1,20 @@
 import { ArrowNarrowLeftIcon } from '@heroicons/react/solid';
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { fetchAllCampaign } from '../../redux/actions/campaign';
 import { SectionCampaign } from '../molecules';
 import Layout from './includes/Layout';
 
 export default function ShowAll() {
+  const CAMPAIGN = useSelector((state) => state.campaign);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const dataCampaign = {
-    name: 'Infaq Yatim : Kebahagiaan untuk 500 anak-anak Yatim',
-    image:
-      'https://imgix.kitabisa.com/13b2764f-ef86-494c-b73a-d82842b281b4.jpg?ar=16:9&w=214&auto=compress&fm=pjpg&cs=tinysrgb&fit=scale',
-    komunitas: 'Rumah Zakat',
-    terkumpul: '6.652.201.949',
-    sisa: 230,
-    percentage: 89,
-  };
-
   useEffect(() => {
+    dispatch(fetchAllCampaign());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <Layout showMenu={false}>
@@ -40,11 +35,20 @@ export default function ShowAll() {
       </div>
 
       <div className="relative my-8">
+        <div className="relative">
+          <p className="text-sm font-light text-zinc-500">
+            Result : {CAMPAIGN?.allCampaign?.length ?? ''} Campaign
+          </p>
+        </div>
         <div className=" grid grid-cols-1 gap-4 mt-2">
-          {Array.from({ length: 20 }).map((item, index) => (
-            // Campaign Card
-            <SectionCampaign item={dataCampaign} key={index} />
-          ))}
+          {CAMPAIGN?.isLoading
+            ? 'loading ....'
+            : CAMPAIGN?.allCampaign?.length > 0
+            ? CAMPAIGN?.allCampaign.map((item, index) => (
+                // Campaign Card
+                <SectionCampaign item={item} key={index} />
+              ))
+            : ''}
         </div>
       </div>
     </Layout>

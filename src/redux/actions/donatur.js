@@ -37,7 +37,18 @@ export const insertDonatur = (data, token) => async (dispatch) => {
   return await api
     .donatur(data)
     .then((res) => {
-      console.log('insert', res);
+      return res;
+    })
+    .catch((err) => {
+      console.log('insert', err.response);
+      return err.response;
+    });
+};
+export const updateDonatur = (data, token) => async (dispatch) => {
+  setHeader(token);
+  return await api
+    .updateDonatur(data)
+    .then((res) => {
       return res;
     })
     .catch((err) => {
@@ -85,5 +96,21 @@ export const fetchDonaturDetail = (data, token) => async (dispatch) => {
     })
     .catch((err) => {
       return err.response;
+    });
+};
+
+export const fetchDataDonatur = (data, token) => async (dispatch) => {
+  setHeader(token);
+  return await api
+    .getDonatur({
+      params: {
+        id: data,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((err) => {
+      console.log(err.response);
     });
 };

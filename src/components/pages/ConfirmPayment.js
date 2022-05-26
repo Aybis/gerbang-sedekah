@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { Modal } from '../atoms';
+import Layout from './includes/Layout';
 
 export default function ConfirmPayment() {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ export default function ConfirmPayment() {
   }
 
   return (
-    <div className="relative bg-zinc-50 max-w-md mx-auto container min-h-screen h-full">
+    <Layout showMenu={false}>
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
         <span onClick={() => navigate(-1)}>
@@ -75,14 +76,14 @@ export default function ConfirmPayment() {
         </p>
       </div>
 
-      {!session && (
+      {/* {!session && (
         <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
           <p>
             <span className="text-apps-primary">Masuk</span> atau lengkapi data
             di bawah ini.
           </p>
         </div>
-      )}
+      )} */}
 
       {/* Unique Code and Amount Section */}
       <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
@@ -174,6 +175,6 @@ export default function ConfirmPayment() {
           </button>
         </div>
       </Modal>
-    </div>
+    </Layout>
   );
 }

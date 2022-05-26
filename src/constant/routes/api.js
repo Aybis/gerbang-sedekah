@@ -22,9 +22,25 @@ export default {
 
   // transaction
   donatur: (data) => axios.post('kolabore/new-donatur', data),
-  updateDonatur: (data) => axios.post('kolabore/update-donatur', data),
+  // updateDonatur: (data) => axios.post('kolabore/update-donatur', data),
   getDonaturDetail: (id) => axios.get(`kolabore/get-donatur?id=${id}`),
   getDetailProjectByUrl: (url) =>
     axios.post('kolabore/get-project-byshorturl', url),
   getDetailProject: (params) => axios.post(`kolabore/get-project-byid`, params),
+
+  // donatur
+  getDonatur: (params) => axios.get('kolabore/get-donatur', params),
+  addDonatur: (params) => axios.post('kolabore/new-donatur', params),
+  updateDonatur: (params) => axios.post('kolabore/update-donatur', params),
+
+  // endpoint campaign
+  getCampaign: (params) => axios.get('kolabore/get-all-project', params),
+  getCampaignById: (params) => axios.post('kolabore/get-project-byid', params),
+  getCampaignByUrl: (params) =>
+    axios.post('kolabore/get-project-byshorturl', params),
+  searchCampaign: (params) => axios.get('kolabore/get-all-project', params),
+
+  // payment method
+  getPaymentMethod: (params) =>
+    axios.get('kolabore/get-all-paymentmethod', params),
 };
