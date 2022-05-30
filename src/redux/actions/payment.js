@@ -7,6 +7,11 @@ export const setAllPayment = (data) => ({
   payload: data,
 });
 
+export const setGroupPayment = (data) => ({
+  type: type.GROUP_PAYMENT,
+  payload: data,
+});
+
 export const setSelectedPayment = (data) => ({
   type: type.SELECTED_PAYMENT,
   payload: data,
@@ -39,5 +44,23 @@ export const fetchAllPayment = (data, header) => async (dispatch) => {
     .catch((err) => {
       console.log(err.response);
       dispatch(setLoadingPayment(false));
+    });
+};
+
+export const fetchGroupPayment = (data, header) => async (dispatch) => {
+  setHeader(header);
+  dispatch(setLoadingPayment(true));
+
+  return await api
+    .getGroupPayment()
+    .then((res) => {
+      dispatch(setGroupPayment(res.data));
+      dispatch(setLoadingPayment(false));
+      return;
+    })
+    .catch((err) => {
+      dispatch(setErrorPayment(err.response));
+      dispatch(setLoadingPayment(false));
+      return;
     });
 };

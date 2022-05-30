@@ -1,8 +1,12 @@
 import { ArrowNarrowLeftIcon, DuplicateIcon } from '@heroicons/react/solid';
 import Cookies from 'js-cookie';
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import {
+  setConfirmPaymentDonatur,
+  setTempDonatur,
+} from '../../redux/actions/donatur';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { Modal } from '../atoms';
 import Layout from './includes/Layout';
@@ -12,14 +16,37 @@ export default function ConfirmPayment() {
   const [showModal, setshowModal] = useState(false);
   const [didMount, setdidMount] = useState(false);
   const DONATUR = useSelector((state) => state.donatur);
+  const USER = useSelector((state) => state.user);
   const session = Cookies.get('session');
+  const dispatch = useDispatch();
 
   const handlerClikModal = () => {
     if (session) {
-      navigate('/');
+      setConfirm().then((res) => {
+        if (res.status_code === 200) {
+          dispatch(setTempDonatur());
+          navigate('/');
+        }
+      });
     } else {
-      navigate('/login');
+      setConfirm().then((res) => {
+        if (res.status_code === 200) {
+          dispatch(setTempDonatur());
+          navigate('/login');
+        }
+      });
     }
+  };
+
+  const setConfirm = async () => {
+    const result = await dispatch(
+      setConfirmPaymentDonatur(
+        DONATUR?.tempDonatur?.donaturId,
+        session ?? USER?.authTemp,
+      ),
+    );
+
+    return result;
   };
 
   useEffect(() => {
@@ -29,7 +56,7 @@ export default function ConfirmPayment() {
       setdidMount(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   if (!didMount) {
     return null;
@@ -76,14 +103,14 @@ export default function ConfirmPayment() {
         </p>
       </div>
 
-      {/* {!session && (
+      {!session && (
         <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
           <p>
             <span className="text-apps-primary">Masuk</span> atau lengkapi data
             di bawah ini.
           </p>
         </div>
-      )} */}
+      )}
 
       {/* Unique Code and Amount Section */}
       <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
@@ -115,7 +142,9 @@ export default function ConfirmPayment() {
         </div>
         <div className="relative">
           <div className="flex space-x-2 items-center">
-            <p className="text-sm">{DONATUR?.tempBank?.noRek}</p>
+            <p className="text-sm">
+              {DONATUR?.tempDonatur?.paymentMethod?.reference}
+            </p>
             <DuplicateIcon
               className="h-5 text-zinc-500 cursor-pointer"
               onClick={() => {
@@ -123,22 +152,26 @@ export default function ConfirmPayment() {
               }}
             />
           </div>
-          <p className="text-xs text-zinc-400 font-light hidden">
+          <p className="text-xs text-zinc-400 font-light hidden mt-1">
             {' '}
-            Yayasan Generasi Bangsa Beradab
+            {DONATUR?.tempDonatur?.paymentMethod?.name}
           </p>
         </div>
       </div>
 
       <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
         <div>
-          <img src={DONATUR?.tempBank?.image} className="h-10" alt="" />
+          <img
+            src={DONATUR?.tempDonatur?.paymentMethod?.image_url}
+            className="h-10"
+            alt=""
+          />
         </div>
         <div className="relative text-right">
           <p className="text-xs font-light">Atas nama</p>
-          <p className="text-xs text-zinc-500">
+          <p className="text-xs text-zinc-500 mt-1">
             {' '}
-            Yayasan Generasi Bangsa Beradab
+            {DONATUR?.tempDonatur?.paymentMethod?.name}
           </p>
         </div>
       </div>

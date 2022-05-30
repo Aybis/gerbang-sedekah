@@ -99,6 +99,22 @@ export const fetchDonaturDetail = (data, token) => async (dispatch) => {
     });
 };
 
+export const setConfirmPaymentDonatur = (data, token) => async (dispatch) => {
+  setHeader(token);
+
+  return await api
+    .confirmDonaturPayment({
+      donaturId: data,
+    })
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      console.log(err.response);
+      return err.response;
+    });
+};
+
 export const fetchDataDonatur = (data, token) => async (dispatch) => {
   setHeader(token);
   return await api

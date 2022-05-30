@@ -8,9 +8,13 @@ import {
   fetchCampaignByUrl,
   setSelectedCampaign,
 } from '../../../redux/actions/campaign';
-import { insertDonatur, setTempDonatur } from '../../../redux/actions/donatur';
 import {
-  fetchAllPayment,
+  insertDonatur,
+  setTempDonatur,
+  updateDonatur,
+} from '../../../redux/actions/donatur';
+import {
+  fetchGroupPayment,
   setSelectedPayment,
 } from '../../../redux/actions/payment';
 import {
@@ -37,19 +41,20 @@ export default function WithLogin() {
   const USER = useSelector((state) => state.user);
   const CAMPAIGN = useSelector((state) => state.campaign);
   const PAYMENT = useSelector((state) => state.payment);
+  const DONATUR = useSelector((state) => state.donatur);
   const dispatch = useDispatch();
 
   const [formDropdown, setformDropdown] = useState({
     paymentMethodId: '',
-    channel: 'tidak',
+    channel: DONATUR?.tempDonatur?.channel ?? 'tidak',
   });
 
   const [state, setstate] = useState({
-    projectId: project,
-    donaturName: USER?.profile?.username,
-    email: USER?.profile?.email ?? '',
-    phone: USER?.profile?.phone ?? '',
-    nominal: 10000,
+    projectId: DONATUR?.tempDonatur?.projectId ?? project,
+    donaturName: DONATUR?.tempDonatur?.donaturName ?? USER?.profile?.username,
+    email: DONATUR?.tempDonatur?.email ?? USER?.profile?.email,
+    phone: DONATUR?.tempDonatur?.phone ?? USER?.profile?.phone,
+    nominal: DONATUR?.tempDonatur?.nominal ?? 10000,
   });
 
   const handlerChangeInput = (event) => {
@@ -66,10 +71,17 @@ export default function WithLogin() {
     let form = {
       ...state,
       ...formDropdown,
+      donaturId: DONATUR?.tempDonatur?.donaturId,
+      userId: DONATUR?.tempDonatur?.userId,
+      uniqueCode: DONATUR?.tempDonatur?.uniqueCode,
     };
 
     try {
-      const result = await dispatch(insertDonatur(form));
+      const result = await dispatch(
+        DONATUR?.tempDonatur?.donaturId
+          ? updateDonatur(form, USER?.authTemp)
+          : insertDonatur(form, USER?.authTemp),
+      );
       setisSubmit(false);
 
       if (result?.status_code === 200) {
@@ -90,7 +102,7 @@ export default function WithLogin() {
 
   const handlerClickBank = (item) => {
     dispatch(setSelectedPayment(item));
-    formDropdown.paymentMethodId = item.id;
+    formDropdown.paymentMethodId = item.paymentMethodId;
     setshowModal(false);
   };
 
@@ -107,9 +119,13 @@ export default function WithLogin() {
   };
 
   useEffect(() => {
-    dispatch(fetchAllPayment());
-    dispatch(setSelectedPayment());
-    dispatch(setSelectedCampaign());
+    if (DONATUR?.tempDonatur?.donaturId) {
+      handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
+    } else {
+      dispatch(fetchGroupPayment());
+      dispatch(setSelectedPayment());
+      dispatch(setSelectedCampaign());
+    }
     // fetch detail campaign
     if (project / project === 1) {
       dispatch(fetchCampaignById(project));
@@ -251,24 +267,28 @@ export default function WithLogin() {
             Pilih Metode Pembayaran
           </h1>
 
-          <div className="grid grid-cols-1 gap-3 mt-6">
-            <div className="relative my-2">
-              <h1 className="text-left text-sm text-zinc-800 font-semibold">
-                Transfer Manual
-              </h1>
-              <div className="relative grid grid-cols-1 gap-4 mt-3">
-                {PAYMENT?.allPayment?.length > 0
-                  ? PAYMENT?.allPayment?.map((bank, indexBank) => (
-                      <SectionBank
-                        handlerClick={handlerClickBank}
-                        item={bank}
-                        key={indexBank}
-                      />
-                    ))
-                  : ''}
-              </div>
-            </div>
-          </div>
+          {PAYMENT?.groupPayment?.length > 0
+            ? PAYMENT?.groupPayment?.map((list, index) => (
+                <div className="grid grid-cols-1 gap-3 mt-6" key={index}>
+                  <div className="relative my-2">
+                    <h1 className="text-left text-sm text-zinc-800 font-semibold">
+                      {list.type}
+                    </h1>
+                    <div className="relative grid grid-cols-1 gap-4 mt-3">
+                      {list?.data?.length > 0
+                        ? list?.data?.map((bank, indexBank) => (
+                            <SectionBank
+                              handlerClick={handlerClickBank}
+                              item={bank}
+                              key={indexBank}
+                            />
+                          ))
+                        : ''}
+                    </div>
+                  </div>
+                </div>
+              ))
+            : ''}
         </div>
       </ModalDonasi>
     </Layout>

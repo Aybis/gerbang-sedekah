@@ -15,7 +15,7 @@ import {
   updateDonatur,
 } from '../../../redux/actions/donatur';
 import {
-  fetchAllPayment,
+  fetchGroupPayment,
   setSelectedPayment,
 } from '../../../redux/actions/payment';
 import { userGetTempToken } from '../../../redux/actions/user';
@@ -47,7 +47,7 @@ export default function WithoutLogin() {
   const dispatch = useDispatch();
 
   const [formDropdown, setformDropdown] = useState({
-    paymentMethodId: DONATUR?.tempDonatur?.paymentMethodId ?? '',
+    paymentMethodId: '',
     channel: DONATUR?.tempDonatur?.channel ?? 'tidak',
   });
 
@@ -73,12 +73,14 @@ export default function WithoutLogin() {
     let form = {
       ...state,
       ...formDropdown,
-      donaturId: DONATUR?.tempDonatur?.id,
+      donaturId: DONATUR?.tempDonatur?.donaturId,
+      userId: DONATUR?.tempDonatur?.userId,
+      uniqueCode: DONATUR?.tempDonatur?.uniqueCode,
     };
 
     try {
       const result = await dispatch(
-        DONATUR?.tempDonatur?.id
+        DONATUR?.tempDonatur?.donaturId
           ? updateDonatur(form, USER?.authTemp)
           : insertDonatur(form, USER?.authTemp),
       );
@@ -100,8 +102,9 @@ export default function WithoutLogin() {
   };
 
   const handlerClickBank = (item) => {
+    console.log(item);
     dispatch(setSelectedPayment(item));
-    formDropdown.paymentMethodId = item.id;
+    formDropdown.paymentMethodId = item.paymentMethodId;
     setshowModal(false);
   };
 
@@ -118,19 +121,25 @@ export default function WithoutLogin() {
   };
 
   useEffect(() => {
-    dispatch(setSelectedPayment());
-    dispatch(setSelectedCampaign());
-    dispatch(userGetTempToken()).then((res) => {
-      dispatch(fetchDataDonatur(DONATUR?.tempDonatur?.id, res.jwtToken));
+    if (DONATUR?.tempDonatur?.donaturId) {
+      handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
+    } else {
+      dispatch(setSelectedPayment());
+      dispatch(setSelectedCampaign());
+      dispatch(userGetTempToken()).then((res) => {
+        dispatch(
+          fetchDataDonatur(DONATUR?.tempDonatur?.donaturId, res.jwtToken),
+        );
 
-      // fetch detail campaign
-      if (project / project === 1) {
-        dispatch(fetchCampaignById(project, res?.jwtToken));
-      } else {
-        dispatch(fetchCampaignByUrl(project, res?.jwtToken));
-      }
-      dispatch(fetchAllPayment('', res?.jwtToken));
-    });
+        // fetch detail campaign
+        if (project / project === 1) {
+          dispatch(fetchCampaignById(project, res?.jwtToken));
+        } else {
+          dispatch(fetchCampaignByUrl(project, res?.jwtToken));
+        }
+        dispatch(fetchGroupPayment('', res?.jwtToken));
+      });
+    }
 
     setdidMount(true);
     return () => {
@@ -165,6 +174,13 @@ export default function WithoutLogin() {
       <SectionDetailCampaign item={CAMPAIGN} />
 
       <hr />
+
+      <div className="relative flex justify-center items-center px-4 py-3 rounded-lg font-normal text-sm text-zinc-600 tracking-wide text-center mx-4 mt-6">
+        <p>
+          <span className="text-apps-primary">Masuk</span> atau lengkapi data di
+          bawah ini.
+        </p>
+      </div>
 
       <div className="relative flex justify-between items-center rounded-lg font-light text-zinc-600 text-sm text-center mt-6">
         <p>Sembunyikan nama saya (anonim)</p>
@@ -267,24 +283,28 @@ export default function WithoutLogin() {
             Pilih Metode Pembayaran
           </h1>
 
-          <div className="grid grid-cols-1 gap-3 mt-6">
-            <div className="relative my-2">
-              <h1 className="text-left text-sm text-zinc-800 font-semibold">
-                Transfer Manual
-              </h1>
-              <div className="relative grid grid-cols-1 gap-4 mt-3">
-                {PAYMENT?.allPayment?.length > 0
-                  ? PAYMENT?.allPayment?.map((bank, indexBank) => (
-                      <SectionBank
-                        handlerClick={handlerClickBank}
-                        item={bank}
-                        key={indexBank}
-                      />
-                    ))
-                  : ''}
-              </div>
-            </div>
-          </div>
+          {PAYMENT?.groupPayment?.length > 0
+            ? PAYMENT?.groupPayment?.map((list, index) => (
+                <div className="grid grid-cols-1 gap-3 mt-6" key={index}>
+                  <div className="relative my-2">
+                    <h1 className="text-left text-sm text-zinc-800 font-semibold">
+                      {list.type}
+                    </h1>
+                    <div className="relative grid grid-cols-1 gap-4 mt-3">
+                      {list?.data?.length > 0
+                        ? list?.data?.map((bank, indexBank) => (
+                            <SectionBank
+                              handlerClick={handlerClickBank}
+                              item={bank}
+                              key={indexBank}
+                            />
+                          ))
+                        : ''}
+                    </div>
+                  </div>
+                </div>
+              ))
+            : ''}
         </div>
       </ModalDonasi>
     </Layout>

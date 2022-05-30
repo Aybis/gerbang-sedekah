@@ -32,6 +32,8 @@ export default {
   getDonatur: (params) => axios.get('kolabore/get-donatur', params),
   addDonatur: (params) => axios.post('kolabore/new-donatur', params),
   updateDonatur: (params) => axios.post('kolabore/update-donatur', params),
+  confirmDonaturPayment: (params) =>
+    axios.post('kolabore/confirm-donatur', params),
 
   // endpoint campaign
   getCampaign: (params) => axios.get('kolabore/get-all-project', params),
@@ -43,4 +45,6 @@ export default {
   // payment method
   getPaymentMethod: (params) =>
     axios.get('kolabore/get-all-paymentmethod', params),
+  getGroupPayment: (params) =>
+    axios.get('kolabore/get-all-paymentmethod-groupbytype', params),
 };

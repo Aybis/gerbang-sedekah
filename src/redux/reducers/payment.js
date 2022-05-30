@@ -11,6 +11,12 @@ export default function (state = initialState, action) {
         allPayment: action.payload,
       };
 
+    case type.GROUP_PAYMENT:
+      return {
+        ...state,
+        groupPayment: action.payload,
+      };
+
     case type.SELECTED_PAYMENT:
       return {
         ...state,
