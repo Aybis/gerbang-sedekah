@@ -22,31 +22,37 @@ export default function Home() {
       name: 'Pemberdayaan',
       status: 'beta',
       isHidden: false,
+      link: 'pemberdayaan',
     },
     {
       name: 'Ketahanan Pangan',
       status: 'beta',
       isHidden: false,
+      link: 'pangan',
     },
     {
       name: 'Pendidikan',
       status: 'beta',
       isHidden: false,
+      link: 'pendidikan',
     },
     {
       name: 'Energi Terbarukan',
       status: 'beta',
       isHidden: false,
+      link: 'energi',
     },
     {
-      name: 'Kesehatan',
+      name: 'Kesehatan & Lingkungan',
       status: 'beta',
       isHidden: false,
+      link: 'kesehatan',
     },
     {
       name: 'Partnership',
       status: 'beta',
       isHidden: false,
+      link: 'partnership',
     },
   ];
 
@@ -97,7 +103,7 @@ export default function Home() {
       {/* End SectionKategori */}
 
       {/* List Campaign */}
-      <div className="relative my-8">
+      <div className="relative my-12">
         <div className="relative flex justify-between items-center">
           <Heading1
             title={'List Campaign'}
