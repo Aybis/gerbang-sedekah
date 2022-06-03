@@ -7,13 +7,16 @@ import { ProgressBar } from '../atoms';
 export default function SectionCampaign({ item }) {
   return (
     <Link
-      to={`/detail/${item.id}`}
+      to={`/detail/${item.projectId}`}
       className="relative border hover:bg-zinc-100 transition-all duration-300 ease-in-out cursor-pointer border-zinc-200 rounded-lg p-2">
       <div className="relative flex space-x-3">
         {/* Image Campaign */}
         <div className="flex flex-none">
           <img
-            src={item.image ?? getImageFromAssets('/assets/images/gekrafs.png')}
+            src={
+              item?.projectImage?.image_url ??
+              getImageFromAssets('/assets/images/gekrafs.png')
+            }
             className="h-28 w-28 object-center object-cover rounded-lg"
             alt=""
           />

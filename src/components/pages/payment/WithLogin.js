@@ -67,7 +67,7 @@ export default function WithLogin() {
   const handlerSubmit = async (event) => {
     event.preventDefault();
     setisSubmit(true);
-    state.projectId = CAMPAIGN?.selectedCampaign?.id;
+    state.projectId = CAMPAIGN?.selectedCampaign?.projectId;
     let form = {
       ...state,
       ...formDropdown,

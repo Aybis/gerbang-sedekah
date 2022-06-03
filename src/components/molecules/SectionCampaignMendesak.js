@@ -7,7 +7,7 @@ import { ProgressBar } from '../atoms';
 export default function SectionCampaignMendesak({ item, addClass }) {
   return (
     <Link
-      to={`/detail/${item.id}`}
+      to={`/detail/${item.projectId}`}
       className={[
         'relative flex flex-col flex-none w-full border border-zinc-200 rounded-lg',
         addClass,

@@ -52,7 +52,7 @@ export const userLogout = (data) => async (dispatch) => {
   return await api
     .login(data)
     .then((res) => {
-      console.log(res);
+      return res;
     })
     .catch((err) => {
       console.log(err.response);
@@ -63,7 +63,8 @@ export const userRefreshToken = (data) => async (dispatch) => {
   return await api
     .refreshToken(data)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
+      return res;
     })
     .catch((err) => {
       console.log(err.response);

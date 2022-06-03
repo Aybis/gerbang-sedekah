@@ -69,7 +69,7 @@ export default function WithoutLogin() {
   const handlerSubmit = async (event) => {
     event.preventDefault();
     setisSubmit(true);
-    state.projectId = CAMPAIGN?.selectedCampaign?.id;
+    state.projectId = CAMPAIGN?.selectedCampaign?.projectId;
     let form = {
       ...state,
       ...formDropdown,
@@ -102,7 +102,6 @@ export default function WithoutLogin() {
   };
 
   const handlerClickBank = (item) => {
-    console.log(item);
     dispatch(setSelectedPayment(item));
     formDropdown.paymentMethodId = item.paymentMethodId;
     setshowModal(false);
