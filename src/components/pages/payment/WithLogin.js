@@ -51,9 +51,9 @@ export default function WithLogin() {
 
   const [state, setstate] = useState({
     projectId: DONATUR?.tempDonatur?.projectId ?? project,
-    donaturName: DONATUR?.tempDonatur?.donaturName ?? USER?.profile?.username,
-    email: DONATUR?.tempDonatur?.email ?? USER?.profile?.email,
-    phone: DONATUR?.tempDonatur?.phone ?? USER?.profile?.phone,
+    donaturName: DONATUR?.tempDonatur?.user?.name ?? USER?.profile?.username,
+    email: DONATUR?.tempDonatur?.user?.email ?? USER?.profile?.email,
+    phone: DONATUR?.tempDonatur?.user?.phone ?? USER?.profile?.phone,
     nominal: DONATUR?.tempDonatur?.nominal ?? 10000,
   });
 
@@ -119,13 +119,14 @@ export default function WithLogin() {
   };
 
   useEffect(() => {
-    if (DONATUR?.tempDonatur?.donaturId) {
-      handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
-    } else {
-      dispatch(fetchGroupPayment());
-      dispatch(setSelectedPayment());
-      dispatch(setSelectedCampaign());
-    }
+    // if (DONATUR?.tempDonatur?.donaturId) {
+    //   handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
+    // } else {
+
+    // }
+    dispatch(fetchGroupPayment());
+    dispatch(setSelectedPayment());
+    dispatch(setSelectedCampaign());
     // fetch detail campaign
     if (project / project === 1) {
       dispatch(fetchCampaignById(project));

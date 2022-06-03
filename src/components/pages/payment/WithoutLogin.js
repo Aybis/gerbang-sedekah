@@ -53,9 +53,9 @@ export default function WithoutLogin() {
 
   const [state, setstate] = useState({
     projectId: DONATUR?.tempDonatur?.projectId ?? '',
-    donaturName: DONATUR?.tempDonatur?.donaturName ?? '',
-    email: DONATUR?.tempDonatur?.email ?? '',
-    phone: DONATUR?.tempDonatur?.phone ?? '',
+    donaturName: DONATUR?.tempDonatur?.user?.name ?? '',
+    email: DONATUR?.tempDonatur?.user?.email ?? '',
+    phone: DONATUR?.tempDonatur?.user?.phone ?? '',
     nominal: DONATUR?.tempDonatur?.nominal ?? 10000,
   });
 
@@ -120,25 +120,24 @@ export default function WithoutLogin() {
   };
 
   useEffect(() => {
-    if (DONATUR?.tempDonatur?.donaturId) {
-      handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
-    } else {
-      dispatch(setSelectedPayment());
-      dispatch(setSelectedCampaign());
-      dispatch(userGetTempToken()).then((res) => {
-        dispatch(
-          fetchDataDonatur(DONATUR?.tempDonatur?.donaturId, res.jwtToken),
-        );
+    // if (DONATUR?.tempDonatur?.donaturId) {
+    //   handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
+    // } else {
 
-        // fetch detail campaign
-        if (project / project === 1) {
-          dispatch(fetchCampaignById(project, res?.jwtToken));
-        } else {
-          dispatch(fetchCampaignByUrl(project, res?.jwtToken));
-        }
-        dispatch(fetchGroupPayment('', res?.jwtToken));
-      });
-    }
+    // }
+    dispatch(setSelectedPayment());
+    dispatch(setSelectedCampaign());
+    dispatch(userGetTempToken()).then((res) => {
+      dispatch(fetchDataDonatur(DONATUR?.tempDonatur?.donaturId, res.jwtToken));
+
+      // fetch detail campaign
+      if (project / project === 1) {
+        dispatch(fetchCampaignById(project, res?.jwtToken));
+      } else {
+        dispatch(fetchCampaignByUrl(project, res?.jwtToken));
+      }
+      dispatch(fetchGroupPayment('', res?.jwtToken));
+    });
 
     setdidMount(true);
     return () => {

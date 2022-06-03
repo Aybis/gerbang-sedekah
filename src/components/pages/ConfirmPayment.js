@@ -66,7 +66,7 @@ export default function ConfirmPayment() {
     <Layout showMenu={false}>
       {/* header page */}
       <div className="grid grid-cols-3 p-4 justify-self-center">
-        <span onClick={() => navigate(-1)}>
+        <span onClick={() => navigate(-1)} className="cursor-pointer">
           <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
         </span>
         <div className="col-span-2 relative">
@@ -112,15 +112,10 @@ export default function ConfirmPayment() {
         </div>
       )}
 
-      {/* Unique Code and Amount Section */}
+      {/* Donasi */}
       <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
         <p className="font-light">Jumlah Donasi</p>
-        <p>
-          Rp{' '}
-          {(
-            DONATUR?.tempDonatur?.nominal + DONATUR?.tempDonatur?.uniqueCode
-          ).toLocaleString('id-ID')}
-        </p>
+        <p>Rp {(DONATUR?.tempDonatur?.nominal).toLocaleString('id-ID')}</p>
       </div>
 
       {/* Unique Code Section */}
@@ -132,6 +127,34 @@ export default function ConfirmPayment() {
         <span className="text-xs font-light text-zinc-500 ml-4">
           *3 angka terakhir akan didonasikan
         </span>
+      </div>
+
+      {/* Unique Code and Amount Section */}
+      <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
+        <p className="font-light">Jumlah Transfer</p>
+        <p>
+          Rp{' '}
+          {(
+            DONATUR?.tempDonatur?.nominal + DONATUR?.tempDonatur?.uniqueCode
+          ).toLocaleString('id-ID')}
+        </p>
+      </div>
+
+      <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
+        <div>
+          <img
+            src={DONATUR?.tempDonatur?.paymentMethod?.imageUrl}
+            className="h-10"
+            alt=""
+          />
+        </div>
+        <div className="relative text-right">
+          <p className="text-xs font-light">Atas nama</p>
+          <p className="text-xs text-zinc-500 mt-1">
+            {' '}
+            {DONATUR?.tempDonatur?.paymentMethod?.name}
+          </p>
+        </div>
       </div>
 
       {/* Bank Section */}
@@ -153,23 +176,6 @@ export default function ConfirmPayment() {
             />
           </div>
           <p className="text-xs text-zinc-400 font-light hidden mt-1">
-            {' '}
-            {DONATUR?.tempDonatur?.paymentMethod?.name}
-          </p>
-        </div>
-      </div>
-
-      <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
-        <div>
-          <img
-            src={DONATUR?.tempDonatur?.paymentMethod?.image_url}
-            className="h-10"
-            alt=""
-          />
-        </div>
-        <div className="relative text-right">
-          <p className="text-xs font-light">Atas nama</p>
-          <p className="text-xs text-zinc-500 mt-1">
             {' '}
             {DONATUR?.tempDonatur?.paymentMethod?.name}
           </p>
