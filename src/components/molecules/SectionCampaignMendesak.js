@@ -13,7 +13,7 @@ export default function SectionCampaignMendesak({ item, addClass }) {
         addClass,
       ].join(' ')}>
       <img
-        src={item.image ?? getImageFromAssets('/assets/images/gekrafs.png')}
+        src={item?.imageUrl ?? getImageFromAssets('/assets/images/gekrafs.png')}
         alt=""
         className="rounded-t-lg transition-all duration-300 ease-in-out h-32 object-cover w-full border-b-2 border-zinc-200"
       />

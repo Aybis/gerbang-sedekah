@@ -231,7 +231,7 @@ export default function WithoutLogin() {
           {PAYMENT?.selectedPayment ? (
             <div className="flex items-center space-x-3">
               <img
-                src={PAYMENT?.selectedPayment.image}
+                src={PAYMENT?.selectedPayment.imageUrl}
                 alt=""
                 className={[
                   PAYMENT?.selectedPayment?.bank === 'MANDIRI' ? 'h-4' : 'h-9',

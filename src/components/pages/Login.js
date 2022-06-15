@@ -56,40 +56,21 @@ export default function Login() {
   }, [dispatch]);
 
   return (
-    <div>
-      <div className="fixed hidden z-10 inset-x-0 top-0 h-14 bg-[#009461]"></div>
-
-      <div className="relative max-w-md container mx-auto min-h-screen h-full bg-white md:p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out md:-mt-24">
-        {/* background image gerbang adab */}
-        <div
-          className="fixed inset-x-0 lg:h-full h-5/6 bottom-0"
-          style={{
-            opacity: 0.1,
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed',
-            backgroundPosition: '15% 50%',
-            backgroundImage: `url(${getImageFromAssets(
-              '/assets/images/Vector.svg',
-            )})`,
-          }}></div>
-
+    <div className="min-h-screen max-h-full flex  relative">
+      <div className="relative max-w-md container mx-auto min-h-screen max-h-full bg-white md:p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out md:-mt-24">
         {/* Logo image gerbang adab */}
-        <div className="relative inset-x-0 p-2 w-full">
-          <div className="flex flex-col justify-center items-center">
+        <div className="relative inset-x-0 p-4 w-full">
+          <div className="flex justify-start items-center">
             <img
-              src={getImageFromAssets('/assets/images/icon.png')}
+              src={getImageFromAssets('/assets/svg/iconPH.svg')}
               alt="logo"
-              className="h-20"
-            />
-            <Heading1
-              title={'Gerbang Sedekah'}
-              addClass="font-extrabold text-2xl text-[#009461]"
+              className="h-14"
             />
           </div>
         </div>
 
         {/* Form Login */}
-        <div className="relative  border-zinc-200 rounded-xl p-4 bg-white md:mt-8">
+        <div className="relative  border-zinc-200 rounded-xl p-4 bg-white md:mt-8 w-full">
           <div className="relative mt-4">
             <Heading1
               title={'Login'}
@@ -129,7 +110,7 @@ export default function Login() {
               isDisabled={
                 !(form?.username !== '' && form?.password?.length > 6)
               }>
-              Login
+              Masuk
             </ButtonSubmit>
           </form>
           <Divider addClass={'my-6 mx-2'} divideName={'or'} />

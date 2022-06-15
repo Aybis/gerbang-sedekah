@@ -216,15 +216,7 @@ export default function WithLogin() {
             PAYMENT?.selectedPayment ? 'border border-zinc-200' : '',
           ].join(' ')}>
           {PAYMENT?.selectedPayment ? (
-            <div className="flex items-center space-x-3">
-              <img
-                src={PAYMENT?.selectedPayment.image}
-                alt=""
-                className={[
-                  PAYMENT?.selectedPayment?.bank === 'MANDIRI' ? 'h-4' : 'h-9',
-                  '',
-                ].join(' ')}
-              />
+            <div className="flex items-center space-x-3 pl-3">
               <div className="flex items-start text-left flex-col space-y-1">
                 <p className="text-sm font-medium to-zinc-800">
                   {PAYMENT?.selectedPayment?.bank}
@@ -245,7 +237,7 @@ export default function WithLogin() {
             typeButton="button"
             handlerClick={() => setshowModal(true)}
             type="primary"
-            addClass={' w-fit py-2 text-xs m-0'}>
+            addClass={' w-fit py-2 text-xs m-0 rounded-md'}>
             Lihat Semua
           </ButtonSubmit>
         </div>

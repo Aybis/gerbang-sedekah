@@ -80,7 +80,7 @@ export default function ConfirmPayment() {
 
       <div className="relative flex flex-col  items-center text-center mx-4 mt-6">
         <p className="text-2xl font-semibold text-zinc-800">
-          Intruksi Pembayaran
+          Instruksi Pembayaran
         </p>
         <p className="text-sm font-normal tracking-wide text-zinc-400 mt-4">
           Transfer sesuai nominal di bawah ini.
@@ -115,7 +115,7 @@ export default function ConfirmPayment() {
       {/* Donasi */}
       <div className="relative flex justify-between items-center bg-slate-100 px-4 py-3 text-sm rounded-lg font-semibold text-zinc-800 text-center mx-4 mt-6">
         <p className="font-light">Jumlah Donasi</p>
-        <p>Rp {(DONATUR?.tempDonatur?.nominal).toLocaleString('id-ID')}</p>
+        <p>Rp {DONATUR?.tempDonatur?.nominal?.toLocaleString('id-ID')}</p>
       </div>
 
       {/* Unique Code Section */}

@@ -8,6 +8,9 @@ export default function ProgressBar({ percentage }) {
           className="bg-blue-500 h-2 rounded-full"
           style={{ width: `${percentage}%` }}></div>
       </div>
+      <p className="text-xs font-light text-zinc-500 text-right mt-0.5">
+        {percentage.toFixed()}%
+      </p>
     </div>
   );
 }

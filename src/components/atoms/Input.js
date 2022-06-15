@@ -4,6 +4,7 @@ import {
   EyeOffIcon,
 } from '@heroicons/react/solid';
 import React, { useState } from 'react';
+import RenderIf from '../../utils/helpers/RenderIf';
 
 export default function Input({
   labelName,
@@ -20,6 +21,8 @@ export default function Input({
   messageError,
   addClassComponent,
   temp = 'text',
+  note,
+  isNote = false,
 }) {
   const [showPassword, setshowPassword] = useState(true);
 
@@ -30,7 +33,7 @@ export default function Input({
         className="block text-sm font-medium text-gray-700 capitalize">
         {labelName}
       </label>
-      <div className="mt-1 relative rounded-md shadow-sm">
+      <div className="mt-1 relative rounded-md">
         <input
           type={showPassword ? type : temp}
           name={name}
@@ -47,9 +50,11 @@ export default function Input({
           onChange={handlerChange}
         />
 
-        {type === 'password' && (
+        <RenderIf isTrue={type === 'password'}>
           <div
-            className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-auto cursor-pointer"
+            className={[
+              'absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-auto cursor-pointer w-fit h-fit mt-3',
+            ].join(' ')}
             onClick={() => setshowPassword(!showPassword)}>
             {!showPassword ? (
               <EyeIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />
@@ -57,7 +62,13 @@ export default function Input({
               <EyeOffIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />
             )}
           </div>
-        )}
+        </RenderIf>
+
+        <RenderIf isTrue={isNote}>
+          <p className="text-xs font-light text-zinc-500 mt-1 leading-relaxed tracking-wide">
+            *{note}
+          </p>
+        </RenderIf>
 
         {isError && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">

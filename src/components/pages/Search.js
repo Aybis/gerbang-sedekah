@@ -78,7 +78,7 @@ export default function Search() {
       <div className="relative my-8">
         <div className="relative flex justify-between items-center">
           <Heading1
-            title={'Campaign Yatim Piatu'}
+            title={'List Campaign'}
             addClass="md:text-base font-medium"
           />
 
@@ -90,29 +90,7 @@ export default function Search() {
         </div>
         <div className="relative grid grid-cols-1 gap-4 mt-2">
           {CAMPAIGN?.allCampaign?.length > 0
-            ? CAMPAIGN?.allCampaign?.slice(1, 3)?.map((item, index) => (
-                // Campaign Card
-                <SectionCampaign item={item} key={index} />
-              ))
-            : ''}
-        </div>
-      </div>
-      {/* End List Campaign */}
-
-      {/* List Campaign */}
-      <div className="relative my-8">
-        <div className="relative flex justify-between items-center">
-          <Heading1 title={'Infaq Yatim'} addClass="md:text-base font-medium" />
-
-          <Link
-            to={'/all/yatim-piatu'}
-            className="text-xs font-light text-zinc-400 cursor-pointer hover:text-zinc-500 transition-all duration-300 ease-in-out">
-            show all
-          </Link>
-        </div>
-        <div className="relative grid grid-cols-1 gap-4 mt-2">
-          {CAMPAIGN?.allCampaign?.length > 0
-            ? CAMPAIGN?.allCampaign?.slice(3, 5)?.map((item, index) => (
+            ? CAMPAIGN?.allCampaign?.slice(1, 5)?.map((item, index) => (
                 // Campaign Card
                 <SectionCampaign item={item} key={index} />
               ))

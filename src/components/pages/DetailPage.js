@@ -127,7 +127,13 @@ export default function DetailPage() {
               <span className="text-zinc-400">Target : </span> Rp{' '}
               {detailData?.target.toLocaleString('id')}{' '}
               <span className="text-zinc-600">
-                ({(detailData?.collected / detailData?.target) * 100}%)
+                (
+                {(
+                  (Math.round(detailData?.collected) /
+                    Math.round(detailData?.target)) *
+                  100
+                ).toFixed(1)}
+                %)
               </span>
             </span>
           </div>

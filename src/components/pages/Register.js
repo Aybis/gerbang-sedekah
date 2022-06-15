@@ -1,44 +1,50 @@
-import { ArrowLeftIcon, EyeIcon, EyeOffIcon } from '@heroicons/react/solid';
 import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { Loading } from '../atoms';
+import swal from 'sweetalert';
 import { userRegister } from '../../redux/actions/user';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import swal from 'sweetalert';
+import { ButtonSubmit, Heading1, Input } from '../atoms';
 
-export default function Register() {
+export default function Login() {
   const session = Cookies.get('session');
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const navigate = useNavigate();
+  const [loading, setloading] = useState(false);
+  const [form, setform] = useState({
+    email: '',
+    phone: '',
 
-  const [isSubmit, setisSubmit] = useState(false);
+    username: '',
+    password: '',
+  });
 
-  const [showPassword, setshowPassword] = useState(false);
+  const handlerChangeInput = (e) => {
+    setform({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-  const handlerSubmit = async (data) => {
-    setisSubmit(true);
-    const result = await userRegister(data);
+  const handlerSubmit = async (event) => {
+    event.preventDefault();
+    setloading(true);
+
+    const result = await userRegister(form);
 
     if (result?.status_code === 200) {
-      setisSubmit(false);
+      setloading(false);
       swal('Yeay!', 'Register Success!', 'success');
       navigate('/login');
     } else {
-      setisSubmit(false);
+      setloading(false);
       let message =
         result?.data?.message ?? result?.errors?.map((item) => item);
 
       swal('Oh no!', message ?? 'Something Happened!', 'error');
     }
-    setisSubmit(false);
+    setloading(false);
 
     return result;
   };
@@ -51,154 +57,100 @@ export default function Register() {
   }, [dispatch]);
 
   return (
-    <div className="relative inset-0 bg-zinc-100 max-h-full max-w-full">
-      <div className="fixed top-0 inset-x-0 p-4 bg-[#9BD35A] z-20 hidden">
-        <div className="relative mx-auto container max-w-md w-full ">
-          <div
-            onClick={() => navigate('/login')}
-            className="flex space-x-2 items-center cursor-pointer text-white hover:text-zinc-800 transition-all duration-300 ease-in-out w-fit">
-            <ArrowLeftIcon className="h-4" />
-            <p className=" font-medium text-sm">Masuk</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="min-h-screen max-h-full relative max-w-md w-full container mx-auto pt-20 overflow-y-auto bg-[#009461]">
-        <div
-          className="fixed inset-x-0 h-full"
-          style={{
-            opacity: 0.1,
-            backgroundRepeat: 'no-repeat',
-            backgroundAttachment: 'fixed',
-            backgroundPosition: '15% 50%',
-            backgroundImage: `url(${getImageFromAssets(
-              '/assets/images/Vector.svg',
-            )})`,
-          }}></div>
-
-        {/* Logo */}
-        <div className="relative inset-x-0 py-4">
-          <div className="flex justify-center items-center w-full">
+    <div className="min-h-screen max-h-full flex  relative">
+      <div className="relative max-w-md container mx-auto min-h-screen max-h-full bg-white md:p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out md:-mt-24">
+        {/* Logo image gerbang adab */}
+        <div className="relative inset-x-0 p-4 w-full">
+          <div className="flex justify-start items-center">
             <img
-              src={getImageFromAssets('/assets/images/logo.svg')}
+              src={getImageFromAssets('/assets/svg/iconPH.svg')}
               alt="logo"
-              className="h-12 object-cover"
+              className="h-14"
             />
           </div>
         </div>
-        <div className="relative flex justify-center inset-x-0 h-full p-4">
-          {/* Form Login */}
+
+        {/* Form Login */}
+        <div className="relative  border-zinc-200 rounded-xl p-4 bg-white md:mt-8 w-full">
+          <div className="relative mt-4">
+            <Heading1
+              title={'Register'}
+              addClass="text-xl md:text-2xl font-semibold"
+            />
+            <p className="text-xs md:text-sm text-zinc-500 tracking-wide leading-relaxed font-light mt-1">
+              Perjalanan kebaikanmu dimulai di sini.
+            </p>
+          </div>
+
           <form
-            onSubmit={handleSubmit(handlerSubmit)}
-            className="relative max-w-md w-full px-4">
-            <div className="relative z-10 p-4 rounded-3xl bg-white shadow-lg shadow-zinc-500/50">
-              <h1 className="text-2xl font-semibold text-zinc-800 mt-4">
-                Daftar baru
-              </h1>
-              <h1 className="text-sm font-light text-zinc-400 mt-1">
-                Perjalanan kebaikanmu dimulai di sini.
-              </h1>
+            className="mt-4 md:mt-10 flex flex-col"
+            onSubmit={handlerSubmit}>
+            <Input
+              addClassComponent={'my-2'}
+              type="text"
+              isDisabled={loading}
+              labelName={'Email'}
+              name="email"
+              handlerChange={handlerChangeInput}
+              placeholder={'Your email'}
+            />
+            <Input
+              addClassComponent={'my-2'}
+              type="text"
+              isDisabled={loading}
+              labelName={'Phone Number'}
+              name="phone"
+              handlerChange={handlerChangeInput}
+              placeholder={'0812xxx'}
+              isNote={true}
+              note="Format nomor 0812xxx"
+            />
+            <Input
+              addClassComponent={'my-2'}
+              type="text"
+              isDisabled={loading}
+              labelName={'Username'}
+              name="username"
+              handlerChange={handlerChangeInput}
+              placeholder={'Your username'}
+            />
+            <Input
+              isDisabled={loading}
+              addClassComponent={'mt-2 mb-3'}
+              labelName={'Password'}
+              type="password"
+              name="password"
+              handlerChange={handlerChangeInput}
+              placeholder={'Your password'}
+              isNote={true}
+              note="Password minimal 8 karakter"
+            />
 
-              <div className="mt-8">
-                <div className="col-span-6 sm:col-span-3">
-                  <input
-                    {...register('email', { required: true })}
-                    type="email"
-                    placeholder="Email"
-                    autoComplete="off"
-                    className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-red-500 mt-1">
-                      This field is required
-                    </p>
-                  )}
-                </div>
-                <div className="col-span-6 sm:col-span-3">
-                  <input
-                    {...register('phone', { required: true })}
-                    type="text"
-                    placeholder="Phone number"
-                    autoComplete="off"
-                    className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
-                  />
-                  {errors.phone && (
-                    <p className="text-xs text-red-500 mt-1">
-                      This field is required
-                    </p>
-                  )}
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <input
-                    {...register('username', { required: true })}
-                    type="text"
-                    placeholder="Username"
-                    autoComplete="off"
-                    className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
-                  />
-                  {errors.username && (
-                    <p className="text-xs text-red-500 mt-1">
-                      This field is required
-                    </p>
-                  )}
-                </div>
-
-                <div className="mt-4 relative">
-                  <input
-                    {...register('password', { required: true })}
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Password"
-                    autoComplete="off"
-                    className="mt-1 focus:ring-apps-primary py-3 focus:border-apps-primary block w-full shadow-sm sm:text-sm border-gray-300 rounded-md placeholder:opacity-50 transition-all duration-300 ease-in-out"
-                  />
-                  {errors.password && (
-                    <p className="text-xs text-red-500 mt-1">
-                      Password minimal 8 karakter
-                    </p>
-                  )}
-                  <div
-                    className="absolute top-4 right-5 flex justify-center items-center"
-                    onClick={() => setshowPassword(!showPassword)}>
-                    {showPassword ? (
-                      <EyeIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />
-                    ) : (
-                      <EyeOffIcon className="h-5 text-zinc-400 transition-all duration-300 ease-in-out" />
-                    )}
-                  </div>
-                </div>
-
-                <div className="relative mt-2">
-                  <span className="text-sm absolute right-2 text-zinc-400 hover:text-apps-primary transition-all duration-300 ease-in-out">
-                    Forgot Password?
-                  </span>
-                </div>
-
-                <div className="mt-16 mb-4">
-                  <button
-                    type="submit"
-                    disabled={isSubmit}
-                    className="disabled:opacity-40 disabled:cursor-not-allowed w-full bg-apps-primary text-white font-semibold rounded-lg flex space-x-2 justify-center items-center py-3">
-                    {isSubmit && (
-                      <Loading height={5} width={4} color="text-white" />
-                    )}
-                    Buat akun
-                  </button>
-                </div>
-
-                <div className="flex pt-6 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">
-                  <h4 className="pt-1s">
-                    Sudah punya akun?{' '}
-                    <span
-                      onClick={() => navigate('/login')}
-                      className="text-apps-primary font-semibold cursor-pointer hover:text-green-500 transition-all duration-300 ease-in">
-                      Masuk sekarang{' '}
-                    </span>
-                  </h4>
-                </div>
-              </div>
-            </div>
+            <ButtonSubmit
+              addClass={'mt-10'}
+              isLoading={loading}
+              isDisabled={
+                !(
+                  form?.username !== '' &&
+                  form?.password?.length > 6 &&
+                  form?.email !== '' &&
+                  form?.phone?.length > 9
+                )
+              }>
+              Daftar sekarang
+            </ButtonSubmit>
           </form>
+
+          <div className="flex mt-4 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">
+            <h4 className="pt-1">
+              Sudah punya akun?{' '}
+              <span
+                onClick={() => navigate('/login')}
+                className="text-blue-500 font-semibold cursor-pointer hover:text-blue-400 transition-all duration-300 ease-in-out">
+                Masuk sekarang{' '}
+              </span>
+            </h4>
+          </div>
         </div>
       </div>
     </div>
