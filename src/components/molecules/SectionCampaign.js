@@ -14,7 +14,7 @@ export default function SectionCampaign({ item }) {
         <div className="flex flex-none">
           <img
             src={
-              item?.projectImage?.imageUrl ??
+              item?.projectImage[0]?.imagesUrl ??
               getImageFromAssets('/assets/images/gekrafs.png')
             }
             className="h-28 w-28 object-center object-cover rounded-lg"

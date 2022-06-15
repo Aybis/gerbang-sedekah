@@ -12,3 +12,4 @@ export { default as ProgressBar } from './ProgressBar';
 export { default as Icon } from './Icon';
 export { default as InputCustom } from './InputCustom';
 export { default as InputCurrency } from './InputCurrency';
+export { default as SelectMenu } from './SelectMenu';

@@ -74,8 +74,11 @@ export default function DetailPage() {
       <div className="relative mb-8 mt-20">
         {/* Image Content */}
         <img
-          src={getImageFromAssets('/assets/images/gekrafs.png')}
-          alt="photocampaign"
+          src={
+            detailData?.projectImage[0]?.imagesUrl ??
+            getImageFromAssets('/assets/images/gekrafs.png')
+          }
+          alt=""
           className="w-full rounded-lg object-cover object-center"
         />
         {/* Detail Content */}

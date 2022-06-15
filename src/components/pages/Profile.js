@@ -166,7 +166,7 @@ export default function Profile() {
               <dl className="space-y-8 sm:space-y-6">
                 <div>
                   <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
-                    Name
+                    Nama
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 capitalize">
                     {USER?.profile?.username ?? ''}
@@ -182,15 +182,15 @@ export default function Profile() {
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
-                    Phone
+                    Nomor Handphone
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
-                    <p>+62 {USER?.profile?.phone ?? '...'}</p>
+                    <p>{USER?.profile?.phone ?? '...'}</p>
                   </dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-gray-500 sm:w-40 sm:flex-shrink-0">
-                    Address
+                    Alamat
                   </dt>
                   <dd className="mt-1 text-sm text-gray-900 sm:col-span-2">
                     {USER?.profile?.address ?? '...'}
