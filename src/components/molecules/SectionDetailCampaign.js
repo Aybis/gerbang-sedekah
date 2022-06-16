@@ -9,7 +9,7 @@ export default function SectionDetailCampaign({ item }) {
       <div className="flex flex-none">
         <img
           src={
-            item?.selectedCampaign?.image ??
+            item?.selectedCampaign?.projectImage[0]?.imagesUrl ??
             getImageFromAssets('/assets/images/gekrafs.png')
           }
           className="h-20 w-28  rounded-lg bg-zinc-50"
