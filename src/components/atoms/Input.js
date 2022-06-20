@@ -1,9 +1,10 @@
 import {
-  ExclamationCircleIcon,
+  CheckIcon,
+  ExclamationIcon,
   EyeIcon,
   EyeOffIcon,
 } from '@heroicons/react/solid';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import RenderIf from '../../utils/helpers/RenderIf';
 
 export default function Input({
@@ -23,6 +24,8 @@ export default function Input({
   temp = 'text',
   note,
   isNote = false,
+  isValidate,
+  showValidate,
 }) {
   const [showPassword, setshowPassword] = useState(true);
 
@@ -46,7 +49,7 @@ export default function Input({
             addClassInput,
           ].join(' ')}
           placeholder={placeholder}
-          defaultValue={value ?? ''}
+          value={value ?? ''}
           onChange={handlerChange}
         />
 
@@ -64,20 +67,24 @@ export default function Input({
           </div>
         </RenderIf>
 
+        <RenderIf isTrue={showValidate}>
+          <div
+            className={[
+              'absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-auto cursor-pointer w-fit h-fit mt-3',
+            ].join(' ')}>
+            {!isValidate ? (
+              <ExclamationIcon className="h-5 text-red-600 transition-all duration-300 ease-in-out" />
+            ) : (
+              <CheckIcon className="h-5 text-green-600 transition-all duration-300 ease-in-out" />
+            )}
+          </div>
+        </RenderIf>
+
         <RenderIf isTrue={isNote}>
           <p className="text-xs font-light text-zinc-500 mt-1 leading-relaxed tracking-wide">
             *{note}
           </p>
         </RenderIf>
-
-        {isError && (
-          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-            <ExclamationCircleIcon
-              className="h-5 w-5 text-red-500"
-              aria-hidden="true"
-            />
-          </div>
-        )}
       </div>
       {isError && (
         <p className="mt-2 text-sm text-red-600" id="email-error">

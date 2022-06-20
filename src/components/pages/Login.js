@@ -13,6 +13,7 @@ export default function Login() {
   const session = Cookies.get('session');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isRemember, setisRemember] = useState(false);
   const [loading, setloading] = useState(false);
   const [form, setform] = useState({
     username: '',
@@ -40,7 +41,7 @@ export default function Login() {
         return res;
       }
       if (res.status === 500 || res.data.status_code === 500) {
-        swal('Oh No!', res?.data?.message, 'error');
+        swal('Oh No!', res?.data?.message, 'warning');
         setloading(false);
 
         return res;
@@ -57,7 +58,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen max-h-full flex  relative">
-      <div className="relative max-w-md container mx-auto min-h-screen max-h-full bg-white md:p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out md:-mt-24">
+      <div className="relative max-w-md container mx-auto min-h-screen max-h-full bg-white p-2 md:p-4 flex flex-col justify-center items-center transition-all duration-300 ease-in-out md:-mt-24">
         {/* Logo image gerbang adab */}
         <div className="relative inset-x-0 p-4 w-full">
           <div className="flex justify-start items-center">
@@ -72,11 +73,8 @@ export default function Login() {
         {/* Form Login */}
         <div className="relative  border-zinc-200 rounded-xl p-4 bg-white md:mt-8 w-full">
           <div className="relative mt-4">
-            <Heading1
-              title={'Login'}
-              addClass="text-xl md:text-2xl font-semibold"
-            />
-            <p className="text-xs md:text-sm text-zinc-500 tracking-wide leading-relaxed font-light mt-1">
+            <Heading1 title={'Login'} addClass="text-2xl font-semibold" />
+            <p className="text-sm text-zinc-500 tracking-wide leading-relaxed font-light mt-1">
               Masuk untuk nikmati kemudahan berdonasi dan akses fitur lainnya.
             </p>
           </div>
@@ -87,11 +85,13 @@ export default function Login() {
             <Input
               addClassComponent={'my-2'}
               type="text"
+              isAutoComplete={isRemember ? 'username' : 'off'}
               isDisabled={loading}
               labelName={'Username'}
               name="username"
+              value={form.username}
               handlerChange={handlerChangeInput}
-              placeholder={'Your username'}
+              placeholder={'Username'}
             />
             <Input
               isDisabled={loading}
@@ -99,10 +99,13 @@ export default function Login() {
               labelName={'Password'}
               type="password"
               name="password"
+              value={form.password}
               handlerChange={handlerChangeInput}
-              placeholder={'Your password'}
+              placeholder={'Password'}
             />
-            <SectionForgotPassword />
+            <SectionForgotPassword
+              handlerClickRemember={() => setisRemember(!isRemember)}
+            />
 
             <ButtonSubmit
               addClass={'mt-10'}
@@ -121,7 +124,7 @@ export default function Login() {
               alt="logo"
               className="h-5 object-cover cursor-pointer"
             />
-            <p className="text-xs">Log In with Google </p>
+            <p className="text-xs">Masuk dengan Google </p>
           </ButtonSubmit>
 
           <div className="flex mt-4 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">

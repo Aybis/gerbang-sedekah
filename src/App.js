@@ -3,9 +3,13 @@ import { ToastContainer } from 'react-toastify';
 import {
   Confirm,
   DetailCampaign,
+  ForgetPassword,
+  HistoryNotification,
   Homepage,
   Login,
+  NewNotification,
   NotFound,
+  Notification,
   Payment,
   Profile,
   Register,
@@ -30,11 +34,20 @@ function App() {
           <Route path="/search/:search" element={<SearchSomething />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/all/:kategori" element={<ShowAll />} />
+
+          <Route path="/notification" element={<Notification />}>
+            <Route index element={<NewNotification />} />
+            <Route
+              path="/notification/history"
+              element={<HistoryNotification />}
+            />
+          </Route>
         </Route>
 
         {/* Route without autenthication */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot" element={<ForgetPassword />} />
         <Route path="/payment/:project" element={<Payment />} />
         <Route path="/confirm" element={<Confirm />} />
         <Route path="*" element={<NotFound />} />

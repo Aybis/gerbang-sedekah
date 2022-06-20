@@ -73,7 +73,7 @@ export default function Home() {
       <SectionHeader />
       {/* End SectionHeader */}
 
-      <div className="relative mb-4 mt-8">
+      <div className="relative mt-8">
         <Heading1
           title={'Campaign Mendesak'}
           addClass="text-sm md:text-base font-medium mb-2"

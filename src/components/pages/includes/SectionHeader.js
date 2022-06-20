@@ -1,6 +1,7 @@
 import { BellIcon } from '@heroicons/react/outline';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { imageApiAvatarUser } from '../../../utils/helpers/assetHelpers';
 
 export default function SectionHeader() {
@@ -27,10 +28,12 @@ export default function SectionHeader() {
         </div>
 
         {/* Notification */}
-        <div className="relative p-2 flex justify-center items-center w-fit cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 rounded-lg">
-          <span className="h-2 w-2 rounded-full bg-red-500 absolute top-2 right-3"></span>
+        <Link
+          to={'/notification'}
+          className="relative p-2 flex justify-center items-center w-fit cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 rounded-lg">
+          {/* <span className="h-2 w-2 rounded-full bg-red-500 absolute top-2 right-3"></span> */}
           <BellIcon className="h-6 " />
-        </div>
+        </Link>
       </div>
     </div>
   );
