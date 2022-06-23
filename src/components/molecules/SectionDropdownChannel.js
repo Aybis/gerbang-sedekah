@@ -29,7 +29,7 @@ export default function SectionDropdownChannel({ value, handlerChange, name }) {
         name={name}
         onChange={handlerChange}
         value={value}
-        className="border-zinc-300 rounded-lg text-sm focus:ring-apps-primary w-fit">
+        className="border-zinc-300 rounded-lg text-sm focus:ring-apps-primary w-fit cursor-pointer">
         {dataOrganisasi.map((item, index) => (
           <option value={item.name} key={index}>
             {item.name}

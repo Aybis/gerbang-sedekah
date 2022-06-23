@@ -11,9 +11,14 @@ import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { ButtonSubmit, Modal, ProgressBar } from '../atoms';
 import Layout from './includes/Layout';
 import createDOMPurify from 'dompurify';
+import RenderIf from '../../utils/helpers/RenderIf';
+import { Skeleton } from '../skeletons';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 export default function DetailPage() {
   const { id } = useParams();
+  const [isLoading, setisLoading] = useState(false);
   const [showShareModal, setshowShareModal] = useState(false);
   const [like, setlike] = useState(false);
   const DOMPurify = createDOMPurify(window);
@@ -36,11 +41,14 @@ export default function DetailPage() {
   ];
 
   const fetchDetailCampaign = async () => {
+    setisLoading(true);
     setHeader();
     await api
       .getDetailProject({ id: +id })
       .then((res) => {
         setdetailData(res.data);
+        setisLoading(false);
+
         return res;
       })
       .catch((err) => {
@@ -52,6 +60,8 @@ export default function DetailPage() {
     fetchDetailCampaign();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log(isLoading, detailData?.projectImage[0]?.imagesUrl);
 
   return (
     <Layout showMenu={false}>
@@ -71,46 +81,59 @@ export default function DetailPage() {
         </div>
       </div>
 
-      <div className="relative mb-8 mt-20">
+      <div className="relative mb-8 mt-8">
         {/* Image Content */}
-        <img
-          src={
-            detailData?.projectImage[0]?.imagesUrl ??
-            getImageFromAssets('/assets/images/gekrafs.png')
-          }
+        <LazyLoadImage
+          effect="blur"
           alt=""
-          className="w-full rounded-lg object-cover object-center"
+          className="w-full rounded-lg shadow-lg shadow-zinc-200/50"
+          src={
+            // detailData?.projectImage[0]?.imagesUrl ??
+            getImageFromAssets('/assets/images/no-image.png')
+          } // use normal <img> attributes as props
         />
         {/* Detail Content */}
         <div className="relative mt-4">
-          <div className="flex justify-between items-center">
-            <div>
-              <h1 className="font-medium text-lg text-zinc-800">
-                {detailData?.title}
-              </h1>
-              <p className="text-xs text-zinc-500 font-light">
-                {detailData?.shortDescription}
-              </p>
+          <RenderIf isTrue={isLoading}>
+            <div className="relative flex flex-col w-full space-y-2">
+              <Skeleton addClass={'h-8 w-full'} />
+              <Skeleton addClass={'h-12 w-full'} />
             </div>
+          </RenderIf>
 
-            <div className="relative flex space-x-1">
-              <div
-                onClick={() => setshowShareModal(true)}
-                className="p-2 rounded-lg flex justify-center items-center hover:bg-zinc-200 cursor-pointer transition-all duration-300 ease-in-out">
-                <ShareIcon className="text-zinc-500 h-6" />
-              </div>
-              <div
-                onClick={() => setlike(!like)}
-                className="p-2 rounded-lg flex justify-center items-center hover:bg-zinc-200 cursor-pointer transition-all duration-300 ease-in-out">
-                <HeartIcon
+          <RenderIf isTrue={!isLoading}>
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="font-medium text-lg text-zinc-800">
+                  {detailData?.title}
+                </h1>
+                <p
                   className={[
-                    'h-6 transition-all duration-300 ease-in-out',
-                    like ? 'text-red-500' : 'text-zinc-400',
-                  ].join(' ')}
-                />
+                    'text-xs text-zinc-500 font-light transition-all duration-300 ease-in-out',
+                  ].join(' ')}>
+                  {detailData?.shortDescription}
+                </p>
+              </div>
+
+              <div className="relative space-x-1 hidden">
+                <div
+                  onClick={() => setshowShareModal(true)}
+                  className="p-2 rounded-lg flex justify-center items-center hover:bg-zinc-200 cursor-pointer transition-all duration-300 ease-in-out">
+                  <ShareIcon className="text-zinc-500 h-6" />
+                </div>
+                <div
+                  onClick={() => setlike(!like)}
+                  className="p-2 rounded-lg flex justify-center items-center hover:bg-zinc-200 cursor-pointer transition-all duration-300 ease-in-out">
+                  <HeartIcon
+                    className={[
+                      'h-6 transition-all duration-300 ease-in-out',
+                      like ? 'text-red-500' : 'text-zinc-400',
+                    ].join(' ')}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </RenderIf>
         </div>
 
         {/* Progress Bar Section */}
@@ -144,9 +167,16 @@ export default function DetailPage() {
 
         {/* Section Deskripsi */}
         <div className="relative mt-6">
-          <p className="text-sm font-medium text-zinc-600 mb-1">Deskripsi</p>
+          <p className="text-sm font-medium text-zinc-900 pb-1 border-b-2 w-fit border-zinc-900">
+            Deskripsi
+          </p>
           <div
-            className="text-zinc-400 text-sm"
+            className={[
+              'text-zinc-600 text-sm font-light mt-2 text-justify',
+              isLoading
+                ? 'bg-zinc-200 animate-pulse text-zinc-200'
+                : 'bg-transparent',
+            ].join(' ')}
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(detailData?.description),
             }}
@@ -154,7 +184,7 @@ export default function DetailPage() {
         </div>
 
         {/* Button Donasi */}
-        <div className="lg:relative fixed z-20 inset-x-0 p-4 bottom-0 md:bottom-auto  flex justify-center items-center bg-zinc-100 md:bg-transparent mx-auto container max-w-md transition-all duration-300 ease-in-out">
+        <div className="lg:sticky fixed z-20 inset-x-0 p-4 bottom-0 md:bottom-0  flex justify-center items-center bg-zinc-100 md:bg-transparent mx-auto container max-w-md transition-all duration-300 ease-in-out">
           <ButtonSubmit
             handlerClick={() => navigate(`/payment/${+id}`)}
             addClass={'py-2 md:mt-8 w-full shadow-lg shadow-blue-500/50'}>

@@ -68,6 +68,8 @@ export default function WithLogin() {
     event.preventDefault();
     setisSubmit(true);
     state.projectId = CAMPAIGN?.selectedCampaign?.projectId;
+    state.donaturNameHide = showName;
+
     let form = {
       ...state,
       ...formDropdown,
@@ -119,11 +121,6 @@ export default function WithLogin() {
   };
 
   useEffect(() => {
-    // if (DONATUR?.tempDonatur?.donaturId) {
-    //   handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
-    // } else {
-
-    // }
     dispatch(fetchGroupPayment());
     dispatch(setSelectedPayment());
     dispatch(setSelectedCampaign());

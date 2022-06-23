@@ -2,7 +2,9 @@ import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 import validator from 'validator';
+import { userForgot } from '../../redux/actions/user';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { ButtonSubmit, Heading1, Input } from '../atoms';
 
@@ -61,10 +63,19 @@ export default function ForgetPassword() {
   const handlerSubmit = async (event) => {
     event.preventDefault();
     setloading(true);
+    const result = await userForgot(form);
 
-    setTimeout(() => {
+    if (result?.status_code === 200) {
       setloading(false);
-    }, 300);
+      swal('Yeay!', 'Register Success!', 'success');
+      navigate('/login');
+    } else {
+      setloading(false);
+      let message =
+        result?.data?.message ?? result?.errors?.map((item) => item);
+
+      swal('Oh no!', message ?? 'Something Happened!', 'warning');
+    }
   };
 
   useEffect(() => {
@@ -187,7 +198,7 @@ export default function ForgetPassword() {
             </ButtonSubmit>
           </form>
 
-          <div className="flex mt-4 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center">
+          <div className="flex mt-4 -mb-2 py-2 text-zinc-400 text-sm text-center justify-center items-center cursor-pointer">
             <h4 onClick={() => navigate('/login')} className="pt-1">
               Kembali
             </h4>

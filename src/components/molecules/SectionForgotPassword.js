@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 export default function SectionForgotPassword({ handlerClickRemember }) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center text-sm">
+    <div className="flex items-end justify-end">
+      <div className="hidden items-center text-sm">
         <input
           id="remember-me"
           name="remember-me"

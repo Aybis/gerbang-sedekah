@@ -83,6 +83,18 @@ export const userRegister = async (data) => {
     });
 };
 
+export const userForgot = async (data) => {
+  return await api
+    .forgot(data)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      // dispatch(err.response.data.message);
+      return err.response;
+    });
+};
+
 export const userGetTempToken = (data) => async (dispatch) => {
   return await api
     .getAuth()

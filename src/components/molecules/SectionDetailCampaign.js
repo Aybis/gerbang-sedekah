@@ -1,19 +1,22 @@
 import { CheckCircleIcon } from '@heroicons/react/solid';
 import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 export default function SectionDetailCampaign({ item }) {
   return (
     <div className="relative flex space-x-4 mt-8 mb-4">
       {/* Image Campaign */}
       <div className="flex flex-none">
-        <img
+        <LazyLoadImage
+          alt=""
+          effect="blur"
           src={
             item?.selectedCampaign?.projectImage[0]?.imagesUrl ??
-            getImageFromAssets('/assets/images/gekrafs.png')
+            getImageFromAssets('/images/noimage.png')
           }
           className="h-20 w-28  rounded-lg bg-zinc-50"
-          alt=""
         />
       </div>
       {/* Detail Campaign */}

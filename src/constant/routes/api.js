@@ -11,6 +11,7 @@ export default {
    * @returns
    */
   register: (data) => axios.post('kolabore/register', data),
+  forgot: (data) => axios.post('kolabore/forgot-password', data),
   refreshToken: (idUser) => axios.post(`kolabore/refresh-token?ID=${idUser}`),
 
   //auth

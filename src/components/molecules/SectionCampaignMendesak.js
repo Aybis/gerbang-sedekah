@@ -1,5 +1,6 @@
 import { CheckCircleIcon } from '@heroicons/react/solid';
-import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Link } from 'react-router-dom';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { ProgressBar } from '../atoms';
@@ -12,14 +13,16 @@ export default function SectionCampaignMendesak({ item, addClass }) {
         'relative flex flex-col flex-none w-full border border-zinc-200 rounded-lg',
         addClass,
       ].join(' ')}>
-      <img
+      <LazyLoadImage
+        alt=""
+        effect="blur"
         src={
           item?.projectImage[0]?.imagesUrl ??
-          getImageFromAssets('/assets/images/gekrafs.png')
+          getImageFromAssets('/images/noimage.png')
         }
-        alt=""
         className="rounded-t-lg transition-all duration-300 ease-in-out h-32 object-cover w-full border-b-2 border-zinc-200"
       />
+
       <div className="relative p-3">
         <p className="text-sm font-semibold text-zinc-800">
           {item?.title?.length < 50

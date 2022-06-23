@@ -1,5 +1,6 @@
 import { CheckCircleIcon } from '@heroicons/react/solid';
-import React from 'react';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Link } from 'react-router-dom';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
 import { ProgressBar } from '../atoms';
@@ -12,13 +13,14 @@ export default function SectionCampaign({ item }) {
       <div className="relative flex space-x-3">
         {/* Image Campaign */}
         <div className="flex flex-none">
-          <img
+          <LazyLoadImage
+            alt=""
+            effect="blur"
             src={
               item?.projectImage[0]?.imagesUrl ??
-              getImageFromAssets('/assets/images/gekrafs.png')
+              getImageFromAssets('/images/noimage.png')
             }
             className="h-28 w-28 object-center object-cover rounded-lg"
-            alt=""
           />
         </div>
         {/* Detail Campaign */}

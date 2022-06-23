@@ -46,6 +46,8 @@ export default function WithoutLogin() {
   const DONATUR = useSelector((state) => state.donatur);
   const dispatch = useDispatch();
 
+  console.log(DONATUR?.tempDonatur);
+
   const [formDropdown, setformDropdown] = useState({
     paymentMethodId: '',
     channel: DONATUR?.tempDonatur?.channel ?? 'tidak',
@@ -70,6 +72,8 @@ export default function WithoutLogin() {
     event.preventDefault();
     setisSubmit(true);
     state.projectId = CAMPAIGN?.selectedCampaign?.projectId;
+    state.donaturNameHide = showName;
+
     let form = {
       ...state,
       ...formDropdown,
@@ -120,11 +124,6 @@ export default function WithoutLogin() {
   };
 
   useEffect(() => {
-    // if (DONATUR?.tempDonatur?.donaturId) {
-    //   handlerClickBank(DONATUR?.tempDonatur?.paymentMethod);
-    // } else {
-
-    // }
     dispatch(setSelectedPayment());
     dispatch(setSelectedCampaign());
     dispatch(userGetTempToken()).then((res) => {

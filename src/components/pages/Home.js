@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchAllCampaign } from '../../redux/actions/campaign';
+import RenderIf from '../../utils/helpers/RenderIf';
 import { Heading1 } from '../atoms';
 import {
   SectionCampaign,
   SectionCampaignMendesak,
   SectionKategori,
 } from '../molecules';
+import { SkeletonCampaign, SkeletonCampaignMendesak } from '../skeletons';
 import Layout from './includes/Layout';
 import SectionHeader from './includes/SectionHeader';
 
@@ -79,15 +81,17 @@ export default function Home() {
           addClass="text-sm md:text-base font-medium mb-2"
         />
         <div className="relative flex gap-4 overflow-x-auto -mx-4 px-4 pb-3">
-          {CAMPAIGN?.isLoading
-            ? ''
-            : CAMPAIGN?.allCampaign?.length > 0
-            ? CAMPAIGN?.allCampaign
-                .slice(0, 2)
-                .map((item, index) => (
-                  <SectionCampaignMendesak item={item} key={index} />
-                ))
-            : ''}
+          {CAMPAIGN?.isLoading ? (
+            <SkeletonCampaignMendesak />
+          ) : CAMPAIGN?.allCampaign?.length > 0 ? (
+            CAMPAIGN?.allCampaign
+              .slice(0, 2)
+              .map((item, index) => (
+                <SectionCampaignMendesak item={item} key={index} />
+              ))
+          ) : (
+            ''
+          )}
         </div>
       </div>
 
@@ -113,16 +117,30 @@ export default function Home() {
           <Link
             to={'/all/yatim-piatu'}
             className="text-xs font-light text-zinc-400 cursor-pointer hover:text-zinc-500 transition-all duration-300 ease-in-out">
-            show all
+            lihat semua
           </Link>
         </div>
         <div className="relative grid grid-cols-1 gap-4 mt-2">
-          {CAMPAIGN?.allCampaign?.length > 0
-            ? CAMPAIGN?.allCampaign?.slice(1, 5)?.map((item, index) => (
+          <RenderIf isTrue={CAMPAIGN?.isLoading}>
+            {Array.from({ length: 4 }).map((item, index) => (
+              <SkeletonCampaign key={index} />
+            ))}
+          </RenderIf>
+
+          <RenderIf isTrue={!CAMPAIGN?.isLoading}>
+            {CAMPAIGN?.allCampaign?.length > 0 ? (
+              CAMPAIGN?.allCampaign?.slice(1, 5)?.map((item, index) => (
                 // Campaign Card
                 <SectionCampaign item={item} key={index} />
               ))
-            : ''}
+            ) : (
+              <div className="relative text-center w-full">
+                <p className="text-sm font-light text-zinc-500">
+                  Tidak ada campaign
+                </p>
+              </div>
+            )}
+          </RenderIf>
         </div>
       </div>
       {/* End List Campaign */}
