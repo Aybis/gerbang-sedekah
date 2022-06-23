@@ -83,14 +83,21 @@ export default function DetailPage() {
 
       <div className="relative mb-8 mt-8">
         {/* Image Content */}
-        <LazyLoadImage
-          effect="blur"
-          alt=""
-          height={'auto'}
-          className="w-full rounded-lg shadow-lg shadow-zinc-200/50"
-          // src={detailData?.projectImage[0]?.imagesUrl} // use normal <img> attributes as props
-          src={detailData?.projectImage[0]?.imagesUrl} // use normal <img> attributes as props
-        />
+        <RenderIf isTrue={isLoading}>
+          <div className="bg-zinc-200 rounded h-64 w-full"></div>
+        </RenderIf>
+        <RenderIf isTrue={!isLoading}>
+          <LazyLoadImage
+            effect="blur"
+            alt=""
+            height={'auto'}
+            className="w-full rounded-lg shadow-lg shadow-zinc-200/50"
+            src={
+              detailData?.projectImage[0]?.imagesUrl ??
+              getImageFromAssets('/assets/images/no-image.png')
+            } // use normal <img> attributes as props
+          />
+        </RenderIf>
         {/* Detail Content */}
         <div className="relative mt-4">
           <RenderIf isTrue={isLoading}>
