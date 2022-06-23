@@ -86,11 +86,10 @@ export default function DetailPage() {
         <LazyLoadImage
           effect="blur"
           alt=""
+          height={'auto'}
           className="w-full rounded-lg shadow-lg shadow-zinc-200/50"
-          src={
-            // detailData?.projectImage[0]?.imagesUrl ??
-            getImageFromAssets('/assets/images/no-image.png')
-          } // use normal <img> attributes as props
+          // src={detailData?.projectImage[0]?.imagesUrl} // use normal <img> attributes as props
+          src={detailData?.projectImage[0]?.imagesUrl} // use normal <img> attributes as props
         />
         {/* Detail Content */}
         <div className="relative mt-4">
@@ -115,7 +114,7 @@ export default function DetailPage() {
                 </p>
               </div>
 
-              <div className="relative space-x-1 hidden">
+              <div className="relative flex space-x-1">
                 <div
                   onClick={() => setshowShareModal(true)}
                   className="p-2 rounded-lg flex justify-center items-center hover:bg-zinc-200 cursor-pointer transition-all duration-300 ease-in-out">
