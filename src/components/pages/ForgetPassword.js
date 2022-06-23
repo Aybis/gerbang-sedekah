@@ -19,7 +19,7 @@ export default function ForgetPassword() {
   const [form, setform] = useState({
     username: '',
     password: '',
-    confirm_password: '',
+    confirmPassword: '',
   });
 
   const validatePassword = (value) => {
@@ -67,7 +67,7 @@ export default function ForgetPassword() {
 
     if (result?.status_code === 200) {
       setloading(false);
-      swal('Yeay!', 'Register Success!', 'success');
+      swal('Yeay!', 'Reset Password Success!', 'success');
       navigate('/login');
     } else {
       setloading(false);
@@ -166,22 +166,22 @@ export default function ForgetPassword() {
               addClassComponent={'mt-2 mb-3'}
               labelName={'Konfirmasi Password'}
               type="password"
-              name="confirm_password"
-              value={form.confirm_password}
+              name="confirmPassword"
+              value={form.confirmPassword}
               handlerChange={handlerChangeInput}
               placeholder={'Konfirmasi'}
               isError={
-                form.confirm_password !== form.password &&
-                form.confirm_password.length > 0
+                form.confirmPassword !== form.password &&
+                form.confirmPassword.length > 0
               }
               messageError={'Password tidak sesuai'}
               addClassInput={[
-                form.confirm_password === form.password &&
-                form.confirm_password.length > 0
+                form.confirmPassword === form.password &&
+                form.confirmPassword.length > 0
                   ? 'border-2 border-green-600 focus:ring-green-600 focus:border-green-600 '
-                  : form.confirm_password.length < 1
+                  : form.confirmPassword.length < 1
                   ? ''
-                  : form.confirm_password.length >= 1
+                  : form.confirmPassword.length >= 1
                   ? ' border-red-500 focus:border-red-500 focus:ring-red-600 '
                   : '',
                 'transition-all duration-300 ease-in-out',

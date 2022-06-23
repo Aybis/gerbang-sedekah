@@ -1,5 +1,6 @@
 import {
   ArrowNarrowLeftIcon,
+  CheckCircleIcon,
   HeartIcon,
   ShareIcon,
 } from '@heroicons/react/solid';
@@ -111,6 +112,12 @@ export default function DetailPage() {
                 <h1 className="font-medium text-lg text-zinc-800">
                   {detailData?.title}
                 </h1>
+                <p className="text-xs text-zinc-400 mt-1 flex items-center mb-2">
+                  {detailData?.komunitas ?? 'Power Humanity'}
+                  <span>
+                    <CheckCircleIcon className="text-blue-500 h-3 ml-1" />
+                  </span>
+                </p>
                 <p
                   className={[
                     'text-xs text-zinc-500 font-light transition-all duration-300 ease-in-out',

@@ -30,7 +30,7 @@ export default function SectionCampaignMendesak({ item, addClass }) {
             : item?.title?.substring(0, 50) + '...'}
         </p>
         <p className="text-xs text-zinc-400 mt-1 flex items-center mb-2">
-          {item.komunitas ?? 'Gekrafs'}
+          {item.komunitas ?? 'Power Humanity'}
           <span>
             <CheckCircleIcon className="text-blue-500 h-3 ml-1" />
           </span>

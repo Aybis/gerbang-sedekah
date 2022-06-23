@@ -28,7 +28,7 @@ export default function SectionCampaign({ item }) {
           <div>
             <p className="text-sm font-medium text-zinc-800">{item.title}</p>
             <p className="text-xs text-zinc-400 mt-1 flex items-center">
-              {item.komunitas ?? 'Gekrafs'}
+              {item.komunitas ?? 'Power Humanity'}
               <span>
                 <CheckCircleIcon className="text-blue-500 h-3 ml-1" />
               </span>

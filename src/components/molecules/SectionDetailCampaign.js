@@ -25,14 +25,14 @@ export default function SectionDetailCampaign({ item }) {
           <p className="text-sm font-medium text-zinc-800">
             {item?.selectedCampaign?.title}
           </p>
-          <p className="text-sm font-light text-zinc-500">
-            {item?.selectedCampaign?.shortDescription}
-          </p>
           <p className="text-xs text-zinc-400 mt-1 flex items-center">
-            {item?.selectedCampaign?.komunitas ?? 'Gekrafs'}
+            {item?.selectedCampaign?.komunitas ?? 'Power Humanity'}
             <span>
               <CheckCircleIcon className="text-blue-500 h-3 ml-1" />
             </span>
+          </p>
+          <p className="text-sm font-light text-zinc-500">
+            {item?.selectedCampaign?.shortDescription}
           </p>
           <p className="text-sm font-medium text-zinc-800 mt-4">
             <span className="font-light text-zinc-500">Target :</span> Rp{' '}
