@@ -61,8 +61,6 @@ export default function DetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(isLoading, detailData?.projectImage[0]?.imagesUrl);
-
   return (
     <Layout showMenu={false}>
       {/* header page */}
