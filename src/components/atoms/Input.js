@@ -45,7 +45,7 @@ export default function Input({
           disabled={isDisabled}
           className={[
             'disabled:bg-zinc-200 disabled:cursor-not-allowed disabled:pointer-events-none',
-            'block w-full pr-10 border-zinc-300 text-zinc-900 py-3 placeholder-zinc-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-sm rounded-md',
+            'block w-full pr-10 border-zinc-300 text-zinc-900 py-3 placeholder-zinc-300 focus:outline-none focus:ring-apps-primary focus:border-apps-primary text-sm rounded-md',
             addClassInput,
           ].join(' ')}
           placeholder={placeholder}

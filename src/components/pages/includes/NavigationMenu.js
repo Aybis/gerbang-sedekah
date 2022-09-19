@@ -37,18 +37,19 @@ export default function NavigationMenu() {
               key={index}
               to={item.url}
               className={[
-                'relative flex flex-none w-16 flex-col justify-center items-center space-y-1 cursor-pointer transition-all duration-300 ease-in-out group p-1 hover:bg-zinc-50 rounded-lg rounded-b-none',
+                'relative flex flex-none w-16 flex-col justify-center items-center space-y-1 cursor-pointer transition-all duration-300 ease-in-out group p-1 hover:bg-zinc-50 rounded-md hover:text-apps-secondary',
                 location.pathname === item.url
-                  ? 'text-blue-600 font-semibold'
+                  ? 'text-apps-primary font-semibold'
                   : 'text-zinc-500',
               ].join(' ')}>
               <Icon
                 type={item.type}
-                height={4}
-                width={4}
+                height={5}
+                addClass="group-hover:text-apps-secondary transition-all duration-300 ease-in-out"
+                width={5}
                 color={
                   location.pathname === item.url
-                    ? 'text-blue-600 '
+                    ? 'text-apps-primary '
                     : 'text-zinc-500'
                 }
               />

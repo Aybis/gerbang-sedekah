@@ -14,10 +14,10 @@ export const getImageFromStorage = (pathname) =>
   process.env.REACT_APP_API_IMAGE + '/' + pathname;
 
 export const imageApi = (name) =>
-  `https://ui-avatars.com/api/?background=f4f4f5&color=000&length=2&name=${name}`;
+  `https://ui-avatars.com/api/?background=257CC0&color=fff&length=2&name=${name}`;
 
 export const imageApiAvatarUser = (name) =>
-  `https://ui-avatars.com/api/?background=0062FF&color=FFF&length=2&name=${name}`;
+  `https://ui-avatars.com/api/?background=257CC0&color=fff&length=2&name=${name}`;
 
 export const capitalize = (str, lower = false) =>
   (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, (match) =>

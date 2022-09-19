@@ -1,4 +1,5 @@
 import { setHeader } from '../../constant/api';
+import setHeaderJson from '../../constant/api/setHeaderJson';
 import api from '../../constant/routes/api';
 import * as type from '../types/campaign';
 
@@ -28,17 +29,20 @@ export const setErrorCampaign = (data) => ({
 });
 
 export const fetchAllCampaign = (params) => async (dispatch) => {
-  setHeader();
+  setHeaderJson();
   dispatch(setLoadingCampaign(true));
 
   return await api
-    .getCampaign()
+    .getCampaign({
+      data: {},
+    })
     .then((res) => {
       dispatch(setAllCampaign(res.data));
       dispatch(setLoadingCampaign(false));
       return;
     })
     .catch((err) => {
+      console.log(err?.response);
       dispatch(setLoadingCampaign(false));
       return;
     });

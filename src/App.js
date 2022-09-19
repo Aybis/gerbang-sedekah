@@ -11,13 +11,18 @@ import {
   NotFound,
   Notification,
   Payment,
-  Profile,
   Register,
   Search,
   SearchSomething,
   ShowAll,
   Transaksi,
 } from './components/pages';
+import {
+  DetailDiri,
+  GantiPassword,
+  Informasi,
+  Pengaturan,
+} from './components/pages/Profile';
 import Authenticated from './middleware/Authenticated';
 
 function App() {
@@ -32,7 +37,6 @@ function App() {
           <Route path="/transaksi" element={<Transaksi />} />
           <Route path="/search" element={<Search />} />
           <Route path="/search/:search" element={<SearchSomething />} />
-          <Route path="/profile" element={<Profile />} />
           <Route path="/all/:kategori" element={<ShowAll />} />
 
           <Route path="/notification" element={<Notification />}>
@@ -42,6 +46,11 @@ function App() {
               element={<HistoryNotification />}
             />
           </Route>
+
+          <Route path="/profile" element={<Pengaturan />} />
+          <Route path="/profile/detail" element={<DetailDiri />} />
+          <Route path="/profile/password" element={<GantiPassword />} />
+          <Route path="/profile/informasi" element={<Informasi />} />
         </Route>
 
         {/* Route without autenthication */}

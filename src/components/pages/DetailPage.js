@@ -4,18 +4,26 @@ import {
   HeartIcon,
   ShareIcon,
 } from '@heroicons/react/solid';
+import createDOMPurify from 'dompurify';
 import React, { useEffect, useState } from 'react';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { setHeader } from '../../constant/api';
 import api from '../../constant/routes/api';
 import { getImageFromAssets } from '../../utils/helpers/assetHelpers';
-import { ButtonSubmit, Modal, ProgressBar } from '../atoms';
-import Layout from './includes/Layout';
-import createDOMPurify from 'dompurify';
 import RenderIf from '../../utils/helpers/RenderIf';
+import { ButtonSubmit, Modal, ProgressBar } from '../atoms';
 import { Skeleton } from '../skeletons';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import Layout from './includes/Layout';
+
+import {
+  FacebookIcon,
+  FacebookShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from 'react-share';
 
 export default function DetailPage() {
   const { id } = useParams();
@@ -25,21 +33,7 @@ export default function DetailPage() {
   const DOMPurify = createDOMPurify(window);
   const [detailData, setdetailData] = useState(null);
   const navigate = useNavigate();
-
-  const dataSosicalMedia = [
-    {
-      name: 'facebook',
-      image: getImageFromAssets('/assets/images/Facebook.png'),
-    },
-    {
-      name: 'instagram',
-      image: getImageFromAssets('/assets/images/instagram.png'),
-    },
-    {
-      name: 'whatsapp',
-      image: getImageFromAssets('/assets/images/whatsapp.png'),
-    },
-  ];
+  const [isLoadedImage, setisLoadedImage] = useState(false);
 
   const fetchDetailCampaign = async () => {
     setisLoading(true);
@@ -66,31 +60,38 @@ export default function DetailPage() {
     <Layout showMenu={false}>
       {/* header page */}
       <div className="relative">
-        <div className="relative grid grid-cols-3 items-center">
+        <div className="relative flex justify-between items-center">
           <div
             onClick={() => navigate(-1)}
-            className="flex flex-none w-fit justify-center col-span-1 items-center p-2 hover:bg-zinc-100 rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
+            className="flex flex-none w-fit justify-center col-span-1 items-center hover:bg-zinc-100 rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
             <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
           </div>
-          <div className="flex flex-shrink relative col-span-2">
-            <h1 className="text-lg font-semibold text-zinc-700 tracking-wide">
+          <div className="flex  flex-shrink relative col-span-2">
+            <h1 className="text-lg w-fit font-semibold text-zinc-700 tracking-wide">
               Detail Campaign
             </h1>
+          </div>
+          <div
+            onClick={() => setshowShareModal(true)}
+            className="flex flex-none w-fit justify-center col-span-1 items-center hover:bg-zinc-100 rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
+            <ShareIcon className="text-zinc-700 h-6" />
           </div>
         </div>
       </div>
 
-      <div className="relative mb-8 mt-8">
+      <div className="relative mb-8 mt-6">
         {/* Image Content */}
         <RenderIf isTrue={isLoading}>
-          <div className="bg-zinc-200 rounded h-64 w-full"></div>
+          <div className="bg-zinc-300 rounded h-64 w-full"></div>
         </RenderIf>
         <RenderIf isTrue={!isLoading}>
-          <LazyLoadImage
+          <img
             effect="blur"
             alt=""
+            style={isLoadedImage ? { display: 'block' } : { display: 'none' }}
             height={'auto'}
-            className="w-full rounded-lg shadow-lg shadow-zinc-200/50"
+            onLoad={() => setisLoadedImage(true)}
+            className="h-48 w-fit rounded-lg object-cover shadow-lg shadow-gray-200"
             src={
               detailData?.projectImage[0]?.imagesUrl ??
               getImageFromAssets('/assets/images/no-image.png')
@@ -107,7 +108,7 @@ export default function DetailPage() {
           </RenderIf>
 
           <RenderIf isTrue={!isLoading}>
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-3">
               <div>
                 <h1 className="font-medium text-lg text-zinc-800">
                   {detailData?.title}
@@ -126,7 +127,7 @@ export default function DetailPage() {
                 </p>
               </div>
 
-              <div className="relative flex space-x-1">
+              <div className="relative hidden space-x-1">
                 <div
                   onClick={() => setshowShareModal(true)}
                   className="p-2 rounded-lg flex justify-center items-center hover:bg-zinc-200 cursor-pointer transition-all duration-300 ease-in-out">
@@ -178,12 +179,12 @@ export default function DetailPage() {
 
         {/* Section Deskripsi */}
         <div className="relative mt-6">
-          <p className="text-sm font-medium text-zinc-900 pb-1 border-b-2 w-fit border-zinc-900">
+          <p className="text-sm font-semibold leading-relaxed text-zinc-900 pb-1  w-fit">
             Deskripsi
           </p>
           <div
             className={[
-              'text-zinc-600 text-sm font-light mt-2 text-justify',
+              'text-gray-600 text-sm leading-relaxed font-light mt-2 text-justify',
               isLoading
                 ? 'bg-zinc-200 animate-pulse text-zinc-200'
                 : 'bg-transparent',
@@ -213,13 +214,15 @@ export default function DetailPage() {
           Bagian ke ...
         </h1>
         <div className="flex justify-evenly items-center">
-          {dataSosicalMedia.map((item) => (
-            <div
-              className="flex cursor-pointer justify-center items-center bg-slate-100 h-14 w-14 rounded-full"
-              key={item.name}>
-              <img src={item.image} alt={item.name} className="h-8" />
-            </div>
-          ))}
+          <FacebookShareButton url={window.location.href}>
+            <FacebookIcon size={32} round={true} />
+          </FacebookShareButton>
+          <TwitterShareButton url={window.location.href}>
+            <TwitterIcon size={32} round={true} />
+          </TwitterShareButton>
+          <WhatsappShareButton url={window.location.href}>
+            <WhatsappIcon size={32} round={true} />
+          </WhatsappShareButton>
         </div>
       </Modal>
     </Layout>

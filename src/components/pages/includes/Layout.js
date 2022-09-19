@@ -45,7 +45,7 @@ export default function Layout({ showMenu = true, addClassParent, children }) {
         <div className="max-w-md mx-auto relative container inset-x-0">
           <div
             onClick={() => handlerButtonToUp()}
-            className="fixed right-10 z-20 md:rig bottom-20 md:right-1/3 bg-blue-500 rounded-full p-2 cursor-pointer hover:bg-blue-600 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/50">
+            className="fixed right-10 z-20 md:rig bottom-20 md:right-1/3 bg-apps-primary rounded-full p-2 cursor-pointer hover:bg-blue-400 transition-all duration-300 ease-in-out shadow-lg shadow-blue-500/50">
             <ArrowNarrowUpIcon className="h-5 lg:h-8 text-white" />
           </div>
         </div>

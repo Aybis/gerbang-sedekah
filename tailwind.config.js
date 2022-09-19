@@ -30,8 +30,9 @@ module.exports = {
       pink: colors.pink,
       rose: colors.rose,
       apps: {
-        primary: '#049563',
-        secondary: '#FDD652',
+        primary: '#257CC0',
+        secondary: '#FFC834',
+        text: '#414042',
         greenButton: '#9BD35A',
         background: '#FCFCFC',
       },

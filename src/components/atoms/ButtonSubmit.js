@@ -18,7 +18,7 @@ export default function ButtonSubmit({
       className={[
         'disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none',
         'px-3 py-3 rounded-lg font-semibold flex justify-center items-center relative space-x-2 transition-all duration-300 ease-in-out cursor-pointer',
-        type === 'primary' && 'bg-blue-600 hover:bg-blue-400 text-white',
+        type === 'primary' && 'bg-apps-primary hover:bg-blue-400 text-white',
         type === 'danger' && 'bg-red-600 hover:bg-red-400 text-white',
         type === 'success' && 'bg-green-600 hover:bg-green-400 text-white',
         type === 'warning' && 'bg-yellow-600 hover:bg-yellow-400 text-zinc-700',

@@ -37,7 +37,10 @@ export default {
     axios.post('kolabore/confirm-donatur', params),
 
   // endpoint campaign
-  getCampaign: (params) => axios.get('kolabore/get-all-project', params),
+  getCampaign: (params) =>
+    axios.post('kolabore/get-all-project', params, {
+      headers: { 'Content-Type': 'application/json' },
+    }),
   getCampaignById: (params) => axios.post('kolabore/get-project-byid', params),
   getCampaignByUrl: (params) =>
     axios.post('kolabore/get-project-byshorturl', params),

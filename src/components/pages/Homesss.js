@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -15,7 +16,6 @@ import SectionHeader from './includes/SectionHeader';
 
 export default function Home() {
   const [didMount, setDidMount] = useState(false);
-
   const dispatch = useDispatch();
   const CAMPAIGN = useSelector((state) => state.campaign);
 
