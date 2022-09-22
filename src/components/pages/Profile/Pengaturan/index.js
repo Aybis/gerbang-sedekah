@@ -90,10 +90,10 @@ export default function Index() {
         </div>
 
         <div className="relative flex flex-col justify-center items-center text-center mt-3 space-y-1">
-          <h1 className="text-lg font-semibold text-apps-text leading-relaxed">
+          <h1 className="text-lg font-semibold text-apps-text leading-relaxed capitalize">
             {USER?.profile?.username}
           </h1>
-          <p className="text-sm font-light text-apps-text/50">
+          <p className="text-sm font-light text-apps-text">
             {USER?.profile?.email}
           </p>
         </div>
@@ -104,15 +104,15 @@ export default function Index() {
             <h2 className="font-semibold text-apps-text leading-relaxed">
               Member
             </h2>
-            <p className="text-sm font-light text-apps-text/50">Type</p>
+            <p className="text-sm font-light text-apps-text">Type</p>
           </div>
           <div className="flex flex-col justify-center items-center">
             <h2 className="font-semibold text-apps-text leading-relaxed">-</h2>
-            <p className="text-sm font-light text-apps-text/50">Organisasi</p>
+            <p className="text-sm font-light text-apps-text">Organisasi</p>
           </div>
           <div className="flex flex-col justify-center items-center">
             <h2 className="font-semibold text-apps-text leading-relaxed">0</h2>
-            <p className="text-sm font-light text-apps-text/50">Campaign</p>
+            <p className="text-sm font-light text-apps-text">Campaign</p>
           </div>
         </div>
       </div>
@@ -122,7 +122,7 @@ export default function Index() {
         <h1 className="text-base font-semibold leading-relaxed text-apps-text">
           Pengaturan
         </h1>
-        <div className="grid grid-cols-1 gap-4 p-2 bg-zinc-50/80 rounded-lg mt-4">
+        <div className="grid grid-cols-1 bg-gray-50 divide-y divide-gray-200 rounded-lg mt-4">
           {listMenu.map((item, index) => (
             <div key={index}>
               <RenderIf isTrue={item.link === '/logout'}>
@@ -130,16 +130,16 @@ export default function Index() {
                   onClick={() => handlerLogout()}
                   key={index}
                   className="group w-full">
-                  <div className="relative  items-center justify-between px-2 py-3 flex gap-4 rounded-md group-hover:bg-red-200 transition-all duration-300 ease-in-out group-hover:-m-2 group-hover:py-4 group-hover:px-5 cursor-pointer">
+                  <div className="relative  items-center justify-between p-4 flex gap-4 rounded-md group-hover:bg-red-200 transition-all duration-300 ease-in-out group-hover:-m-2 group-hover:py-4 group-hover:px-5 cursor-pointer">
                     <div className="relative flex items-center gap-4">
-                      <span className="h-8 w-8 bg-zinc-100 text-apps-text/90 p-1.5 rounded">
+                      <span className="h-8 w-8 bg-zinc-100 group-hover:bg-red-300 group-hover:text-red-600 text-apps-text/90 p-1.5 rounded">
                         {item.icon}
                       </span>
-                      <p className="font-medium text-apps-text group-hover:text-white transition-all duration-300 ease-in-out leading-relaxed">
+                      <p className="font-medium text-apps-text group-hover:text-red-400 transition-all duration-300 ease-in-out leading-relaxed">
                         {item.label}
                       </p>
                     </div>
-                    <span className="h-8 w-8 p-1 text-apps-text/70 group-hover:text-white transition-all duration-300 ease-in-out rounded">
+                    <span className="h-8 w-8 p-1 text-apps-text/70 group-hover:text-red-400 transition-all duration-300 ease-in-out rounded">
                       <ChevronRightIcon />
                     </span>
                   </div>
@@ -147,7 +147,7 @@ export default function Index() {
               </RenderIf>
               <RenderIf isTrue={item.link !== '/logout'}>
                 <Link to={item.link} key={index} className="group">
-                  <div className="relative items-center justify-between px-2 py-3 flex gap-4 rounded-md group-hover:bg-apps-primary transition-all duration-300 ease-in-out group-hover:-m-2 group-hover:py-4 group-hover:px-5 cursor-pointer">
+                  <div className="relative items-center justify-between p-4 flex gap-4 rounded-md group-hover:bg-apps-primary transition-all duration-300 ease-in-out group-hover:-m-2 group-hover:py-4 group-hover:px-5 cursor-pointer">
                     <div className="relative flex items-center gap-4">
                       <span className="h-8 w-8 bg-zinc-100 text-apps-text/90 p-1.5 rounded">
                         {item.icon}

@@ -13,6 +13,8 @@ export default {
   register: (data) => axios.post('kolabore/register', data),
   forgot: (data) => axios.post('kolabore/forgot-password', data),
   refreshToken: (idUser) => axios.post(`kolabore/refresh-token?ID=${idUser}`),
+  update: (data) => axios.post('kolabore/update-profile', data),
+  changePassword: (data) => axios.post('kolabore/change-password', data),
 
   //auth
   getAuth: () =>
@@ -20,6 +22,9 @@ export default {
       username: '$2a$11$8PTF5vbqVYidoWe49gmMD.rkWszjt.51MBOMJvOtQPGTpxHo8Zj3.',
       password: '$2a$11$OZ8pJRo82lcTM1xNul0UFu01//c.bI3E2kruhp3asq87Lb0Baj/Fq',
     }),
+
+  // category
+  getCategory: () => axios.get('kolabore/get-all-projectCategory'),
 
   // transaction
   donatur: (data) => axios.post('kolabore/new-donatur', data),
@@ -44,7 +49,7 @@ export default {
   getCampaignById: (params) => axios.post('kolabore/get-project-byid', params),
   getCampaignByUrl: (params) =>
     axios.post('kolabore/get-project-byshorturl', params),
-  searchCampaign: (params) => axios.get('kolabore/get-all-project', params),
+  searchCampaign: (params) => axios.post('kolabore/get-all-project', params),
 
   // payment method
   getPaymentMethod: (params) =>

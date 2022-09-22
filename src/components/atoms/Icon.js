@@ -62,7 +62,7 @@ export default function Icon({
     );
   }
 
-  if (type === 'pangan') {
+  if (type === 'ketahanan pangan') {
     return (
       <svg
         className={[`h-${height} w-${width} ${color}`, addClass].join(' ')}
@@ -97,7 +97,7 @@ export default function Icon({
     );
   }
 
-  if (type === 'kesehatan') {
+  if (type === 'kesehatan & lingkungan') {
     return (
       <svg
         className={[`h-${height} w-${width} ${color}`, addClass].join(' ')}
@@ -194,7 +194,7 @@ export default function Icon({
     );
   }
 
-  if (type === 'energi') {
+  if (type === 'energi terbarukan') {
     return (
       <svg
         className={[`h-${height} w-${width} ${color}`, addClass].join(' ')}

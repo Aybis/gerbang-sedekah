@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchAllCampaign } from '../../redux/actions/campaign';
+import { fetchDataCategory } from '../../redux/actions/category';
 import { Heading1 } from '../atoms';
 import { SectionCampaign, SectionCampaignMendesak } from '../molecules';
 import Layout from './includes/Layout';
@@ -11,6 +12,7 @@ export default function Search() {
   const [search, setsearch] = useState('');
   const navigate = useNavigate();
   const CAMPAIGN = useSelector((state) => state.campaign);
+  const CATEGORY = useSelector((state) => state.category);
   const dispatch = useDispatch();
 
   const handlerChangeInput = (event) => {
@@ -19,6 +21,7 @@ export default function Search() {
 
   useEffect(() => {
     dispatch(fetchAllCampaign());
+    dispatch(fetchDataCategory());
   }, [dispatch]);
 
   return (

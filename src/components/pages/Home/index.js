@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchAllCampaign } from '../../../redux/actions/campaign';
+import { fetchDataCategory } from '../../../redux/actions/category';
 import RenderIf from '../../../utils/helpers/RenderIf';
 import { Heading1 } from '../../atoms';
 import {
@@ -17,47 +18,10 @@ export default function Index() {
   const [didMount, setDidMount] = useState(false);
   const dispatch = useDispatch();
   const CAMPAIGN = useSelector((state) => state.campaign);
-
-  const dataKategori = [
-    {
-      name: 'Pemberdayaan',
-      status: 'beta',
-      isHidden: false,
-      link: 'pemberdayaan',
-    },
-    {
-      name: 'Ketahanan Pangan',
-      status: 'beta',
-      isHidden: false,
-      link: 'pangan',
-    },
-    {
-      name: 'Pendidikan',
-      status: 'beta',
-      isHidden: false,
-      link: 'pendidikan',
-    },
-    {
-      name: 'Energi Terbarukan',
-      status: 'beta',
-      isHidden: false,
-      link: 'energi',
-    },
-    {
-      name: 'Kesehatan & Lingkungan',
-      status: 'beta',
-      isHidden: false,
-      link: 'kesehatan',
-    },
-    {
-      name: 'Partnership',
-      status: 'beta',
-      isHidden: false,
-      link: 'partnership',
-    },
-  ];
+  const CATEGORY = useSelector((state) => state.category);
 
   useEffect(() => {
+    dispatch(fetchDataCategory());
     dispatch(fetchAllCampaign());
     setDidMount(true);
     return () => setDidMount(false);
@@ -95,15 +59,28 @@ export default function Index() {
       </div>
 
       {/* SectionKategori */}
-      <div className="relative my-8">
-        <Heading1 title={'Kategori'} addClass="md:text-base font-medium" />
-        <div className="relative grid grid-cols-3 gap-x-4 gap-y-5 place-items-center mt-2">
-          {dataKategori?.map((item, index) => (
-            <SectionKategori item={item} key={index} />
-          ))}
+      <RenderIf isTrue={CATEGORY?.isError}>
+        <div className="relative p-4 flex justify-center items-center">
+          <p className="text-sm text-zinc-800">Gagal memuat data kategori</p>
         </div>
-      </div>
-      {/* End SectionKategori */}
+      </RenderIf>
+      <RenderIf isTrue={CATEGORY?.isLoading}>
+        <div className="relative p-4 flex justify-center items-center">
+          <p className="text-sm text-zinc-800">Memuat data kategori</p>
+        </div>
+      </RenderIf>
+      <RenderIf isTrue={!CATEGORY?.isError && !CATEGORY?.isLoading}>
+        <div className="relative my-8">
+          <Heading1 title={'Kategori'} addClass="md:text-base font-medium" />
+          <div className="relative grid grid-cols-3 gap-4 place-items-center mt-3">
+            {CATEGORY?.dataCategory?.length > 0 &&
+              CATEGORY?.dataCategory?.map((item, index) => (
+                <SectionKategori item={item} key={index} />
+              ))}
+          </div>
+        </div>
+        {/* End SectionKategori */}
+      </RenderIf>
 
       {/* List Campaign */}
       <div className="relative my-12">
@@ -119,7 +96,8 @@ export default function Index() {
             lihat semua
           </Link>
         </div>
-        <div className="relative grid grid-cols-1 gap-4 mt-2">
+
+        <div className="relative grid grid-cols-1 gap-4 mt-3">
           <RenderIf isTrue={CAMPAIGN?.isLoading}>
             {Array.from({ length: 4 }).map((item, index) => (
               <SkeletonCampaign key={index} />

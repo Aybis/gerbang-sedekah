@@ -21,7 +21,7 @@ export default function SectionHeader() {
           {/* Name */}
           <div className="relative">
             <p className="text-xs font-light text-zinc-500">Selamat datang,</p>
-            <p className="text-sm font-semibold text-apps-text">
+            <p className="text-sm font-semibold text-apps-text leading-relaxed tracking-wide capitalize">
               {USER?.profile?.username}
             </p>
           </div>
@@ -32,7 +32,7 @@ export default function SectionHeader() {
           to={'/notification'}
           className="relative p-2 flex justify-center items-center w-fit cursor-pointer hover:scale-110 transition-all duration-300 ease-in-out hover:bg-zinc-100 text-zinc-400 hover:text-zinc-700 rounded-lg group">
           {/* <span className="h-2 w-2 rounded-full bg-red-500 absolute top-2 right-3"></span> */}
-          <BellIcon className="h-6 text-apps-primary/40 group-hover:text-apps-primary transition-all duration-300 ease-in-out" />
+          <BellIcon className="h-6 text-gray-400 group-hover:text-apps-primary transition-all duration-300 ease-in-out" />
         </Link>
       </div>
     </div>

@@ -30,8 +30,8 @@ export default function Index() {
       <div className="relative flex gap-4 items-center">
         <div
           onClick={() => navigate(-1)}
-          className="relative h-8 w-8 p-2 hover:bg-zinc-50 rounded-md cursor-pointer">
-          <ArrowNarrowLeftIcon className="h-full w-full text-apps-text" />
+          className="flex flex-none w-fit justify-center col-span-1 items-center hover:bg-zinc-100 rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
+          <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
         </div>
         <div className="relative">
           <h1 className="text-apps-text text-xl leading-relaxed font-semibold">
@@ -46,10 +46,10 @@ export default function Index() {
           <img
             src={USER?.image ?? imageApiAvatarUser(USER?.profile?.username)}
             alt="avatar"
-            className="h-full w-full object-cover object-center rounded-full ring-4 ring-apps-primary"
+            className="h-full w-full object-cover object-center rounded-full ring-4 ring-apps-secondary"
           />
 
-          <span className="absolute -bottom-2 right-0 h-8 w-8 rounded-full p-1 bg-apps-secondary text-apps-text cursor-pointer">
+          <span className="absolute -bottom-1 right-0 h-8 w-8 rounded-full p-1 bg-apps-secondary text-apps-text cursor-pointer shadow-md shadow-apps-secondary">
             <PencilIcon className="h-full w-full" />
           </span>
         </div>

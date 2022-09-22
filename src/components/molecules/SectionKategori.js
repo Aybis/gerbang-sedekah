@@ -8,7 +8,7 @@ export default function SectionKategori({ item }) {
         <Icon
           height={12}
           width={14}
-          type={item.link}
+          type={item.name.toLowerCase()}
           addClass="border border-zinc-200 rounded-lg p-2"
         />
       </div>

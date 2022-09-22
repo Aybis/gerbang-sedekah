@@ -6,11 +6,12 @@ import user from './user';
 import donatur from './donatur';
 import campaign from './campaign';
 import payment from './payment';
+import category from './category';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', 'donatur', 'campaign', 'payment'],
+  whitelist: ['user', 'donatur', 'campaign', 'payment', 'category'],
 };
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   donatur,
   campaign,
   payment,
+  category,
 });
 
 export default persistReducer(persistConfig, rootReducer);
