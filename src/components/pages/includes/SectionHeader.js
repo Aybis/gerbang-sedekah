@@ -14,7 +14,10 @@ export default function SectionHeader() {
         <div className="relative flex space-x-2">
           {/* Avatar */}
           <img
-            src={imageApiAvatarUser(USER?.profile?.username)}
+            src={
+              USER?.profile?.imageUrl ??
+              imageApiAvatarUser(USER?.profile?.name ?? USER?.profile?.username)
+            }
             alt="user"
             className="h-10 rounded-md"
           />
@@ -22,7 +25,7 @@ export default function SectionHeader() {
           <div className="relative">
             <p className="text-xs font-light text-zinc-500">Selamat datang,</p>
             <p className="text-sm font-semibold text-apps-text leading-relaxed tracking-wide capitalize">
-              {USER?.profile?.username}
+              {USER?.profile?.name ?? USER?.profile?.username}
             </p>
           </div>
         </div>

@@ -42,9 +42,8 @@ export const fetchAllCampaign = (params) => async (dispatch) => {
       return;
     })
     .catch((err) => {
-      console.log(err?.response);
       dispatch(setLoadingCampaign(false));
-      return;
+      return err?.response;
     });
 };
 
@@ -62,8 +61,8 @@ export const searchCampaign = (data) => async (dispatch) => {
       return;
     })
     .catch((err) => {
-      console.log(err.response);
       dispatch(setLoadingCampaign(false));
+      return err.response;
     });
 };
 
@@ -80,8 +79,8 @@ export const fetchCampaignById = (id, header) => async (dispatch) => {
       dispatch(setLoadingCampaign(false));
     })
     .catch((err) => {
-      console.log(err.response);
       dispatch(setLoadingCampaign(false));
+      return err.response;
     });
 };
 
@@ -98,7 +97,7 @@ export const fetchCampaignByUrl = (url, header) => async (dispatch) => {
       dispatch(setLoadingCampaign(false));
     })
     .catch((err) => {
-      console.log(err.response);
       dispatch(setLoadingCampaign(false));
+      return err.response;
     });
 };

@@ -13,7 +13,7 @@ export default {
   register: (data) => axios.post('kolabore/register', data),
   forgot: (data) => axios.post('kolabore/forgot-password', data),
   refreshToken: (idUser) => axios.post(`kolabore/refresh-token?ID=${idUser}`),
-  update: (data) => axios.post('kolabore/update-profile', data),
+  updateProfile: (data) => axios.post('kolabore/update-profile', data),
   changePassword: (data) => axios.post('kolabore/change-password', data),
 
   //auth

@@ -1,6 +1,7 @@
 import api from '../../constant/routes/api';
 import * as type from '../types/user';
 import Cookies from 'js-cookie';
+import { setHeader } from '../../constant/api';
 
 export const setProfile = (data) => ({
   type: type.PROFILE,
@@ -90,6 +91,34 @@ export const userForgot = async (data) => {
       return res;
     })
     .catch((err) => {
+      // dispatch(err.response.data.message);
+      return err.response;
+    });
+};
+
+export const userUpdateProfile = async (data) => {
+  console.log(data);
+  setHeader();
+  return await api
+    .updateProfile(data)
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err?.response;
+    });
+};
+
+export const userChangePassword = async (data) => {
+  setHeader();
+  return await api
+    .changePassword(data)
+    .then((res) => {
+      console.log(res);
+      return res;
+    })
+    .catch((err) => {
+      console.log(err?.response);
       // dispatch(err.response.data.message);
       return err.response;
     });

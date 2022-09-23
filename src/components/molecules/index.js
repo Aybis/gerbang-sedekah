@@ -7,3 +7,4 @@ export { default as SectionCampaignMendesak } from './SectionCampaignMendesak';
 export { default as SectionDetailCampaign } from './SectionDetailCampaign';
 export { default as SectionDropdownChannel } from './SectionDropdownChannel';
 export { default as SectionBank } from './SectionBank';
+export { default as BackPage } from './Backpage';

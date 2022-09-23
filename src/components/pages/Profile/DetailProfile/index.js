@@ -1,21 +1,28 @@
-import { ArrowNarrowLeftIcon, PencilIcon } from '@heroicons/react/solid';
+import { PencilIcon } from '@heroicons/react/solid';
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setProfile, userUpdateProfile } from '../../../../redux/actions/user';
 import { imageApiAvatarUser } from '../../../../utils/helpers/assetHelpers';
-import { ButtonSubmit, Input } from '../../../atoms';
+import { ButtonSubmit, Input, Textarea } from '../../../atoms';
+import { BackPage } from '../../../molecules';
 import Layout from '../../includes/Layout';
+import Compressor from 'compressorjs';
+import swal from 'sweetalert';
 
 export default function Index() {
   const USER = useSelector((state) => state.user);
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [photo, setPhoto] = useState(null);
+  const [image, setImage] = useState(null);
+  const [loading, setloading] = useState(false);
 
   const [form, setform] = useState({
-    nama: USER?.profile?.nama ?? '',
-    email: USER?.profile?.email ?? '',
-    phone: USER?.profile?.phone ?? '',
-    username: USER?.profile?.username ?? '',
-    alamat: USER?.profile?.alamat ?? '',
+    Name: USER?.profile?.name ?? '',
+    Email: USER?.profile?.email ?? '',
+    Phone: USER?.profile?.phone ?? '',
+    Username: USER?.profile?.username ?? '',
+    Address: USER?.profile?.address ?? '',
+    Images: USER?.profile?.imageUrl ?? '',
   });
 
   const handlerChange = (e) => {
@@ -25,74 +32,129 @@ export default function Index() {
     });
   };
 
+  const inputPhoto = (event) => {
+    let file = event.target.files[0] ? event.target.files[0] : null;
+    if (!file) {
+      return;
+    } else {
+      new Compressor(file, {
+        quality: 0.5,
+        convertSize: 5000,
+        success: (result) => {
+          setPhoto(URL.createObjectURL(result));
+          createImage(result);
+        },
+      });
+    }
+  };
+
+  const createImage = (file) => {
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      setImage(e.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handlerSubmit = async (e) => {
+    e.preventDefault();
+    setloading(true);
+    let dataForm = new FormData();
+
+    for (let key in form) {
+      dataForm.append(key, form[key]);
+      if (key === 'Images') {
+        dataForm.append('Images', image);
+      }
+    }
+
+    const result = await userUpdateProfile(dataForm);
+    if (result.status_code === 200) {
+      setloading(false);
+      dispatch(setProfile(result.data));
+      swal('Yeay', 'Profile berhasil diperbaharui!', 'success');
+    }
+    setloading(false);
+  };
+
   return (
     <Layout showMenu={false}>
-      <div className="relative flex gap-4 items-center">
-        <div
-          onClick={() => navigate(-1)}
-          className="flex flex-none w-fit justify-center col-span-1 items-center hover:bg-zinc-100 rounded-lg cursor-pointer transition-all duration-300 ease-in-out">
-          <ArrowNarrowLeftIcon className="text-zinc-700 h-6" />
-        </div>
-        <div className="relative">
-          <h1 className="text-apps-text text-xl leading-relaxed font-semibold">
-            Data Diri
-          </h1>
-        </div>
-      </div>
+      <BackPage title={'Kembali'} />
 
       {/* Avatar  */}
       <div className="relative mt-12 flex flex-col w-full justify-center items-center">
         <div className="relative flex justify-center items-center h-32 w-32 rounded-full">
           <img
-            src={USER?.image ?? imageApiAvatarUser(USER?.profile?.username)}
+            src={
+              photo !== null
+                ? image
+                : USER?.profile?.imageUrl ??
+                  imageApiAvatarUser(USER?.profile?.username)
+            }
             alt="avatar"
             className="h-full w-full object-cover object-center rounded-full ring-4 ring-apps-secondary"
           />
-
-          <span className="absolute -bottom-1 right-0 h-8 w-8 rounded-full p-1 bg-apps-secondary text-apps-text cursor-pointer shadow-md shadow-apps-secondary">
+          <label
+            htmlFor="file-upload"
+            className="h-8 w-8 rounded-full p-1 bg-apps-secondary text-apps-text cursor-pointer shadow-md shadow-apps-secondary  absolute -bottom-2 right-2">
             <PencilIcon className="h-full w-full" />
-          </span>
+            <input
+              id="file-upload"
+              name="Images"
+              accept="image/*"
+              onChange={(e) => inputPhoto(e)}
+              type="file"
+              className="sr-only"
+            />
+          </label>
         </div>
       </div>
 
-      <form
-        onSubmit={(e) => e.preventDefault()}
-        className="mt-12 grid grid-cols-1 gap-4">
+      <form onSubmit={handlerSubmit} className="mt-12 grid grid-cols-1 gap-4">
         <Input
-          value={form.nama}
+          value={form.Name}
           handlerChange={handlerChange}
-          name={'nama'}
+          name={'Name'}
           labelName={'Nama'}
         />
         <Input
-          value={form.email}
-          name={'email'}
+          value={form.Email}
+          name={'Email'}
           isDisabled
           handlerChange={handlerChange}
           labelName={'Email'}
         />
         <Input
-          value={form.phone}
+          value={form.Phone}
           isDisabled
           handlerChange={handlerChange}
-          name={'phone'}
+          name={'Phone'}
           labelName={'No. Handphone'}
         />
         <Input
-          value={form.username}
+          value={form.Username}
           isDisabled
           handlerChange={handlerChange}
-          name={'username'}
+          name={'Username'}
           labelName={'Username'}
         />
-        <Input
-          value={form.alamat}
-          handlerChange={handlerChange}
-          name={'alamat'}
-          labelName={'Alamat'}
+        <Textarea
+          value={form.Address}
+          onchange={handlerChange}
+          showLabel={true}
+          label={'Alamat'}
+          name={'Address'}
+          isTransaction={false}
+          addClass="focus:ring-apps-primary focus:border-apps-primary"
+          placeholder={'...'}
         />
 
-        <ButtonSubmit addClass={'mt-8'}>Update</ButtonSubmit>
+        <ButtonSubmit
+          isLoading={loading}
+          isDisabled={loading}
+          addClass={'mt-8'}>
+          Update
+        </ButtonSubmit>
       </form>
     </Layout>
   );

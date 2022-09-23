@@ -91,7 +91,7 @@ export default function Index() {
 
         <div className="relative flex flex-col justify-center items-center text-center mt-3 space-y-1">
           <h1 className="text-lg font-semibold text-apps-text leading-relaxed capitalize">
-            {USER?.profile?.username}
+            {USER?.profile?.name ?? USER?.profile?.username}
           </h1>
           <p className="text-sm font-light text-apps-text">
             {USER?.profile?.email}
@@ -104,7 +104,7 @@ export default function Index() {
             <h2 className="font-semibold text-apps-text leading-relaxed">
               Member
             </h2>
-            <p className="text-sm font-light text-apps-text">Type</p>
+            <p className="text-sm font-light text-apps-text">Tipe</p>
           </div>
           <div className="flex flex-col justify-center items-center">
             <h2 className="font-semibold text-apps-text leading-relaxed">-</h2>
